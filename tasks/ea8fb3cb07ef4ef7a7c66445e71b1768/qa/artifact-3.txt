@@ -1,0 +1,89 @@
+
+其中 `issuedAt` 和 `expiresAt` 必须由截图脚本按当前时间动态生成，不允许写入固定过期时间。
+
+## 4. 测试参数
+
+截图脚本使用以下公开参数创建确定性场景：
+
+| 参数 | 示例 | 用途 |
+|---|---|---|
+| `tab` | `?tab=sms` | 初始显示短信验证码登录 |
+| `tab` | `?tab=qr` | 初始显示扫码登录 |
+| `qrState` | `?tab=qr&qrState=scanned` | 初始进入已扫描待确认状态 |
+| `error` | `?error=password` | 初始注入密码错误状态 |
+| `error` | `?error=locked` | 初始注入账号锁定状态 |
+| `smsCountdown` | `?tab=sms&smsCountdown=60` | 初始进入短信倒计时 |
+| `success` | `?success=1` | 初始进入登录成功反馈 |
+| `expired` | `?expired=1` | 写入已过期会话并显示过期模态框 |
+| `sessionSeconds` | `?sessionSeconds=60` | 缩短新签发会话有效期 |
+| `lockSeconds` | `?lockSeconds=300` | 设置密码锁定时长 |
+
+安全要求：
+
+- 测试参数只应在本地或测试环境启用。
+- 参数值必须进行白名单和范围校验。
+- `redirect` 只允许站内相对路径。
+- 不得在生产环境暴露真实密钥、真实用户信息或可绕过真实认证策略的接口。
+
+## 5. 截图清单
+
+| 序号 | 文件名 | 用例编号 | 场景与执行入口 | 视口 | 预期 | 实际 | 结论 | 缺陷编号 |
+|---|---|---|---|---|---|---|---|---|
+| 01 | `01-desktop-login.png` | TC-01 | 桌面端默认密码登录页：`/index.html` | 1440 × 900 | 左侧品牌区与右侧登录卡片完整；默认选中账号密码；输入框、协议和主按钮可见；无横向滚动 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 02 | `02-desktop-tab-sms.png` | TC-02 | 桌面端短信验证码页：`/index.html?tab=sms` | 1440 × 900 | 短信 Tab 激活；显示手机号、验证码、获取验证码按钮和协议行；旧错误状态清除 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 03 | `03-desktop-tab-qr.png` | TC-03 | 桌面端扫码待扫描：`/index.html?tab=qr` | 1440 × 900 | 扫码 Tab 激活；显示 CSS 二维码占位、待扫描状态、刷新二维码和切换账号链接 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 04 | `04-desktop-qr-confirm.png` | TC-04 | 桌面端扫码已扫描待确认：`/index.html?tab=qr&qrState=scanned` | 1440 × 900 | 状态显示“已扫描待确认”；主按钮变为“确认登录”且可操作 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 05 | `05-desktop-error-password.png` | TC-05 | 桌面端密码错误：`/index.html?error=password` | 1440 × 900 | 顶部提示和密码字段错误提示出现；密码框标红；页面结构无明显跳动 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 06 | `06-desktop-lock.png` | TC-06 | 桌面端失败锁定：`/index.html?error=locked&lockSeconds=300` | 1440 × 900 | 显示账号锁定提示；登录按钮禁用并显示 5 分钟倒计时 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 07 | `07-desktop-sms-countdown.png` | TC-07 | 桌面端短信倒计时：`/index.html?tab=sms&smsCountdown=60` | 1440 × 900 | 获取验证码按钮禁用；文案为“60s 后重试”；倒计时持续递减 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 08 | `08-desktop-login-success.png` | TC-08 | 桌面端登录成功：`/index.html?success=1` | 1440 × 900 | 显示成功提示；按 redirect 跳转或进入工作台 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 09 | `09-desktop-app.png` | TC-09 | 桌面端工作台：`/app.html`，执行前写入 `newera.sso.session` | 1440 × 900 | 顶部导航、用户菜单、欢迎卡片和三个功能卡片完整显示；不会被守卫重定向 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 10 | `10-desktop-guard-redirect.png` | TC-10 | 未登录访问受保护页：`/app.html` | 1440 × 900 | 重定向至登录页；URL 保留 `redirect=app.html`；显示“登录后将继续访问…”提示 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 11 | `11-desktop-session-expired.png` | TC-11 | 会话过期：`/app.html?expired=1` | 1440 × 900 | 显示“会话已过期”模态框；背景滚动锁定；提供重新登录按钮 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 12 | `12-desktop-403.png` | TC-12 | 无权限页：`/403.html` | 1440 × 900 | 显示 403 标题、说明、返回按钮和统一内联 SVG 图形 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 13 | `13-mobile-login.png` | TC-M01 | 移动端默认密码登录：`/index.html` | 375 × 667 | 品牌区隐藏或压缩；卡片满宽；输入控件高度不小于 44px；无横向滚动 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 14 | `14-mobile-sms.png` | TC-M02 | 移动端短信登录：`/index.html?tab=sms` | 375 × 667 | 短信表单完整；Tab、输入框、获取验证码按钮、协议和主按钮无截断 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 15 | `15-mobile-app.png` | TC-M03 | 移动端工作台：`/app.html`，执行前写入 `newera.sso.session` | 375 × 667 | 顶部导航和工作台卡片自适应；用户菜单可操作；无横向滚动和文字截断 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+
+## 6. 补充截图清单
+
+以下截图用于提高错误分支、状态恢复和异常页覆盖度。
+
+| 序号 | 文件名 | 用例编号 | 场景与执行入口 | 视口 | 预期 | 实际 | 结论 | 缺陷编号 |
+|---|---|---|---|---|---|---|---|---|
+| 16 | `16-desktop-error-empty.png` | TC-21 | 桌面端必填校验：`/index.html` | 1440 × 900 | 顶部提示和字段提示明确；协议行下显示未同意提示 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 17 | `17-desktop-tab-switch.png` | TC-20 | 密码 Tab 输入内容后切换到短信 Tab | 1440 × 900 | 已输入密码账号内容保留；旧错误提示消失；Tab 指示正确 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 18 | `18-desktop-guard-redirect.png` | TC-10 | 未登录访问带目标参数的工作台 | 1440 × 900 | 登录页 URL 保留安全的站内 redirect 参数 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 19 | `19-desktop-session-persist.png` | TC-09 | 写入有效 `newera.sso.session` 后刷新 `/app.html` | 1440 × 900 | 刷新后仍显示工作台和用户信息，不跳回登录页 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 20 | `20-desktop-logout.png` | TC-12 | 打开工作台用户菜单 | 1440 × 900 | 用户菜单完整显示；可点击“退出登录” | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+| 21 | `21-desktop-404.png` | TC-15 | 页面不存在：`/404.html` | 1440 × 900 | 显示 404 标题、说明和返回按钮 | 阻塞：当前环境未执行浏览器捕获 | 阻塞 | BLOCK-SHOT-001 |
+
+## 7. 自动截图执行方式
+
+### 7.1 环境要求
+
+必须具备：
+
+1. Node.js 18 或更高版本。
+2. Chromium 或 Chrome 浏览器。
+3. 可写的项目根目录和 `screenshots/` 目录。
+4. 完整的前端项目文件，包括 `index.html`、`app.html`、`app.js`、`styles.css` 和异常页。
+
+### 7.2 Chromium 路径
+
+脚本按以下顺序查找 Chromium：
+
+1. 环境变量 `CHROMIUM_PATH`。
+2. `/usr/bin/chromium`。
+3. `/usr/bin/chromium-browser`。
+4. `/usr/bin/google-chrome`。
+5. `/usr/bin/google-chrome-stable`。
+6. macOS 常见路径：
+   - `/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`
+   - `/Applications/Chromium.app/Contents/MacOS/Chromium`
+7. Windows 常见路径：
+   - `C:\Program Files\Google\Chrome\Application\chrome.exe`
+   - `C:\Program Files (x86)\Google\Chrome\Application\chrome.exe`
+
+示例：
+

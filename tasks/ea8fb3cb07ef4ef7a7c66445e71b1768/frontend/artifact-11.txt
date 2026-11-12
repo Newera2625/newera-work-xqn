@@ -1,0 +1,11 @@
+
+支持的错误码：
+
+- `ACCOUNT_NOT_FOUND`：账号不存在。
+- `ACCOUNT_LOCKED`：账号锁定，可附带 `expiresAt` 毫秒时间戳。
+- `INVALID_CREDENTIALS`：账号或密码校验失败。
+
+### 验证码接口
+
+请求：
+

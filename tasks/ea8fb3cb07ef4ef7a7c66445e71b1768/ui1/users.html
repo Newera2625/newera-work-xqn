@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>用户管理 - NewEra 统一身份认证</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-page">
+    <header class="app-header">
+      <a class="app-brand" href="app.html" aria-label="NewEra 统一身份认证工作台">
+        <span class="brand-mark brand-mark--small" aria-hidden="true">
+          <svg viewBox="0 0 32 32">
+            <rect x="4" y="4" width="24" height="24" rx="7"></rect>
+            <path d="m10 16 4 4 8-9"></path>
+          </svg>
+        </span>
+        <span>NewEra 身份平台</span>
+      </a>
+
+      <nav class="top-nav" aria-label="主要导航">
+        <a href="app.html">工作台</a>
+        <a href="users.html" class="is-active">用户</a>
+        <a href="applications.html">应用</a>
+        <a href="activity.html">审计日志</a>
+      </nav>
+
+      <div class="user-menu-wrap">
+        <button class="user-trigger user-trigger--compact" id="user-trigger" type="button" aria-expanded="false" aria-controls="user-menu">
+          <span class="avatar" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.2 0-7 2.2-7 5v1h14v-1c0-2.8-2.8-5-7-5Z"></path>
+            </svg>
+          </span>
+          <span class="user-trigger__copy">
+            <strong>Alex Chen</strong>
+            <small>管理员</small>
+          </span>
+          <svg class="chevron" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="m5.5 7.5 4.5 4.5 4.5-4.5"></path>
+          </svg>
+        </button>
+
+        <div class="user-menu" id="user-menu" role="menu" hidden>
+          <div class="user-menu__header">
+            <strong>Alex Chen</strong>
+            <span>alex.chen@newera.cn</span>
+          </div>
+          <div class="user-menu__divider"></div>
+          <a class="user-menu__item" href="profile.html" role="menuitem">个人资料</a>
+          <a class="user-menu__item" href="settings.html" role="menuitem">账户设置</a>
+          <div class="user-menu__divider"></div>
+          <button class="user-menu__item user-menu__item--danger" id="logout-button" type="button" role="menuitem">退出登录</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">身份目录</p>
+          <h1>用户管理</h1>
+          <p>管理企业用户、账户状态与角色权限。</p>
+        </div>
+        <button class="button button--primary" id="invite-user-button" type="button">
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M9 3h2v6h6v2h-6v6H9v-6H3V9h6V3Z"></path>
+          </svg>
+          邀请用户
+        </button>
+      </div>
+
+      <section class="panel table-panel" aria-labelledby="users-table-title">
+        <div class="table-toolbar">
+          <div>
+            <h2 id="users-table-title">全部用户</h2>
+            <p>共 12,486 位用户</p>
+          </div>
+          <div class="toolbar-actions">
+            <label class="search-box">
+              <span class="sr-only">搜索用户</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="m14.5 13.2 3.7 3.7-1.3 1.3-3.7-3.7a6.5 6.5 0 1 1 1.3-1.3ZM8.5 13A4.5 4.5 0 1 0 8.5 4a4.5 4.5 0 0 0 0 9Z"></path>
+              </svg>
+              <input id="user-search" type="search" placeholder="搜索姓名或邮箱">
+            </label>
+            <button class="button button--secondary button--small" id="filter-button" type="button" aria-expanded="false" aria-controls="filter-panel">
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M3 4h14v2l-5.5 6V17l-3-1.5v-3.5L3 6V4Z"></path>
+              </svg>
+              筛选
+            </button>
+          </div>
+        </div>
+
+        <div class="filter-panel" id="filter-panel" hidden>
+          <label>
+            <span>账户状态</span>
+            <select id="status-filter">
+              <option value="all">全部状态</option>
+              <option value="active">已激活</option>
+              <option value="pending">待审核</option>
+              <option value="suspended">已停用</option>
+            </select>
+          </label>
+          <label>
+            <span>用户角色</span>
+            <select id="role-filter">
+              <option value="all">全部角色</option>
+              <option value="管理员">管理员</option>
+              <option value="普通用户">普通用户</option>
+              <option value="审计员">审计员</option>
+            </select>
+          </label>
+          <button class="text-link" id="reset-filter-button" type="button">清除筛选</button>
+        </div>
+
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">用户</th>
+                <th scope="col">角色</th>
+                <th scope="col">状态</th>
+                <th scope="col">最近登录</th>
+                <th scope="col"><span class="sr-only">操作</span></th>
+              </tr>
+            </thead>
+            <tbody id="users-table-body">
+              <tr data-name="Morgan Lee" data-email="morgan.lee@newera.cn" data-status="active" data-role="普通用户">
+                <td>
+                  <div class="user-cell">
+                    <span class="avatar avatar--soft">ML</span>
+                    <div>
+                      <strong>Morgan Lee</strong>
+                      <span>morgan.lee@newera.cn</span>
+                    </div>
+                  </div>
+                </td>
+                <td>普通用户</td>
+                <td><span class="status-badge status-badge--active"><span class="status-dot"></span>已激活</span></td>
+                <td>12 分钟前</td>
+                <td>
+                  <button class="icon-button" type="button" aria-label="查看 Morgan Lee">
+                    <svg viewBox="0 0 20 20" aria-hidden="true">
+                      <path d="M10 5c-4.5 0-7.5 4.4-8.2 5 .7.6 3.7 5 8.2 5s7.5-4.4 8.2-5c-.7-.6-3.7-5-8.2-5Zm0 7.5A2.5 2.5 0 1 1 10 7.5a2.5 2.5 0 0 1 0 5Zm0-2a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z"></path>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr data-name="Olivia Wang" data-email="olivia.wang@newera.cn" data-status="active" data-role="管理员">
+                <td>
+                  <div class="user-cell">
+                    <span class="avatar avatar--soft">OW</span>
+                    <div>
+                      <strong>Olivia Wang</strong>
+                      <span>olivia.wang@newera.cn</span>
+                    </div>
+                  </div>
+                </td>
+                <td>管理员</td>
+                <td><span class="status-badge status-badge--active"><span class="status-dot"></span>已激活</span></td>
+                <td>1 小时前</td>
+                <td>
+                  <button class="icon-button" type="button" aria-label="查看 Olivia Wang">
+                    <svg viewBox="0 0 20 20" aria-hidden="true">
+                      <path d="M10 5c-4.5 0-7.5 4.4-8.2 5 .7.6 3.7 5 8.2 5s7.5-4.4 8.2-5c-.7-.6-3.7-5-8.2-5Zm0 7.5A2.5 2.5 0 1 1 10 7.5a2.5 2.5 0 0 1 0 5Zm0-2a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z"></path>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr data-name="Ethan Zhang" data-email="ethan.zhang@newera.cn" data-status="pending" data-role="普通用户">
+                <td>
+                  <div class="user-cell">
+                    <span class="avatar avatar--soft">EZ</span>
+                    <div>
+                      <strong>Ethan Zhang</strong>
+                      <span>ethan.zhang@newera.cn</span>
+                    </div>
+                  </div>
+                </td>
+                <td>普通用户</td>
+                <td><span class="status-badge status-badge--pending"><span class="status-dot"></span>待审核</span></td>
+                <td>尚未登录</td>
+                <td>
+                  <button class="icon-button" type="button" aria-label="查看 Ethan Zhang">
+                    <svg viewBox="0 0 20 20" aria-hidden="true">
+                      <path d="M10 5c-4.5 0-7.5 4.4-8.2 5 .7.6 3.7 5 8.2 5s7.5-4.4 8.2-5c-.7-.6-3.7-5-8.2-5Zm0 7.5A2.5 2.5 0 1 1 10 7.5a2.5 2.5 0 0 1 0 5Zm0-2a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z"></path>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr data-name="Sophia Liu" data-email="sophia.liu@newera.cn" data-status="suspended" data-role="审计员">
+                <td>
+                  <div class="user-cell">
+                    <span class="avatar avatar--soft">SL</span>
+                    <div>
+                      <strong>Sophia Liu</strong>
+                      <span>sophia.liu@newera.cn</span>
+                    </div>
+                  </div>
+                </td>
+                <td>审计员</td>
+                <td><span class="status-badge status-badge--suspended"><span class="status-dot"></span>已停用</span></td>
+                <td>8 天前</td>
+                <td>
+                  <button class="icon-button" type="button" aria-label="查看 Sophia Liu">
+                    <svg viewBox="0 0 20 20" aria-hidden="true">
+                      <path d="M10 5c-4.5 0-7.5 4.4-8.2 5 .7.6 3.7 5 8.2 5s7.5-4.4 8.2-5c-.7-.6-3.7-5-8.2-5Zm0 7.5A2.5 2.5 0 1 1 10 7.5a2.5 2.5 0 0 1 0 5Zm0-2a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z"></path>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+
+              <tr data-name="Noah Wilson" data-email="noah.wilson@newera.cn" data-status="active" data-role="普通用户">
+                <td>
+                  <div class="user-cell">
+                    <span class="avatar avatar--soft">NW</span>
+                    <div>
+                      <strong>Noah Wilson</strong>
+                      <span>noah.wilson@newera.cn</span>
+                    </div>
+                  </div>
+                </td>
+                <td>普通用户</td>
+                <td><span class="status-badge status-badge--active"><span class="status-dot"></span>已激活</span></td>
+                <td>昨天</td>
+                <td>
+                  <button class="icon-button" type="button" aria-label="查看 Noah Wilson">
+                    <svg viewBox="0 0 20 20" aria-hidden="true">
+                      <path d="M10 5c-4.5 0-7.5 4.4-8.2 5 .7.6 3.7 5 8.2 5s7.5-4.4 8.2-5c-.7-.6-3.7-5-8.2-5Zm0 7.5A2.5 2.5 0 1 1 10 7.5a2.5 2.5 0 0 1 0 5Zm0-2a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1Z"></path>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="empty-state" id="users-empty-state" hidden>
+          <span aria-hidden="true">
+            <svg viewBox="0 0 32 32">
+              <path d="M16 3a6 6 0 1 0 0 12 6 6 0 0 0 0-12Zm0 14c-6.2 0-10 3.2-10 7v3h20v-3c0-3.8-3.8-7-10-7Z"></path>
+            </svg>
+          </span>
+          <h3>未找到匹配用户</h3>
+          <p>请调整搜索词或筛选条件后重试。</p>
+        </div>
+
+        <div class="table-footer">
+          <p>显示 1–5 条，共 12,486 条</p>
+          <div class="pagination" aria-label="分页">
+            <button type="button" disabled aria-label="上一页">
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="m12.5 4.5-5.5 5.5 5.5 5.5"></path>
+              </svg>
+            </button>
+            <button type="button" class="is-active" aria-current="page">1</button>
+            <button type="button">2</button>
+            <button type="button">3</button>
+            <span aria-hidden="true">…</span>
+            <button type="button">2498</button>
+            <button type="button" aria-label="下一页">
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="m7.5 4.5 5.5 5.5-5.5 5.5"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal-backdrop" id="invite-modal" hidden>
+      <section class="modal" role="dialog" aria-modal="true" aria-labelledby="invite-modal-title">
+        <div class="modal__header">
+          <div>
+            <p class="eyebrow">添加成员</p>
+            <h2 id="invite-modal-title">邀请新用户</h2>
+          </div>
+          <button class="icon-button" id="close-invite-modal" type="button" aria-label="关闭邀请窗口">
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <path d="m5 6.6 1.4-1.4L10 8.8l3.6-3.6L15 6.6 11.4 10 15 13.4l-1.4 1.4L10 11.2l-3.6 3.6L5 13.4 8.6 10 5 6.6Z"></path>
+            </svg>
+          </button>
+        </div>
+
+        <form id="invite-form" novalidate>
+          <div class="form-field">
+            <label for="invite-email">企业邮箱</label>
+            <input id="invite-email" name="invite-email" type="email" placeholder="name@company.com" required>
+            <p class="field-error" id="invite-email-error" aria-live="polite"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="invite-role">分配角色</label>
+            <select id="invite-role" name="invite-role">
+              <option value="普通用户">普通用户</option>
+              <option value="管理员">管理员</option>
+              <option value="审计员">审计员</option>
+            </select>
+          </div>
+
+          <div class="modal__actions">
+            <button class="button button--secondary" id="cancel-invite" type="button">取消</button>
+            <button class="button button--primary" type="submit">发送邀请</button>
+          </div>
+        </form>
+      </section>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden>
+      <span class="toast__icon" aria-hidden="true">
+        <svg viewBox="0 0 20 20">
+          <path d="m10 2.5 2 5.2 5.5.2-4.3 3.4 1.5 5.3-4.7-3.1L5.3 16.6l1.5-5.3L2.5 7.9l5.5-.2 2-5.2Z"></path>
+        </svg>
+      </span>
+      <span id="toast-message">操作成功</span>
+    </div>
+  </div>
+
+  <script>
+    const userTrigger = document.getElementById("user-trigger");
+    const userMenu = document.getElementById("user-menu");
+
+    function setMenuState(open) {
+      userMenu.hidden = !open;
+      userTrigger.setAttribute("aria-expanded", String(open));
+    }
+
+    userTrigger.addEventListener("click", (event) => {
+      event.stopPropagation();
+      setMenuState(userMenu.hidden);
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!userMenu.hidden && !userMenu.contains(event.target)) {
+        setMenuState(false);
+      }
+    });
+
+    document.getElementById("logout-button").addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+
+    const filterButton = document.getElementById("filter-button");
+    const filterPanel = document.getElementById("filter-panel");
+    const searchInput = document.getElementById("user-search");
+    const statusFilter = document.getElementById("status-filter");
+    const roleFilter = document.getElementById("role-filter");
+    const tableBody = document.getElementById("users-table-body");
+    const emptyState = document.getElementById("users-empty-state");
+
+    filterButton.addEventListener("click", () => {
+      const open = filterPanel.hidden;
+      filterPanel.hidden = !open;
+      filterButton.setAttribute("aria-expanded", String(open));
+    });
+
+    function filterRows() {
+      const query = searchInput.value.trim().toLowerCase();
+      const status = statusFilter.value;
+      const role = roleFilter.value;
+      const rows = Array.from(tableBody.querySelectorAll("tr"));
+      let visibleCount = 0;
+
+      rows.forEach((row) => {
+        const name = row.dataset.name.toLowerCase();
+        const email = row.dataset.email.toLowerCase();
+        const matchesQuery = !query || name.includes(query) || email.includes(query);
+        const matchesStatus = status === "all" || row.dataset.status === status;
+        const matchesRole = role === "all" || row.dataset.role === role;
+        const visible = matchesQuery && matchesStatus && matchesRole;
+
+        row.hidden = !visible;
+        if (visible) visibleCount += 1;
+      });
+
+      emptyState.hidden = visibleCount !== 0;
+    }
+
+    searchInput.addEventListener("input", filterRows);
+    statusFilter.addEventListener("change", filterRows);
+    roleFilter.addEventListener("change", filterRows);
+
+    document.getElementById("reset-filter-button").addEventListener("click", () => {
+      searchInput.value = "";
+      statusFilter.value = "all";
+      roleFilter.value = "all";
+      filterRows();
+    });
+
+    const inviteModal = document.getElementById("invite-modal");
+    const inviteButton = document.getElementById("

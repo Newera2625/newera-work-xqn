@@ -1,14 +1,7 @@
-design/
+.
+├── index.html
 ├── styles.css
-├── login-password.html
-├── login-sms.html
-├── login-qr.html
-├── login-states.html
-├── mobile-login.html
-├── mobile-sms.html
-├── mobile-app.html
-├── app-welcome.html
-├── error-401.html
-├── error-403.html
-├── error-404.html
-└── modal-expired.html
+├── app.html
+├── 401.html
+├── 403.html
+└── 404.html

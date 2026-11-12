@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>登录 - NewEra 统一身份认证</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auth-page">
+  <main class="auth-layout">
+    <section class="auth-showcase" aria-labelledby="showcase-title">
+      <a class="app-brand app-brand--light" href="index.html" aria-label="NewEra 统一身份认证首页">
+        <span class="brand-mark brand-mark--light" aria-hidden="true">
+          <svg viewBox="0 0 32 32">
+            <rect x="4" y="4" width="24" height="24" rx="7"></rect>
+            <path d="m10 16 4 4 8-9"></path>
+          </svg>
+        </span>
+        <span>NewEra 身份平台</span>
+      </a>
+
+      <div class="showcase-copy">
+        <p class="eyebrow eyebrow--light">安全、统一的访问体验</p>
+        <h1 id="showcase-title">一个身份，连接每一种工作方式</h1>
+        <p>通过统一身份认证保护企业账户，集中管理访问权限与安全策略。</p>
+      </div>
+
+      <div class="trust-list" aria-label="平台特性">
+        <div class="trust-item">
+          <span class="trust-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="m12 2 8 3v6c0 5.1-3.4 9.4-8 11-4.6-1.6-8-5.9-8-11V5l8-3Zm0 5.1-3 3 2.1 2.1 5.9-5.8 1.4 1.4-7.3 7.2-3.5-3.4L5.2 10l5.4 5.3 7.8-7.7-1.4-1.4-5 4.9-.9-.9Z"></path>
+            </svg>
+          </span>
+          <div>
+            <strong>统一安全策略</strong>
+            <p>集中配置认证规则与会话策略</p>
+          </div>
+        </div>
+
+        <div class="trust-item">
+          <span class="trust-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 4h6v6H4V4Zm10 0h6v6h-6V4ZM4 14h6v6H4v-6Zm10 0h6v6h-6v-6Z"></path>
+            </svg>
+          </span>
+          <div>
+            <strong>应用权限管理</strong>
+            <p>清晰掌握每个账户的访问范围</p>
+          </div>
+        </div>
+
+        <div class="trust-item">
+          <span class="trust-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm0 2c-4.4 0-8 2.3-8 5.2V21h16v-1.8c0-2.9-3.6-5.2-8-5.2Z"></path>
+            </svg>
+          </span>
+          <div>
+            <strong>可审计账户活动</strong>
+            <p>完整记录关键操作与登录事件</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="auth-panel" aria-labelledby="login-title">
+      <div class="auth-panel__mobile-brand">
+        <a class="app-brand" href="index.html" aria-label="NewEra 统一身份认证首页">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32">
+              <rect x="4" y="4" width="24" height="24" rx="7"></rect>
+              <path d="m10 16 4 4 8-9"></path>
+            </svg>
+          </span>
+          <span>NewEra 身份平台</span>
+        </a>
+      </div>
+
+      <div class="login-card">
+        <div class="auth-heading">
+          <p class="eyebrow">账户验证</p>
+          <h2 id="login-title">欢迎回来</h2>
+          <p>请输入您的企业账户信息以继续。</p>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="登录方式">
+          <button class="tab is-active" id="password-tab" type="button" role="tab" aria-selected="true" aria-controls="password-panel">密码登录</button>
+          <button class="tab" id="sms-tab" type="button" role="tab" aria-selected="false" aria-controls="sms-panel" tabindex="-1">短信登录</button>
+        </div>
+
+        <div class="tab-panel" id="password-panel" role="tabpanel" aria-labelledby="password-tab">
+          <form class="auth-form" id="login-form" novalidate>
+            <div class="form-field">
+              <label for="email">企业邮箱</label>
+              <div class="input-wrap">
+                <svg class="input-icon" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M2.5 5.5h15v10h-15v-10Zm1.5 1.5 6 4 6-4H4Z"></path>
+                </svg>
+                <input id="email" name="email" type="email" autocomplete="email" placeholder="name@company.com" required>
+              </div>
+              <p class="field-error" id="email-error" aria-live="polite"></p>
+            </div>
+
+            <div class="form-field">
+              <div class="field-label-row">
+                <label for="password">密码</label>
+                <a href="reset-password.html">忘记密码？</a>
+              </div>
+              <div class="input-wrap">
+                <svg class="input-icon" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M5.5 8V6.5a4.5 4.5 0 0 1 9 0V8h1v8h-11V8h1Zm1.5 0h6V6.5a3 3 0 0 0-6 0V8Zm.5 3v2h1v-2H7Zm4 0v2h1v-2h-1Z"></path>
+                </svg>
+                <input id="password" name="password" type="password" autocomplete="current-password" placeholder="输入密码" required>
+                <button class="input-action" id="toggle-password" type="button" aria-label="显示密码" aria-pressed="false">显示</button>
+              </div>
+              <p class="field-error" id="password-error" aria-live="polite"></p>
+            </div>
+
+            <label class="checkbox-row">
+              <input type="checkbox" name="remember">
+              <span class="checkbox-custom" aria-hidden="true">
+                <svg viewBox="0 0 16 16">
+                  <path d="m3.5 8 3 3 6-6"></path>
+                </svg>
+              </span>
+              <span>在此设备上保持登录</span>
+            </label>
+
+            <button class="button button--primary button--full" type="submit">
+              <span>安全登录</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="m7.5 4.5 5.5 5.5-5.5 5.5"></path>
+              </svg>
+            </button>
+
+            <p class="form-message" id="login-message" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <div class="tab-panel" id="sms-panel" role="tabpanel" aria-labelledby="sms-tab" hidden>
+          <form class="auth-form" id="sms-form" novalidate>
+            <div class="form-field">
+              <label for="phone">手机号码</label>
+              <div class="input-wrap">
+                <svg class="input-icon" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M6 2.5h8v15H6v-15Zm2 2v1h4v-1H8Zm0 4v1h4v-1H8Zm0 4v1h4v-1H8Z"></path>
+                </svg>
+                <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="输入手机号码" required>
+              </div>
+              <p class="field-error" id="phone-error" aria-live="polite"></p>
+            </div>
+
+            <div class="form-field">
+              <label for="sms-code">短信验证码</label>
+              <div class="input-wrap input-wrap--action">
+                <svg class="input-icon" viewBox="0 0 20 20" aria-hidden="true">
+                  <path d="M4 3h12v14H4V3Zm2.5 4 3.5 3 3.5-3h-7Z"></path>
+                </svg>
+                <input id="sms-code" name="sms-code" inputmode="numeric" autocomplete="one-time-code" placeholder="6 位验证码" maxlength="6" required>
+                <button class="input-action input-action--send" id="send-code-button" type="button">获取验证码</button>
+              </div>
+              <p class="field-error" id="sms-code-error" aria-live="polite"></p>
+            </div>
+
+            <button class="button button--primary button--full" type="submit">
+              <span>验证并登录</span>
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <path d="m7.5 4.5 5.5 5.5-5.5 5.5"></path>
+              </svg>
+            </button>
+
+            <p class="form-message" id="sms-message" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+
+        <div class="divider"><span>企业单点登录</span></div>
+
+        <button class="sso-button" type="button" id="sso-button">
+          <span class="sso-logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 5h7v7H9V7H4V5Zm9 0h7v7h-2V7h-5V5ZM4 12h7v7H9v-5H4v-2Zm9 0h7v7h-2v-5h-5v-2Z"></path>
+            </svg>
+          </span>
+          使用企业统一身份登录
+        </button>
+
+        <p class="auth-help">无法登录？请联系您的系统管理员</p>
+      </div>
+
+      <p class="auth-footer">登录即表示您同意企业的安全访问策略</p>
+    </section>
+  </main>
+
+  <script>
+    const passwordTab = document.getElementById("password-tab");
+    const smsTab = document.getElementById("sms-tab");
+    const passwordPanel = document.getElementById("password-panel");
+    const smsPanel = document.getElementById("sms-panel");
+
+    function activateTab(tab, panel) {
+      const isPassword = tab === passwordTab;
+
+      passwordTab.classList.toggle("is-active", isPassword);
+      smsTab.classList.toggle("is-active", !isPassword);
+      passwordTab.setAttribute("aria-selected", String(isPassword));
+      smsTab.setAttribute("aria-selected", String(!isPassword));
+      passwordTab.tabIndex = isPassword ? 0 : -1;
+      smsTab.tabIndex = isPassword ? -1 : 0;
+      passwordPanel.hidden = !isPassword;
+      smsPanel.hidden = isPassword;
+    }
+
+    passwordTab.addEventListener("click", () => activateTab(passwordTab, passwordPanel));
+    smsTab.addEventListener("click", () => activateTab(smsTab, smsPanel));
+
+    [passwordTab, smsTab].forEach((tab) => {
+      tab.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowRight") {
+          event.preventDefault();
+          activateTab(smsTab, smsPanel);
+          smsTab.focus();
+        }
+        if (event.key === "ArrowLeft") {
+          event.preventDefault();
+          activateTab(passwordTab, passwordPanel);
+          passwordTab.focus();
+        }
+      });
+    });
+
+    const togglePassword = document.getElementById("toggle-password");
+    const passwordInput = document.getElementById("password");
+
+    togglePassword.addEventListener("click", () => {
+      const shouldShow = passwordInput.type === "password";
+      passwordInput.type = shouldShow ? "text" : "password";
+      togglePassword.textContent = shouldShow ? "隐藏" : "显示";
+      togglePassword.setAttribute("aria-label", shouldShow ? "隐藏密码" : "显示密码");
+      togglePassword.setAttribute("aria-pressed", String(shouldShow));
+      passwordInput.focus();
+    });
+
+    function showError(input, errorElement, message) {
+      const group = input.closest(".form-field");
+      group.classList.add("has-error");
+      input.setAttribute("aria-invalid", "true");
+      errorElement.textContent = message;
+    }
+
+    function clearError(input, errorElement) {
+      const group = input.closest(".form-field");
+      group.classList.remove("has-error");
+      input.removeAttribute("aria-invalid");
+      errorElement.textContent = "";
+    }
+
+    const loginForm = document.getElementById("login-form");
+    const emailInput = document.getElementById("email");
+    const passwordField = document.getElementById("password");
+
+    loginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const emailError = document.getElementById("email-error");
+      const passwordError = document.getElementById("password-error");
+      const message = document.getElementById("login-message");
+      let valid = true;
+
+      clearError(emailInput, emailError);
+      clearError(passwordField, passwordError);
+      message.textContent = "";
+      message.className = "form-message";
+
+      if (!emailInput.value.trim()) {
+        showError(emailInput, emailError, "请输入企业邮箱");
+        valid = false;
+      } else if (!emailInput.validity.valid) {
+        showError(emailInput, emailError, "请输入有效的企业邮箱地址");
+        valid = false;
+      }
+
+      if (!passwordField.value) {
+        showError(passwordField, passwordError, "请输入密码");
+        valid = false;
+      } else if (passwordField.value.length < 6) {
+        showError(passwordField, passwordError, "密码至少需要 6 个字符");
+        valid = false;
+      }
+
+      if (!valid) {
+        message.textContent = "请检查表单中的提示信息。";
+        message.classList.add("is-error");
+        return;
+      }
+
+      message.textContent = "验证成功，正在进入工作台。";
+      message.classList.add("is-success");
+      window.setTimeout(() => {
+        window.location.href = "app.html";
+      }, 500);
+    });
+
+    const smsForm = document.getElementById("sms-form");
+    const phoneInput = document.getElementById("phone");
+    const codeInput = document.getElementById("sms-code");
+    const sendCodeButton = document.getElementById("send-code-button");
+
+    sendCodeButton.addEventListener("click", () => {
+      const phoneError = document.getElementById("phone-error");
+      clearError(phoneInput, phoneError);
+
+      if (!/^1\d{10}$/.test(phoneInput.value.trim())) {
+        showError(phoneInput, phoneError, "请输入有效的 11 位手机号码");
+        phoneInput.focus();
+        return;
+      }
+
+      sendCodeButton.disabled = true;
+      let seconds = 60;
+      sendCodeButton.textContent = seconds + " 秒后重发";
+
+      const timer = window.setInterval(() => {
+        seconds -= 1;
+        sendCodeButton.textContent = seconds + " 秒后重发";
+        if (seconds <= 0) {
+          window.clearInterval(timer);
+          sendCodeButton.disabled = false;
+          sendCodeButton.textContent = "重新获取";
+        }
+      }, 1000);
+    });
+
+    smsForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const phoneError = document.getElementById("phone-error");
+      const codeError = document.getElementById("sms-code-error");
+      const message = document.getElementById("sms-message");
+      let valid = true;
+
+      clearError(phoneInput, phoneError);
+      clearError(codeInput, codeError);
+      message.textContent = "";
+      message.className = "form-message";
+
+      if (!/^1\d{10}$/.test(phoneInput.value.trim())) {
+        showError(phoneInput, phoneError, "请输入有效的 11 位手机号码");
+        valid = false;
+      }
+
+      if (!/^\d{6}$/.test(codeInput.value.trim())) {
+        showError(codeInput, codeError, "请输入 6 位短信验证码");
+        valid = false;
+      }
+
+      if (!valid) {
+        message.textContent = "请检查表单中的提示信息。";
+        message.classList.add("is-error");
+        return;
+      }
+
+      message.textContent = "验证成功，正在进入工作台。";
+      message.classList.add("is-success");
+      window.setTimeout(() => {
+        window.location.href = "app.html";
+      }, 500);
+    });
+
+    document.getElementById("sso-button").addEventListener("click", () => {
+      const message = document.getElementById("login-message");
+      activateTab(passwordTab, passwordPanel);
+      message.textContent = "正在连接企业统一身份服务。";
+      message.classList.add("is-success");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>创建账户 - NewEra 统一身份认证</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="auth-page">
+  <main class="auth-layout auth-layout--register">
+    <section class="auth-showcase" aria-labelledby="showcase-title">
+      <a class="app-brand app-brand--light" href="index.html" aria-label="NewEra 统一身份认证首页">
+        <span class="brand-mark brand-mark--light" aria-hidden="true">
+          <svg viewBox="0 0 32 32">
+            <rect x="4" y="4" width="24" height="24" rx="7"></rect>
+            <path d="m10 16 4 4 8-9"></path>
+          </svg>
+        </span>
+        <span>NewEra 身份平台</span>
+      </a>
+
+      <div class="showcase-copy">
+        <p class="eyebrow eyebrow--light">开始安全连接</p>
+        <h1 id="showcase-title">创建您的统一身份账户</h1>
+        <p>只需几步即可加入企业身份体系，并安全访问已授权的工作应用。</p>
+      </div>
+
+      <ol class="steps-list" aria-label="注册流程">
+        <li class="steps-item is-active">
+          <span>1</span>
+          <div>
+            <strong>填写账户信息</strong>
+            <p>验证您的企业身份</p>
+          </div>
+        </li>
+        <li class="steps-item">
+          <span>2</span>
+          <div>
+            <strong>安全验证</strong>
+            <p>确认您的注册邮箱</p>
+          </div>
+        </li>
+        <li class="steps-item">
+          <span>3</span>
+          <div>
+            <strong>设置安全选项</strong>
+            <p>完成账户安全配置</p>
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="auth-panel" aria-labelledby="register-title">
+      <div class="auth-panel__mobile-brand">
+        <a class="app-brand" href="index.html" aria-label="NewEra 统一身份认证首页">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32">
+              <rect x="4" y="4" width="24" height="24" rx="7"></rect>
+              <path d="m10 16 4 4 8-9"></path>
+            </svg>
+          </span>
+          <span>NewEra 身份平台</span>
+        </a>
+      </div>
+
+      <div class="login-card login-card--register">
+        <div class="auth-heading">
+          <p class="eyebrow">账户注册</p>
+          <h2 id="register-title">创建新账户</h2>
+          <p>请使用企业邮箱注册，账户创建后需由管理员完成审核。</p>
+        </div>
+
+        <form class="auth-form" id="register-form" novalidate>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="first-name">名字</label>
+              <input id="first-name" name="first-name" type="text" autocomplete="given-name" placeholder="请输入名字" required>
+              <p class="field-error" id="first-name-error" aria-live="polite"></p>
+            </div>
+
+            <div class="form-field">
+              <label for="last-name">姓氏</label>
+              <input id="last-name" name="last-name" type="text" autocomplete="family-name" placeholder="请输入姓氏" required>
+              <p class="field-error" id="last-name-error" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="register-email">企业邮箱</label>
+            <div class="input-wrap">
+              <svg class="input-icon" viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M2.5 5.5h15v10h-15v-10Zm1.5 1.5 6 4 6-4H4Z"></path>
+              </svg>
+              <input id="register-email" name="register-email" type="email" autocomplete="email" placeholder="name@company.com" required>
+            </div>
+            <p class="field-error" id="register-email-error" aria-live="polite"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="register-password">设置密码</label>
+            <div class="input-wrap">
+              <svg class="input-icon" viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M5.5 8V6.5a4.5 4.5 0 0 1 9 0V8h1v8h-11V8h1Zm1.5 0h6V6.5a3 3 0 0 0-6 0V8Zm.5 3v2h1v-2H7Zm4 0v2h1v-2h-1Z"></path>
+              </svg>
+              <input id="register-password" name="register-password" type="password" autocomplete="new-password" placeholder="至少 8 个字符" required>
+              <button class="input-action" id="toggle-register-password" type="button" aria-label="显示密码" aria-pressed="false">显示</button>
+            </div>
+            <div class="password-meter" id="password-meter" aria-label="密码强度">
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <p class="field-hint" id="password-hint">建议包含大小写字母、数字与符号</p>
+            <p class="field-error" id="register-password-error" aria-live="polite"></p>
+          </div>
+
+          <div class="form-field">
+            <label for="confirm-password">确认密码</label>
+            <div class="input-wrap">
+              <svg class="input-icon" viewBox="0 0 20 20" aria-hidden="true">
+                <path d="M5.5 8V6.5a4.5 4.5 0 0 1 9 0V8h1v8h-11V8h1Zm1.5 0h6V6.5a3 3 0 0 0-6 0V8Zm.5 3v2h1v-2H7Zm4 0v2h1v-2h-1Z"></path>
+              </svg>
+              <input id="confirm-password" name="confirm-password" type="password" autocomplete="new-password" placeholder="再次输入密码" required>
+            </div>
+            <p class="field-error" id="confirm-password-error" aria-live="polite"></p>
+          </div>
+
+          <label class="checkbox-row checkbox-row--terms">
+            <input id="terms-checkbox" name="terms" type="checkbox" required>
+            <span class="checkbox-custom" aria-hidden="true">
+              <svg viewBox="0 0 16 16">
+                <path d="m3.5 8 3 3 6-6"></path>
+              </svg>
+            </span>
+            <span>我已阅读并同意<a href="terms.html">服务条款</a>与<a href="privacy.html">隐私政策</a></span>
+          </label>
+          <p class="field-error field-error--standalone" id="terms-error" aria-live="polite"></p>
+
+          <button class="button button--primary button--full" type="submit">
+            <span>创建账户</span>
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <path d="m7.5 4.5 5.5 5.5-5.5 5.5"></path>
+            </svg>
+          </button>
+
+          <p class="form-message" id="register-message" role="status" aria-live="polite"></p>
+        </form>
+
+        <p class="auth-switch">已有账户？<a href="login.html">直接登录</a></p>
+      </div>
+
+      <p class="auth-footer">您的账户信息将按照企业安全策略进行保护</p>
+    </section>
+  </main>
+
+  <script>
+    const registerForm = document.getElementById("register-form");
+    const registerPassword = document.getElementById("register-password");
+    const confirmPassword = document.getElementById("confirm-password");
+    const passwordMeter = document.getElementById("password-meter");
+    const passwordHint = document.getElementById("password-hint");
+    const toggleRegisterPassword = document.getElementById("toggle-register-password");
+
+    function showError(input, errorId, message) {
+      const group = input.closest(".form-field");
+      group.classList.add("has-error");
+      input.setAttribute("aria-invalid", "true");
+      document.getElementById(errorId).textContent = message;
+    }
+
+    function clearError(input, errorId) {
+      const group = input.closest(".form-field");
+      group.classList.remove("has-error");
+      input.removeAttribute("aria-invalid");
+      document.getElementById(errorId).textContent = "";
+    }
+
+    toggleRegisterPassword.addEventListener("click", () => {
+      const shouldShow = registerPassword.type === "password";
+      registerPassword.type = shouldShow ? "text" : "password";
+      toggleRegisterPassword.textContent = shouldShow ? "隐藏" : "显示";
+      toggleRegisterPassword.setAttribute("aria-label", shouldShow ? "隐藏密码" : "显示密码");
+      toggleRegisterPassword.setAttribute("aria-pressed", String(shouldShow));
+      registerPassword.focus();
+    });
+
+    registerPassword.addEventListener("input", () => {
+      const value = registerPassword.value;
+      let score = 0;
+
+      if (value.length >= 8) score += 1;
+      if (/[a-z]/.test(value) && /[A-Z]/.test(value)) score += 1;
+      if (/\d/.test(value)) score += 1;
+      if (/[^A-Za-z0-9]/.test(value)) score += 1;
+
+      passwordMeter.dataset.strength = String(score);
+      passwordMeter.setAttribute("aria-label", "密码强度：" + score + " 级");
+
+      if (score <= 1) {
+        passwordHint.textContent = "建议包含大小写字母、数字与符号";
+      } else if (score === 2) {
+        passwordHint.textContent = "密码强度：中等，可继续增加字符种类";
+      } else if (score === 3) {
+        passwordHint.textContent = "密码强度：良好";
+      } else {
+        passwordHint.textContent = "密码强度：优秀";
+      }
+    });
+
+    registerForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const message = document.getElementById("register-message");
+      const termsCheckbox = document.getElementById("terms-checkbox");
+      const fields = [
+        { input: document.getElementById("first-name"), errorId: "first-name-error", label: "名字" },
+        { input: document.getElementById("last-name"), errorId: "last-name-error", label: "姓氏" },
+        { input: document.getElementById("register-email"), errorId: "register-email-error", label: "企业邮箱" },
+        { input: registerPassword, errorId: "register-password-error", label: "密码" },
+        { input: confirmPassword, errorId: "confirm-password-error", label: "确认密码" }
+      ];
+
+      fields.forEach((field) => clearError(field.input, field.errorId));
+      document.getElementById("terms-error").textContent = "";
+      message.textContent = "";
+      message.className = "form-message";
+      let valid = true;
+
+      fields.forEach((field) => {
+        if (!field.input.value.trim()) {
+          showError(field.input, field.errorId, "请输入" + field.label);
+          valid = false;
+        }
+      });
+
+      const email = document.getElementById("register-email");
+      if (email.value && !email.validity.valid) {
+        showError(email, "register-email-error", "请输入有效的企业邮箱地址");
+        valid = false;
+      }
+
+      if (registerPassword.value && registerPassword.value.length < 8) {
+        showError(registerPassword, "register-password-error", "密码至少需要 8 个字符");
+        valid = false;
+      }
+
+      if (confirmPassword.value && confirmPassword.value !== registerPassword.value) {
+        showError(confirmPassword, "confirm-password-error", "两次输入的密码不一致");
+        valid = false;
+      }
+
+      if (!termsCheckbox.checked) {
+        document.getElementById("terms-error").textContent = "请阅读并同意服务条款与隐私政策";
+        valid = false;
+      }
+
+      if (!valid) {
+        message.textContent = "请检查表单中的提示信息。";
+        message.classList.add("is-error");
+        return;
+      }
+
+      message.textContent = "注册申请已提交，请前往企业邮箱完成验证。";
+      message.classList.add("is-success");
+      window.setTimeout(() => {
+        window.location.href = "login.html";
+      }, 900);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+chmod +x tests/run-visual-tests.sh
+./tests/run-visual-tests.sh

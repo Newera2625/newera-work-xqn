@@ -1,0 +1,14 @@
+
+## 接口约定
+
+页面默认请求同源接口：
+
+- `POST /api/auth/login`
+- `POST /api/auth/sms-code`
+
+如需修改接口地址，请编辑 `login.js` 顶部的 `API_CONFIG`。
+
+### 登录接口
+
+请求：
+

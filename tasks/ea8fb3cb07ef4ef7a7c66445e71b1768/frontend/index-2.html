@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NewEra Copilot SSO 登录">
+  <title>登录 | NewEra Copilot</title>
+  <style>
+    :root {
+      --color-primary: #3347b0;
+      --color-primary-dark: #26398f;
+      --color-primary-light: #eef1ff;
+      --color-primary-soft: #f7f8ff;
+      --color-text: #172033;
+      --color-text-secondary: #647087;
+      --color-text-tertiary: #929bae;
+      --color-border: #dfe4ed;
+      --color-border-strong: #c9d0dc;
+      --color-background: #f4f6fa;
+      --color-surface: #ffffff;
+      --color-surface-muted: #f8f9fc;
+      --color-success: #287a52;
+      --color-success-light: #edf8f2;
+      --color-error: #b43c48;
+      --color-error-light: #fff1f2;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 16px;
+      --spacing-lg: 24px;
+      --spacing-xl: 32px;
+      --spacing-2xl: 48px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-pill: 999px;
+      --shadow-card: 0 18px 50px rgba(24, 35, 64, 0.08);
+      --shadow-button: 0 6px 16px rgba(51, 71, 176, 0.2);
+      --font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-width: 320px;
+      background: var(--color-background);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--color-text);
+      background:
+        radial-gradient(circle at 12% 18%, rgba(51, 71, 176, 0.08), transparent 30%),
+        linear-gradient(135deg, #f8f9fc 0%, var(--color-background) 58%, #eef1f8 100%);
+      font-family: var(--font-family);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button,
+    a,
+    label {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+    }
+
+    a {
+      color: var(--color-primary);
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: var(--color-primary-dark);
+      text-decoration: underline;
+    }
+
+    .page-shell {
+      position: relative;
+      display: grid;
+      min-height: 100vh;
+      grid-template-columns: minmax(0, 1.05fr) minmax(440px, 0.95fr);
+      overflow: hidden;
+    }
+
+    .brand-panel {
+      position: relative;
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(32px, 5vw, 72px);
+      color: #ffffff;
+      background:
+        linear-gradient(145deg, rgba(38, 57, 143, 0.94), rgba(51, 71, 176, 0.82)),
+        var(--color-primary);
+    }
+
+    .brand-panel::before,
+    .brand-panel::after {
+      position: absolute;
+      content: "";
+      pointer-events: none;
+    }
+
+    .brand-panel::before {
+      top: 16%;
+      right: -15%;
+      width: 460px;
+      height: 460px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 50%;
+    }
+
+    .brand-panel::after {
+      right: 8%;
+      bottom: 11%;
+      width: 210px;
+      height: 210px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 40px;
+      transform: rotate(18deg);
+    }
+
+    .brand-header,
+    .brand-content,
+    .brand-footer {
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+
+    .brand-logo:hover {
+      color: #ffffff;
+      text-decoration: none;
+    }
+
+    .brand-logo-mark {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    }
+
+    .brand-logo-mark svg {
+      width: 23px;
+      height: 23px;
+    }
+
+    .brand-content {
+      width: min(560px, 100%);
+      margin: auto 0;
+      padding: 80px 0;
+    }
+
+    .brand-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 var(--spacing-lg);
+      color: rgba(255, 255, 255, 0.78);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .brand-kicker::before {
+      width: 28px;
+      height: 1px;
+      content: "";
+      background: rgba(255, 255, 255, 0.48);
+    }
+
+    .brand-title {
+      max-width: 680px;
+      margin: 0;
+      font-size: clamp(36px, 4.4vw, 62px);
+      font-weight: 700;
+      line-height: 1.16;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-description {
+      max-width: 540px;
+      margin: var(--spacing-lg) 0 0;
+      color: rgba(255, 255, 255, 0.74);
+      font-size: 17px;
+      line-height: 1.8;
+    }
+
+    .feature-list {
+      display: grid;
+      max-width: 560px;
+      margin: var(--spacing-2xl) 0 0;
+      padding: 0;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--spacing-md);
+      list-style: none;
+    }
+
+    .feature-item {
+      display: flex;
+      min-height: 96px;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--spacing-md) var(--spacing-lg);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(8px);
+    }
+
+    .feature-title {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 650;
+    }
+
+    .feature-text {
+      margin: 6px 0 0;
+      color: rgba(255, 255, 255, 0.64);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .brand-footer {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 13px;
+    }
+
+    .login-panel {
+      position: relative;
+      display: flex;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(24px, 5vw, 64px);
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .login-card {
+      width: min(440px, 100%);
+      padding: clamp(28px, 4vw, 42px);
+      border: 1px solid rgba(223, 228, 237, 0.9);
+      border-radius: var(--radius-lg);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-card);
+    }
+
+    .mobile-brand {
+      display: none;
+      margin-bottom: var(--spacing-xl);
+      color: var(--color-text);
+    }
+
+    .mobile-brand:hover {
+      color: var(--color-text);
+      text-decoration: none;
+    }
+
+    .mobile-brand .brand-logo-mark {
+      border-color: var(--color-border);
+      background: var(--color-primary-light);
+    }
+
+    .mobile-brand .brand-logo-mark svg {
+      color: var(--color-primary);
+    }
+
+    .login-header {
+      margin-bottom: var(--spacing-xl);
+    }
+
+    .login-title {
+      margin: 0;
+      color: var(--color-text);
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.025em;
+    }
+
+    .login-subtitle {
+      margin: var(--spacing-sm) 0 0;
+      color: var(--color-text-secondary);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    .login-form {
+      display: grid;
+      gap: var(--spacing-lg);
+    }
+
+    .field-group {
+      display: grid;
+      gap: var(--spacing-sm);
+    }
+
+    .field-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-md);
+    }
+
+    .field-label {
+      color: var(--color-text);
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .required-mark {
+      margin-left: 3px;
+      color: var(--color-error);
+    }
+
+    .field-link {
+      color: var(--color-primary);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .input-shell {
+      position: relative;
+      display: flex;
+      min-height: 48px;
+      align-items: center;
+      border: 1px solid var(--color-border-strong);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    }
+
+    .input-shell:hover {
+      border-color: #aeb7c7;
+    }
+
+    .input-shell:focus-within {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(51, 71, 176, 0.12);
+    }
+
+    .input-shell.has-error {
+      border-color: var(--color-error);
+      background: var(--color-error-light);
+    }
+
+    .input-shell.has-error:focus-within {
+      box-shadow: 0 0 0 3px rgba(180, 60, 72, 0.1);
+    }
+
+    .input-leading {
+      display: grid;
+      width: 46px;
+      flex: 0 0 46px;
+      place-items: center;
+      color: var(--color-text-tertiary);
+    }
+
+    .input-leading svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .field-input {
+      width: 100%;
+      min-width: 0;
+      height: 46px;
+      padding: 0 var(--spacing-md) 0 0;
+      border: 0;
+      outline: 0;
+      color: var(--color-text);
+      background: transparent;
+      font-size: 15px;
+    }
+
+    .field-input::placeholder {
+      color: var(--color-text-tertiary);
+    }
+
+    .field-input:-webkit-autofill {
+      transition: background-color 9999s ease-out;
+      -webkit-text-fill-color: var(--color-text);
+      box-shadow: 0 0 0 1000px var(--color-surface) inset;
+    }
+
+    .field-error {
+      min-height: 18px;
+      margin: -2px 0 0;
+      color: var(--color-error);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .password-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .password-wrap .field-input {
+      padding-right: 72px;
+    }
+
+    .visibility-button {
+      position: absolute;
+      top: 50%;
+      right: 6px;
+      display: inline-flex;
+      min-height: 36px;
+      align-items: center;
+      gap: 5px;
+      padding: 0 8px;
+      border: 0;
+      border-radius: var(--radius-sm);
+      color: var(--color-text-secondary);
+      background: transparent;
+      font-size: 12px;
+      transform: translateY(-50%);
+    }
+
+    .visibility-button:hover {
+      color: var(--color-primary);
+      background: var(--color-primary-light);
+    }
+
+    .visibility-button:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 1px;
+    }
+
+    .visibility-button svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    .password-strength {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 3px;
+    }
+
+    .strength-bar {
+      height: 3px;
+      overflow: hidden;
+      border-radius: var(--radius-pill);
+      background: var(--color-border);
+    }
+
+    .strength-bar::after {
+      display: block;
+      width: 0;
+      height: 100%;
+      content: "";
+      border-radius: inherit;
+      background: var(--color-primary);
+      transition: width 180ms ease;
+    }
+
+    .password-strength[data-level="1"] .strength-bar.is-active::after,
+    .password-strength[data-level="2"] .strength-bar.is-active::after {
+      width: 100%;
+    }
+
+    .password-strength[data-level="3"] .strength-bar.is-active::after,
+    .password-strength[data-level="4"] .strength-bar.is-active::after {
+      width: 100%;
+    }
+
+    .strength-text {
+      margin: 4px 0 0;
+      color: var(--color-text-tertiary);
+      font-size: 11px;
+    }
+
+    .sms-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 120px;
+      gap: var(--spacing-sm);
+    }
+
+    .send-code-button {
+      min-height: 48px;
+      padding: 0 var(--spacing-sm);
+      border: 1px solid var(--color-primary);
+      border-radius: var(--radius-md);
+      color: var(--color-primary);
+      background: var(--color-primary-soft);
+      font-size: 13px;
+      font-weight: 650;
+      transition: background 160ms ease, color 160ms ease, border-color 160ms ease, transform 160ms ease;
+    }
+
+    .send-code-button:hover:not(:disabled) {
+      border-color: var(--color-primary-dark);
+      color: var(--color-primary-dark);
+      background: var(--color-primary-light);
+    }
+
+    .send-code-button:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .send-code-button:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .send-code-button:disabled {
+      border-color: var(--color-border);
+      color: var(--color-text-tertiary);
+      background: var(--color-surface-muted);
+    }
+
+    .form-options {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--spacing-md);
+      margin-top: -4px;
+    }
+
+    .checkbox-label,
+    .agreement-label {
+      display: inline-flex;
+      align-items: flex-start;
+      gap: 9px;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .checkbox-label input,
+    .agreement-label input {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 16px;
+      margin: 2px 0 0;
+      accent-color: var(--color-primary);
+    }
+
+    .checkbox-label input:focus-visible,
+    .agreement-label input:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .agreement-box {
+      display: grid;
+      gap: 5px;
+    }
+
+    .agreement-label {
+      align-items: flex-start;
+    }
+
+    .agreement-error {
+      min-height: 18px;
+      margin: 0;
+      color: var(--color-error);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .submit-button {
+      position: relative;
+      display: inline-flex;
+      width: 100%;
+      min-height: 50px;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      border: 1px solid var(--color-primary);
+      border-radius: var(--radius-md);
+      color: #ffffff;
+      background: var(--color-primary);
+      box-shadow: var(--shadow-button);
+      font-size: 15px;
+      font-weight: 700;
+      transition: background 160ms ease, border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    }
+
+    .submit-button:hover:not(:disabled) {
+      border-color: var(--color-primary-dark);
+      background: var(--color-primary-dark);
+      box-shadow: 0 8px 20px rgba(51, 71, 176, 0.26);
+    }
+
+    .submit-button:active:not(:disabled) {
+      transform: translateY(1px);
+      box-shadow: 0 3px 8px rgba(51, 71, 176, 0.2);
+    }
+
+    .submit-button:focus-visible {
+      outline: 3px solid rgba(51, 71, 176, 0.24);
+      outline-offset: 2px;
+    }
+
+    .submit-button:disabled {
+      border-color: var(--color-border-strong);
+      color: var(--color-text-tertiary);
+      background: var(--color-border);
+      box-shadow: none;
+    }
+
+    .loading-spinner {
+      display: none;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.42);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 700ms linear infinite;
+    }
+
+    .submit-button.is-loading .loading-spinner {
+      display: inline-block;
+    }
+
+    .login-divider {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+      margin: var(--spacing-lg) 0;
+      color: var(--color-text-tertiary);
+      font-size: 12px;
+    }
+
+    .login-divider::before,
+    .login-divider::after {
+      height: 1px;
+      flex: 1;
+      content: "";
+      background: var(--color-border);
+    }
+
+    .sso-button {
+      display: inline-flex;
+      width: 100%;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border: 1px solid var(--color-border-strong);
+      border-radius: var(--radius-md);
+      color: var(--color-text);
+      background: var(--color-surface);
+      font-size: 14px;
+      font-weight: 650;
+      transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+    }
+
+    .sso-button:hover {
+      border-color: var(--color-primary);
+      background: var(--color-primary-soft);
+    }
+
+    .sso-button:active {
+      transform: translateY(1px);
+    }
+
+    .sso-button:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    .sso-button svg {
+      width: 20px;
+      height: 20px;
+      color: var(--color-primary);
+    }
+
+    .login-footer {
+      margin: var(--spacing-xl) 0 0;
+      color: var(--color-text-tertiary);
+      font-size: 12px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .top-notice {
+      position: fixed;
+      z-index: 20;
+      top: 22px;
+      left: 50%;
+      width: min(420px, calc(100vw - 32px));
+      padding: 12px 16px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      color: var(--color-text);
+      background: var(--color-surface);
+      box-shadow: 0 12px 32px rgba(24, 35, 64, 0.14);
+      font-size: 13px;
+      line-height: 1.5;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -12px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .top-notice.is-visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .top-notice.is-success {
+      border-color: rgba(40, 122, 82, 0.25);
+      color: var(--color-success);
+      background: var(--color-success-light);
+    }
+
+    .top-notice.is-error {
+      border-color: rgba(180, 60, 72, 0.25);
+      color: var(--color-error);
+      background: var(--color-error-light);
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (max-width: 920px) {
+      .page-shell {
+        display: block;
+      }
+
+      .brand-panel {
+        display: none;
+      }
+
+      .login-panel {
+        min-height: 100vh;
+        padding: 24px;
+      }
+
+      .mobile-brand {
+        display: inline-flex;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .login-panel {
+        align-items: flex-start;
+        padding: 0;
+        background: var(--color-background);
+      }
+
+      .login-card {
+        width: 100%;
+        min-height: 100vh;
+        padding: 28px 20px;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .login-title {
+        font-size: 27px;
+      }
+
+      .sms-row {
+        grid-template-columns: minmax(0, 1fr) 108px;
+      }
+
+      .form-options {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="top-notice" id="topNotice" aria-live="polite"></div>
+
+  <main class="page-shell">
+    <section class="brand-panel" aria-labelledby="brandTitle">
+      <header class="brand-header">
+        <a class="brand-logo" href="/" aria-label="NewEra Copilot 首页">
+          <span class="brand-logo-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M7 6.5h10a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-4l-4.5 3v-3H7a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M8.5 10.5h7M8.5 14h4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>NewEra Copilot</span>
+        </a>
+      </header>
+
+      <div class="brand-content">
+        <p class="brand-kicker">Enterprise AI Workspace</p>
+        <h1 class="brand-title" id="brandTitle">让智能协作，成为团队的日常</h1>
+        <p class="brand-description">
+          统一安全访问企业知识、工具与智能工作流，在一个可信、清晰的工作空间内完成每一次创造。
+        </p>
+
+        <ul class="feature-list" aria-label="平台特点">
+          <li class="feature-item">
+            <p class="feature-title">统一身份认证</p>
+            <p class="feature-text">安全、便捷地访问企业工作空间</p>
+          </li>
+          <li class="feature-item">
+            <p class="feature-title">企业级安全</p>
+            <p class="feature-text">全链路保护账号与数据安全</p>
+          </li>
+          <li class="feature-item">
+            <p class="feature-title">跨端协同</p>
+            <p class="feature-text">随时随地保持团队进度同步</p>
+          </li>
+          <li class="feature-item">
+            <p class="feature-title">智能工作流</p>
+            <p class="feature-text">让复杂任务更简单、更高效</p>
+          </li>
+        </ul>
+      </div>
+
+      <footer class="brand-footer">
+        © 2026 NewEra. 保留所有权利。
+      </footer>
+    </section>
+
+    <section class="login-panel" aria-labelledby="loginTitle">
+      <div class="login-card">
+        <a class="brand-logo mobile-brand" href="/" aria-label="NewEra Copilot 首页">
+          <span class="brand-logo-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M7 6.5h10a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-4l-4.5 3v-3H7a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M8.5 10.5h7M8.5 14h4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>NewEra Copilot</span>
+        </a>
+
+        <header class="login-header">
+          <h2 class="login-title" id="loginTitle">欢迎回来</h2>
+          <p class="login-subtitle">使用您的企业账号登录，继续访问智能工作空间。</p>
+        </header>
+
+        <form class="login-form" id="loginForm" novalidate>
+          <div class="field-group">
+            <div class="field-label-row">
+              <label class="field-label" for="account">
+                企业账号<span class="required-mark" aria-hidden="true">*</span>
+              </label>
+              <a class="field-link" href="/support/account-help">无法获取账号？</a>
+            </div>
+
+            <div class="input-shell" id="accountShell">
+              <span class="input-leading" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="8" r="3.5" stroke="currentColor" stroke-width="1.8"/>
+                  <path d="M5.5 19c.8-3.2 3.1-4.8 6.5-4.8s5.7 1.6 6.5 4.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <input
+                class="field-input"
+                id="account"
+                name="account"
+                type="text"
+                inputmode="email"
+                autocomplete="username"
+                placeholder="请输入企业账号"
+                aria-describedby="accountError"
+                required
+              >
+            </div>
+            <p class="field-error" id="accountError" aria-live="polite"></p>
+          </div>
+
+          <div class="field-group">
+            <div class="field-label-row">
+              <label class="field-label" for="password">
+                登录密码<span class="required-mark" aria-hidden="true">*</span>
+              </label>
+              <a class="field-link" href="/support/reset-password">忘记密码？</a>
+            </div>
+
+            <div class="input-shell" id="passwordShell">
+              <span class="input-leading" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <rect x="4.5" y="10" width="15" height="10" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+                  <path d="M8 10V7.5a4 4 0 0 1 8 0V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <div class="password-wrap">
+                <input
+                  class="field-input"
+                  id="password"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  placeholder="请输入登录密码"
+                  aria-describedby="passwordError"
+                  required
+                >
+                <button
+                  class="visibility-button"
+                  type="button"
+                  data-password-target="password"
+                  data-password-text
+                  aria-label="显示密码"
+                  aria-pressed="false"
+                >
+                  <svg data-eye-icon viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M3.5 12s3-5 8.5-5 8.5 5 8.5 5-3 5-8.5 5-8.5-5-8.5-5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+                    <circle cx="12" cy="12" r="2.4" stroke="currentColor" stroke-width="1.7"/>
+                  </svg>
+                  <svg data-eye-off-icon viewBox="0 0 24 24" fill="none" aria-hidden="true" hidden>
+                    <path d="m4 4 16 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M9.5 7.4A8.8 8.8 0 0 1 12 7c5.5 0 8.5 5 8.5 5a12.8 12.8 0 0 1-2.2 2.8M14.2 16.1c-.7.2-1.4.4-2.2.4-5.5 0-8.5-5-8.5-5a12.7 12.7 0 0 1 2.4-2.9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+                  </svg>
+                  <span>显示密码</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="password-strength" id="passwordStrength" data-level="0" aria-hidden="true">
+              <span class="strength-bar" data-strength-item="1"></span>
+              <span class="strength-bar" data-strength-item="2"></span>
+              <span class="strength-bar" data-strength-item="3"></span>
+              <span class="strength-bar" data-strength-item="4"></span>
+            </div>
+            <p class="strength-text" id="passwordStrengthText">建议包含字母、数字与符号</p>
+            <p class="field-error" id="passwordError" aria-live="polite"></p>
+          </div>
+
+          <div class="field-group">
+            <div class="field-label-row">
+              <label class="field-label" for="smsCode">
+                短信验证码<span class="required-mark" aria-hidden="true">*</span>
+              </label>
+            </div>
+
+            <div class="sms-row">
+              <div class="input-shell" id="smsCodeShell">
+                <span class="input-leading" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="7" y="3.5" width="10" height="17" rx="2.5" stroke="currentColor" stroke-width="1.8"/>
+                    <path d="M10 6.5h4M10 17.5h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  </svg>
+                </span>
+                <input
+                  class="field-input"
+                  id="smsCode"
+                  name="smsCode"
+                  type="text"
+                  inputmode="numeric"
+                  autocomplete="one-time-code"
+                  maxlength="6"
+                  placeholder="输入 6 位验证码"
+                  aria-describedby="smsCodeError"
+                  required
+                >
+              </div>
+              <button class="send-code-button" id="sendCode" type="button">获取验证码</button>
+            </div>
+            <p class="field-error" id="smsCodeError" aria-live="polite"></p>
+          </div>
+
+          <div class="agreement-box">
+            <label class="agreement-label" for="agreement">
+              <input id="agreement" name="agreement" type="checkbox" required>
+              <span>我已阅读并同意 <a href="/terms">服务条款</a> 与 <a href="/privacy">隐私政策</a></span>
+            </label>
+            <p class="agreement-error" id="agreementError" aria-live="polite"></p>
+          </div>
+
+          <div class="form-options">
+            <label class="checkbox-label" for="rememberMe">
+              <input id="rememberMe" name="rememberMe" type="checkbox">
+              <span>保持登录状态</span>
+            </label>
+          </div>
+
+          <button class="submit-button" id="submitButton" type="submit">
+            <span class="loading-spinner" aria-hidden="true"></span>
+            <span>登录</span>
+          </button>
+        </form>
+
+        <div class="login-divider">或使用以下方式</div>
+
+        <button class="sso-button" id="ssoButton" type="button">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 5.5h6.5v6H4v-6Zm9.5 0H20v6h-6.5v-6ZM4 14.5h6.5v6H4v-6Zm9.5 0H20v6h-6.5v-6Z" fill="currentColor" opacity="0.18"/>
+            <path d="M4 5.5h6.5v6H4v-6Zm9.5 0H20v6h-6.5v-6ZM4 14.5h6.5v6H4v-6Zm9.5 0H20v6h-6.5v-6Z" stroke="currentColor" stroke-width="1.5"/>
+          </svg>
+          <span>企业单点登录</span>
+        </button>
+
+        <p class="login-footer">
+          登录即表示您同意 NewEra Copilot 使用必要的 Cookie 维持会话安全。
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script src="./login.js"></script>
+</body>
+</html>

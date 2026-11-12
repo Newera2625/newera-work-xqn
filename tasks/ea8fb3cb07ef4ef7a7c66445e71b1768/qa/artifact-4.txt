@@ -1,3 +1,5 @@
 
-建议保存为 `tests/capture-screenshots.js`：
+### 7.3 执行命令
+
+在项目根目录执行：
 

@@ -1,10 +1,3 @@
-?s=sessionSeconds=60
-?s=lockSeconds=300
-?s=tab=sms
-?s=tab=qr
-?s=qrState=scanned
-?s=error=password
-?s=error=locked
-?s=smsCountdown=60
-?s=success=1
-?s=expired=1
+screenshots/README.md
+TEST_REPORT.md
+tests/capture-screenshots.js
