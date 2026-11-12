@@ -1,0 +1,565 @@
+```text
+file=index.html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1020">
+<meta name="description" content="个人介绍主页 · QQ 3627236036">
+<title>个人主页 · QQ 3627236036</title>
+
+<!--
+============================================================
+  个人介绍主页（QQ 头像版）· 单文件版
+------------------------------------------------------------
+  【使用说明】
+  1. 更换昵称   : 搜索 "QQ 3627236036" 修改 <h1 class="name"> 中的文字。
+  2. 更换签名   : 搜索 "用代码记录热爱" 修改 .slogan。
+  3. 更换简介   : 搜索 "↓ 请替换此处" 的 <p class="bio"> 段落。
+  4. 更换标签   : 在 .tags 内增删 <span class="tag">…</span>（建议 6-8 个）。
+  5. 更换联系方式: 在 .contact 卡片内修改号码 / 邮箱文本。
+  6. 更换链接   : 在 .links 内把 href="#" 换成真实地址（记得保留
+                   target="_blank" rel="noopener noreferrer"）。
+  7. 更换头像来源: 修改 JS 中的 AVATAR_SOURCES 数组，第一个为首选。
+  8. 更换配色   : 修改 CSS 变量 :root { --accent-a / --accent-b / --bg-1 } 等。
+  9. 双击本文件即可在浏览器打开，无需服务器、无外部依赖（除头像接口外）。
+  最后更新：2024-01-01（可在页脚同步修改）
+============================================================
+-->
+
+<style>
+/* ============ 基础变量（改配色改这里） ============ */
+:root{
+  --accent-a:#7c5cff;          /* 主色：紫 */
+  --accent-b:#38bdf8;          /* 辅色：蓝 */
+  --bg-1:#0f1020;              /* 背景深蓝 */
+  --bg-2:#1b1030;              /* 背景深紫 */
+  --text:#f5f6ff;              /* 主文字 */
+  --text-2:rgba(245,246,255,.65);/* 次级文字 */
+  --glass:rgba(255,255,255,.06);
+  --stroke:rgba(255,255,255,.12);
+  --radius:24px;
+  --shadow:0 24px 60px -20px rgba(0,0,0,.65);
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  min-height:100vh;
+  font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  color:var(--text);
+  background:linear-gradient(135deg,var(--bg-1) 0%,var(--bg-2) 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px 16px;
+  position:relative;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ============ 背景层 ============ */
+.bg-layer{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.bg-layer::before{ /* 细网格纹理 */
+  content:"";position:absolute;inset:0;
+  background-image:
+    repeating-linear-gradient(to right,rgba(255,255,255,.05) 0 1px,transparent 1px 44px),
+    repeating-linear-gradient(to bottom,rgba(255,255,255,.05) 0 1px,transparent 1px 44px);
+  opacity:.6;
+  mask-image:radial-gradient(ellipse at center,#000 10%,transparent 78%);
+  -webkit-mask-image:radial-gradient(ellipse at center,#000 10%,transparent 78%);
+}
+.blob{position:absolute;border-radius:50%;filter:blur(90px);opacity:.55;}
+.blob.b1{width:520px;height:520px;background:radial-gradient(circle,var(--accent-a),transparent 68%);top:-140px;left:-120px;animation:float 16s ease-in-out infinite;}
+.blob.b2{width:460px;height:460px;background:radial-gradient(circle,var(--accent-b),transparent 68%);bottom:-160px;right:-110px;animation:float 20s ease-in-out infinite reverse;}
+@keyframes float{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(30px,-26px,0) scale(1.08)}}
+
+/* ============ 主卡片 ============ */
+.card{
+  position:relative;z-index:1;
+  width:100%;max-width:920px;
+  background:var(--glass);
+  border:1px solid var(--stroke);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:44px 44px 30px;
+  backdrop-filter:blur(14px) saturate(140%);
+  -webkit-backdrop-filter:blur(14px) saturate(140%);
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .card{background:rgba(24,22,44,.88);}
+}
+
+/* ============ 头像区 ============ */
+.avatar-wrap{
+  position:relative;width:160px;height:160px;margin:0 auto 26px;
+  display:grid;place-items:center;
+}
+.halo{
+  position:absolute;inset:-14px;border-radius:50%;
+  background:conic-gradient(from 0deg,var(--accent-a),var(--accent-b),#f472b6,var(--accent-a));
+  filter:blur(6px);opacity:.85;
+  animation:spin 8s linear infinite;
+  z-index:0;
+}
+.halo::after{content:"";position:absolute;inset:10px;border-radius:50%;background:#14132a;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ring{
+  position:absolute;inset:-6px;border-radius:50%;
+  border:1px dashed rgba(255,255,255,.22);
+  z-index:1;
+}
+.avatar-box{position:relative;z-index:2;width:160px;height:160px;border-radius:50%;overflow:hidden;
+  border:3px solid rgba(255,255,255,.85);
+  box-shadow:0 12px 36px rgba(0,0,0,.5);
+  transition:transform .45s cubic-bezier(.2,.8,.2,1), box-shadow .45s ease;
+}
+.avatar-wrap:hover .avatar-box{transform:scale(1.06);box-shadow:0 18px 50px rgba(124,92,255,.45);}
+.avatar-box img{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transform:scale(.92);
+  transition:opacity .6s ease,transform .6s cubic-bezier(.2,.8,.2,1);}
+.avatar-box img.ready{opacity:1;transform:scale(1);}
+.avatar-skeleton{
+  position:absolute;inset:0;z-index:3;
+  background:linear-gradient(100deg,rgba(255,255,255,.05) 20%,rgba(255,255,255,.18) 40%,rgba(255,255,255,.05) 60%);
+  background-size:200% 100%;
+  animation:shimmer 1.3s linear infinite;
+  transition:opacity .45s ease;
+}
+.avatar-skeleton.hide{opacity:0;pointer-events:none;}
+@keyframes shimmer{0%{background-position:120% 0}100%{background-position:-120% 0}}
+.status-dot{
+  position:absolute;right:10px;bottom:10px;z-index:4;
+  width:20px;height:20px;border-radius:50%;
+  background:#31d158;border:3px solid #14132a;
+  animation:pulse 2s ease-out infinite;
+}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(49,209,88,.6)}70%{box-shadow:0 0 0 12px rgba(49,209,88,0)}100%{box-shadow:0 0 0 0 rgba(49,209,88,0)}}
+.avatar-note{margin:10px 0 0;text-align:center;font-size:12px;color:var(--text-2);min-height:16px;}
+
+/* ============ 信息区 ============ */
+.intro{text-align:center;}
+.name{
+  margin:0 0 10px;font-size:34px;line-height:1.25;font-weight:800;letter-spacing:.5px;
+  background:linear-gradient(92deg,#fff 20%,#c9bcff 55%,#8fd8ff 90%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  word-break:break-word;
+}
+.slogan{margin:0 0 16px;font-size:16px;color:var(--text-2);letter-spacing:.6px;}
+.bio{
+  margin:0 auto;max-width:640px;font-size:15px;line-height:1.9;color:var(--text-2);
+  text-align:left;
+}
+.divider{height:1px;margin:28px 0 24px;background:linear-gradient(90deg,transparent,var(--stroke),transparent);}
+
+/* ============ 标签墙 ============ */
+.tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:22px;}
+.tag{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:999px;font-size:13px;color:var(--text);
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--stroke);
+  transition:transform .25s cubic-bezier(.2,.8,.2,1),background .25s,border-color .25s,box-shadow .25s;
+  cursor:default;
+}
+.tag:hover{transform:translateY(-4px);
+  background:linear-gradient(120deg,rgba(124,92,255,.32),rgba(56,189,248,.24));
+  border-color:rgba(255,255,255,.3);
+  box-shadow:0 10px 24px -8px rgba(124,92,255,.6);
+}
+
+/* ============ 联系方式 ============ */
+.section-title{
+  font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--text-2);
+  margin:0 0 14px;text-align:left;font-weight:600;
+}
+.contact{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.c-card{
+  background:rgba(255,255,255,.045);
+  border:1px solid var(--stroke);
+  border-radius:16px;padding:16px 16px 14px;
+  display:flex;flex-direction:column;gap:8px;
+  transition:transform .25s ease,border-color .25s,background .25s;
+}
+.c-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.07);}
+.c-label{font-size:12px;color:var(--text-2);display:flex;align-items:center;gap:6px;}
+.c-value{font-size:16px;font-weight:700;letter-spacing:.4px;word-break:break-all;}
+.c-btn{
+  align-self:flex-start;margin-top:2px;
+  font:inherit;font-size:12.5px;cursor:pointer;
+  padding:6px 13px;border-radius:999px;
+  color:var(--text);background:rgba(255,255,255,.08);
+  border:1px solid var(--stroke);
+  transition:background .2s,transform .2s,border-color .2s;
+}
+.c-btn:hover{background:linear-gradient(120deg,var(--accent-a),var(--accent-b));border-color:transparent;transform:translateY(-1px);}
+.c-btn:active{transform:translateY(0) scale(.97);}
+.c-btn.done{background:rgba(49,209,88,.2);border-color:rgba(49,209,88,.5);}
+
+/* ============ 链接卡片 ============ */
+.links{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.link{
+  display:flex;align-items:center;gap:13px;text-decoration:none;color:var(--text);
+  background:rgba(255,255,255,.045);
+  border:1px solid var(--stroke);border-radius:16px;
+  padding:15px 16px;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1),border-color .25s,background .25s,box-shadow .25s;
+}
+.link:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.28);
+  background:rgba(255,255,255,.08);box-shadow:0 14px 30px -14px rgba(0,0,0,.7);}
+.link .ico{
+  width:42px;height:42px;flex:none;border-radius:13px;display:grid;place-items:center;
+  font-size:20px;background:linear-gradient(140deg,rgba(124,92,255,.4),rgba(56,189,248,.3));
+  border:1px solid rgba(255,255,255,.16);
+}
+.link .lt{font-size:14.5px;font-weight:700;}
+.link .ls{font-size:12px;color:var(--text-2);margin-top:3px;}
+
+/* ============ 主按钮 ============ */
+.actions{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:26px;}
+.btn{
+  font:inherit;font-size:14.5px;font-weight:700;cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;gap:9px;
+  padding:13px 30px;border-radius:999px;border:1px solid transparent;
+  color:#fff;background:linear-gradient(120deg,var(--accent-a),var(--accent-b));
+  box-shadow:0 14px 30px -12px rgba(124,92,255,.85);
+  transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s,filter .22s;
+}
+.btn:hover{transform:translateY(-3px);box-shadow:0 20px 38px -14px rgba(56,189,248,.9);filter:brightness(1.07);}
+.btn:active{transform:translateY(-1px) scale(.98);}
+.btn.ghost{background:rgba(255,255,255,.06);border-color:var(--stroke);box-shadow:none;color:var(--text);}
+.btn.ghost:hover{background:rgba(255,255,255,.12);box-shadow:none;}
+
+/* ============ 页脚 ============ */
+.footer{
+  margin-top:30px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08);
+  display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;
+  font-size:12.5px;color:var(--text-2);
+}
+.footer .made{opacity:.75;}
+
+/* ============ Toast ============ */
+.toast{
+  position:fixed;left:50%;bottom:34px;transform:translate(-50%,24px);
+  padding:12px 22px;border-radius:999px;font-size:13.5px;
+  background:rgba(20,19,42,.92);border:1px solid rgba(255,255,255,.18);
+  color:var(--text);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  box-shadow:0 16px 40px -14px rgba(0,0,0,.8);
+  opacity:0;pointer-events:none;z-index:50;
+  transition:opacity .3s ease,transform .3s cubic-bezier(.2,.8,.2,1);
+}
+.toast.show{opacity:1;transform:translate(-50%,0);}
+
+/* ============ 入场动画（错峰） ============ */
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.rise{opacity:0;animation:rise .7s cubic-bezier(.2,.8,.2,1) forwards;}
+.d1{animation-delay:.05s}.d2{animation-delay:.16s}.d3{animation-delay:.27s}
+.d4{animation-delay:.38s}.d5{animation-delay:.49s}.d6{animation-delay:.60s}.d7{animation-delay:.71s}
+.d8{animation-delay:.82s}.d9{animation-delay:.93s}.d10{animation-delay:1.04s}
+
+/* ============ 响应式 ============ */
+@media (max-width:640px){
+  body{padding:18px 12px;align-items:flex-start;}
+  .card{padding:30px 20px 24px;border-radius:20px;}
+  .avatar-wrap{width:120px;height:120px;margin-bottom:22px;}
+  .avatar-box{width:120px;height:120px;}
+  .halo{inset:-10px;}
+  .name{font-size:26px;}
+  .slogan{font-size:14px;}
+  .bio{font-size:14px;line-height:1.85;}
+  .contact{grid-template-columns:1fr;}
+  .links{grid-template-columns:1fr;}
+  .tags{gap:8px;}
+  .tag{padding:7px 13px;font-size:12px;}
+  .footer{flex-direction:column;text-align:center;gap:6px;}
+  .btn{width:100%;justify-content:center;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- 背景层 -->
+<div class="bg-layer" aria-hidden="true">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- 主卡片 -->
+<main class="card">
+
+  <!-- ===== 头像区 ===== -->
+  <section class="avatar-wrap rise d1">
+    <div class="halo" aria-hidden="true"></div>
+    <div class="ring" aria-hidden="true"></div>
+    <div class="avatar-box">
+      <div class="avatar-skeleton" id="skeleton" aria-hidden="true"></div>
+      <img id="avatar" alt="我的 QQ 头像" width="160" height="160" decoding="async">
+    </div>
+    <div class="status-dot" title="在线" aria-hidden="true"></div>
+    <p class="avatar-note" id="avatarNote"></p>
+  </section>
+
+  <!-- ===== 信息区 ===== -->
+  <section class="intro">
+    <!-- ↓ 请替换此处：把 "QQ 3627236036" 改成你的昵称 -->
+    <h1 class="name rise d2">QQ 3627236036</h1>
+    <!-- ↓ 请替换此处：一句签名 -->
+    <p class="slogan rise d3">用代码记录热爱，用热爱奔赴山海</p>
+    <!-- ↓ 请替换此处：个人简介（2-3 句） -->
+    <p class="bio rise d4">
+      你好，我是一名热爱技术与生活的探索者。喜欢把想法变成可以运行的产品，也喜欢在键盘之外记录光影与声音。
+      这里是我的小角落，收藏着正在做的事、喜欢的风格和常去的地方。很高兴认识你！
+    </p>
+
+    <!-- ↓ 请替换此处：技能/标签墙（建议 6-8 个） -->
+    <div class="tags rise d5">
+      <span class="tag">🎯 前端开发</span>
+      <span class="tag">⚙️ 后端开发</span>
+      <span class="tag">🎨 UI 设计</span>
+      <span class="tag">🧠 产品思维</span>
+      <span class="tag">📷 摄影</span>
+      <span class="tag">🎵 音乐</span>
+      <span class="tag">✍️ 写作</span>
+      <span class="tag">🌍 旅行</span>
+    </div>
+  </section>
+
+  <div class="divider rise d6"></div>
+
+  <!-- ===== 联系方式 ===== -->
+  <section>
+    <h2 class="section-title rise d6">Contact / 联系方式</h2>
+    <div class="contact rise d7">
+      <!-- ↓ 请替换此处：QQ 号（默认 3627236036） -->
+      <div class="c-card">
+        <div class="c-label">💬 QQ</div>
+        <div class="c-value" id="qqValue">3627236036</div>
+        <button class="c-btn" data-copy="3627236036" data-tip="已复制 QQ 号">复制 QQ 号</button>
+      </div>
+      <!-- ↓ 请替换此处：邮箱 -->
+      <div class="c-card">
+        <div class="c-label">✉️ 邮箱</div>
+        <div class="c-value">hello@example.com</div>
+        <button class="c-btn" data-copy="hello@example.com" data-tip="已复制邮箱">复制邮箱</button>
+      </div>
+      <!-- ↓ 请替换此处：城市 / 坐标 -->
+      <div class="c-card">
+        <div class="c-label">📍 坐标</div>
+        <div class="c-value">中国 · 某座城</div>
+        <div class="c-label" style="opacity:.7">GMT+8 · 在线</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider rise d8"></div>
+
+  <!-- ===== 链接区 ===== -->
+  <section>
+    <h2 class="section-title rise d8">Links / 更多</h2>
+    <div class="links rise d9">
+      <!-- ↓ 请替换此处：把 href="#" 换成你的真实地址 -->
+      <a class="link" href="#" target="_blank" rel="noopener noreferrer" data-pending="待补充">
+        <span class="ico">🐙</span>
+        <span><span class="lt">GitHub</span><span class="ls">代码与项目</span></span>
+      </a>
+      <a class="link" href="#" target="_blank" rel="noopener noreferrer" data-pending="待补充">
+        <span class="ico">📮</span>
+        <span><span class="lt">邮箱</span><span class="ls">随时联系</span></span>
+      </a>
+      <a class="link" href="#" target="_blank" rel="noopener noreferrer" data-pending="待补充">
+        <span class="ico">🌐</span>
+        <span><span class="lt">个人主页</span><span class="ls">更多作品</span></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== 联系入口 ===== -->
+  <div class="actions rise d10">
+    <!-- ↓ 请替换此处：主按钮（可改为 tencent://message/?uin=3627236036） -->
+    <a class="btn" id="chatBtn" href="tencent://message/?uin=3627236036">💬 联系我</a>
+    <button class="btn ghost" id="copyAllBtn">📋 复制 QQ 号</button>
+  </div>
+
+  <!-- ===== 页脚 ===== -->
+  <footer class="footer rise d10">
+    <span>© <span id="year">2024</span> 3627237236 · 用热爱奔赴山海</span>
+    <span class="made">由 NewEra 打造 · 最后更新 2024-01-01</span>
+  </footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------------- 头像加载（多级降级） ---------------- */
+  // ↓ 如需更换头像来源，修改下面数组即可（第一个为首选）
+  var AVATAR_SOURCES = [
+    'https://q.qlogo.cn/headimg_d?dst_uin=3627236036&spec=640',
+    'https://q.qlogo.cn/headimg_d?dst_uin=3627236036&spec=100',
+    'https://q.qlogo.cn/headimg_d?dst_uin=3627236036&spec=40'
+  ];
+  // 内联 SVG 占位头像（首字母 Q + 渐变底）
+  var FALLBACK_SVG =
+    'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">' +
+      '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0%" stop-color="#7c5cff"/><stop offset="100%" stop-color="#38bdf8"/>' +
+      '</linearGradient></defs>' +
+      '<rect width="320" height="320" fill="url(#g)"/>' +
+      '<text x="160" y="178" font-size="150" font-family="system-ui,sans-serif" font-weight="700" ' +
+      'fill="rgba(255,255,255,.92)" text-anchor="middle">Q</text></svg>'
+    );
+
+  var img = document.getElementById('avatar');
+  var skel = document.getElementById('skeleton');
+  var note = document.getElementById('avatarNote');
+
+  function showSkeleton(show) {
+    if (skel) skel.classList.toggle('hide', !show);
+  }
+
+  function tryLoad(index) {
+    if (index >= AVATAR_SOURCES.length) {
+      img.src = FALLBACK_SVG;
+      if (note) note.textContent = '头像暂未获取到，已使用占位头像';
+      return;
+    }
+    img.onload = function () {
+      img.classList.add('ready');
+      showSkeleton(false);
+      if (note) note.textContent = '';
+    };
+    img.onerror = function () {
+      if (index >= AVATAR_SOURCES.length - 1) {
+        img.src = FALLBACK_SVG;
+        if (note) note.textContent = '头像暂未获取到，已使用占位头像';
+      } else {
+        tryLoad(index + 1);
+      }
+    };
+    img.src = AVATAR_SOURCES[index];
+  }
+  tryLoad(0);
+
+  /* ---------------- Toast ---------------- */
+  var toastEl = document.getElementById('toast');
+  var toastTimer = null;
+  function toast(msg) {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toastEl.classList.remove('show');
+    }, 2000);
+  }
+
+  /* ---------------- 复制（clipboard 优先 + execCommand 降级） ---------------- */
+  function fallbackCopy(text) {
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, text.length);
+      var ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+      return navigator.clipboard.writeText(text)
+        .then(function () { return true; })
+        .catch(function () { return fallbackCopy(text); });
+    }
+    return Promise.resolve(fallbackCopy(text));
+  }
+
+  function bindCopyBtn(btn) {
+    var text = btn.getAttribute('data-copy') || '';
+    var original = btn.textContent;
+    var timer = null;
+    btn.addEventListener('click', function () {
+      copyText(text).then(function (ok) {
+        if (ok) {
+          btn.textContent = '已复制 ✓';
+          btn.classList.add('done');
+          toast('已复制：' + text);
+        } else {
+          toast('复制失败，请手动选择复制');
+        }
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          btn.textContent = original;
+          btn.classList.remove('done');
+        }, 2000);
+      });
+    });
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'), bindCopyBtn);
+
+  /* 底部"复制 QQ 号"按钮 */
+  var copyAll = document.getElementById('copyAllBtn');
+  if (copyAll) {
+    var qq = (document.getElementById('qqValue') || {}).textContent || '3627236036';
+    copyAll.addEventListener('click', function () {
+      copyText(qq.trim()).then(function (ok) {
+        if (ok) {
+          copyAll.textContent = '已复制 ✓';
+          toast('已复制：' + qq.trim());
+          setTimeout(function () { copyAll.textContent = '📋 复制 QQ 号'; }, 2000);
+        } else {
+          toast('复制失败，请手动选择复制');
+        }
+      });
+    });
+  }
+
+  /* ---------------- "联系我"按钮 ---------------- */
+  var chatBtn = document.getElementById('chatBtn');
+  if (chatBtn) {
+    chatBtn.addEventListener('click', function (e) {
+      // 若系统未安装 QQ，尝试复制 QQ 号作为降级
+      setTimeout(function () {
+        if (document.hidden) return;
+        toast('正在唤起 QQ，若无反应请复制 QQ 号：3627236036');
+      }, 700);
+    });
+  }
+
+  /* ---------------- 占位链接提示 ---------------- */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-pending]'), function (a) {
+    a.addEventListener('click', function (e) {
+      if (a.getAttribute('href') === '#' || !a.getAttribute('href')) {
+        e.preventDefault();
+        toast('该链接' + (a.getAttribute('data-pending') || '待补充'));
+      }
+    });
+  });
+
+  /* ---------------- 页脚年份 ---------------- */
+  var y = document.getElementById('year');
+  if (y) y.textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
+
+```
