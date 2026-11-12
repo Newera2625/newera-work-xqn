@@ -1,0 +1,1 @@
+已完成简单 SSO 单点登录演示站：交付 6 个 HTML 页面（index / login / accounts / app / denied）、assets 下 style.css（全局 CSS 变量与响应式样式）、auth.js（认证与会话逻辑，挂载 window.DemoSSO）、app.js（页面交互绑定）及 README.md（使用说明、演示账号、流程讲解、真实后端接入指引）；实现登录校验、密码显隐、身份选择、会话守卫与 30 分钟过期、登录回跳、单点登出确认、剩余时间倒计时与「即将过期」徽章，全站零依赖零外部资源、图标均为内联 SVG。

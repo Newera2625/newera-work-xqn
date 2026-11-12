@@ -1,0 +1,1 @@
+已完成 UI-1 的视觉与结构交付：assets/style.css（全局设计令牌 + 组件样式，含四态/loading/error/即将过期状态与响应式）、index.html（Hero+流程图+演示账号+当前状态）、login.html（居中单列卡片、错误条/状态条/密码显隐/记住设备）、accounts.html（3 张身份卡）、app.html（会话面板+应用入口卡+退出确认条）、denied.html（未授权提示卡），另附 style-preview.html 作为样式令牌检视页；全部图标为内联 SVG、无 emoji、无外部资源，配色严格为主色靛蓝 + 中性色 + 琥珀辅助色。
