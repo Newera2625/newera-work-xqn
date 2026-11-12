@@ -1,0 +1,6 @@
+screenshots/
+├── 01-dashboard-1440x900.png
+├── 02-orders-1440x900.png
+├── 03-order-detail-1440x900.png
+├── 04-new-order-1440x900.png
+└── 05-dashboard-mobile-390x844.png
