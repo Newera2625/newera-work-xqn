@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- 本文件仅为设计稿，交互逻辑由前端在正式页面实现。 -->
   <main class="login-shell">
     <section class="brand-panel" aria-labelledby="brand-title">
       <div class="brand-content">
@@ -33,11 +32,18 @@
           <p>使用企业统一身份继续</p>
         </header>
 
+        <div class="card-notice-stack" aria-live="polite">
+          <div class="card-notice card-notice--info" role="status">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 9v5M10 6.5v.5"/></svg>
+            <span>登录后将继续访问工作台</span>
+          </div>
+        </div>
+
         <div class="login-tabs" role="tablist" aria-label="登录方式">
           <button class="tab" role="tab" aria-selected="false">账号密码</button>
           <button class="tab is-active" role="tab" aria-selected="true">短信验证码</button>
           <button class="tab" role="tab" aria-selected="false">扫码登录</button>
-          <span class="tab-indicator" aria-hidden="true"></span>
+          <span class="tab-indicator" aria-hidden="true" style="transform: translateX(100%);"></span>
         </div>
 
         <form class="login-form" novalidate>

@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- 本文件仅为设计稿，交互逻辑由前端在正式页面实现。 -->
   <main class="login-shell login-shell--single">
     <section class="form-panel">
       <div class="login-card login-card--wide">
@@ -16,54 +15,173 @@
           <p>使用企业统一身份继续</p>
         </header>
 
+        <div class="card-notice-stack" aria-live="polite">
+          <div class="card-notice card-notice--info" role="status">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 9v5M10 6.5v.5"/></svg>
+            <span>使用企业 App 扫描二维码后，请在手机上确认登录</span>
+          </div>
+        </div>
+
         <div class="login-tabs" role="tablist" aria-label="登录方式">
           <button class="tab" role="tab" aria-selected="false">账号密码</button>
           <button class="tab" role="tab" aria-selected="false">短信验证码</button>
           <button class="tab is-active" role="tab" aria-selected="true">扫码登录</button>
-          <span class="tab-indicator" aria-hidden="true"></span>
+          <span class="tab-indicator" aria-hidden="true" style="transform: translateX(200%);"></span>
         </div>
 
-        <div class="qr-state-grid">
-          <article class="qr-state">
+        <div class="qr-panel" aria-live="polite">
+          <article class="qr-state is-active" data-qr-state="waiting">
             <div class="qr-code-wrap">
               <div class="qr-code" aria-label="二维码装饰占位图">
-                <span class="finder finder--tl"></span><span class="finder finder--tr"></span><span class="finder finder--bl"></span>
-                <span class="qr-data qr-data--one"></span><span class="qr-data qr-data--two"></span><span class="qr-data qr-data--three"></span>
-                <span class="qr-center"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 20 6v5c0 5-3.2 8.7-8 10-4.8-1.3-8-5-8-10V6l8-3Z"/><path d="m9 12 2 2 4-5"/></svg></span>
+                <span class="finder finder--tl"></span>
+                <span class="finder finder--tr"></span>
+                <span class="finder finder--bl"></span>
+                <span class="qr-data qrqr-data"></span>
               </div>
             </div>
-            <h3>请使用企业 App 扫描二维码</h3>
-            <p>扫描后请在手机上确认登录</p>
-            <div class="qr-actions"><button class="text-button" type="button">刷新二维码</button><span></span><button class="text-button text-button--muted" type="button">切换账号</button></div>
-            <small>二维码 60 秒后失效</small>
+            <p class="qr-tip">请使用企业 App 扫描二维码</p>
+            <div class="qr-actions">
+              <button class="text-button" type="button" data-action="refresh-qr">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M16 7a7 7 0 1 0 1 6"/><path d="M16 3v4h-4"/></svg>
+                刷新二维码
+              </button>
+              <span class="qr-divider" aria-hidden="true"></span>
+              <button class="text-button" type="button" data-action="copy-link">
+                <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="6" y="6" width="9" height="9" rx="1.5"/><path d="M13 6V4.5A1.5 1.5 0 0 0 11.5 3h-7A1.5 1.5 0 0 0 3 4.5v7A1.5 1.5 0 0 0 4.5 13H6"/></svg>
+                复制链接
+              </button>
+            </div>
           </article>
 
-          <article class="qr-state qr-state--confirmed">
-            <div class="qr-code-wrap qr-code-wrap--active">
-              <div class="qr-code" aria-label="二维码装饰占位图">
-                <span class="finder finder--tl"></span><span class="finder finder--tr"></span><span class="finder finder--bl"></span>
-                <span class="qr-data qr-data--one"></span><span class="qr-data qr-data--two"></span><span class="qr-data qr-data--three"></span>
-                <span class="qr-center"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 20 6v5c0 5-3.2 8.7-8 10-4.8-1.3-8-5-8-10V6l8-3Z"/><path d="m9 12 2 2 4-5"/></svg></span>
-              </div>
+          <article class="qr-state" data-qr-state="scanned">
+            <div class="scan-status-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20"/><path d="m16 24 5 5 11-12"/></svg>
             </div>
-            <h3>扫描成功，请在手机上确认登录</h3>
-            <p>检测到已授权设备，确认后将进入系统</p>
-            <button class="button button--primary button--full" type="button">确认登录</button>
-            <div class="qr-actions qr-actions--below"><button class="text-button" type="button">刷新二维码</button><span></span><button class="text-button text-button--muted" type="button">切换账号</button></div>
-            <small>二维码 42 秒后失效</small>
+            <h3>扫描成功</h3>
+            <p>请在手机上确认登录</p>
+          </article>
+
+          <article class="qr-state" data-qr-state="confirmed">
+            <div class="scan-status-icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20"/><path d="m16 24 5 5 11-12"/></svg>
+            </div>
+            <h3>登录成功</h3>
+            <p>正在安全跳转到工作台</p>
+          </article>
+
+          <article class="qr-state" data-qr-state="expired">
+            <div class="scan-status-icon scan-status-icon--muted" aria-hidden="true">
+              <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="20"/><path d="M24 14v11l7 4"/></svg>
+            </div>
+            <h3>二维码已失效</h3>
+            <p>刷新二维码后重新扫码</p>
+            <button class="secondary-button" type="button" data-action="refresh-qr">刷新二维码</button>
           </article>
         </div>
 
-        <div class="agreement agreement--qr">
-          <label class="checkbox-label checkbox-label--agreement">
-            <input type="checkbox">
+        <div class="login-meta">
+          <label class="checkbox-label">
+            <input type="checkbox" checked>
             <span class="checkbox" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="m3 8 3 3 7-7"/></svg></span>
-            <span>我已阅读并同意<a href="#">《服务条款》</a><a href="#">《隐私政策》</a></span>
+            <span>在此设备保持登录</span>
           </label>
-          <p class="agreement-message" aria-live="polite"></p>
+          <a class="meta-link" href="#">登录遇到问题</a>
         </div>
       </div>
     </section>
   </main>
+
+  <script>
+    const qrPanel = document.querySelector('.qr-panel');
+    const qrCode = document.querySelector('.qr-code');
+    const qrTip = document.querySelector('.qr-tip');
+    const refreshButtons = document.querySelectorAll('[data-action="refresh-qr"]');
+    const copyLinkButton = document.querySelector('[data-action="copy-link"]');
+    const states = document.querySelectorAll('[data-qr-state]');
+
+    let currentState = 'waiting';
+    let stateTimer;
+    let refreshTimer;
+    let countdown = 60;
+
+    function setQrState(state) {
+      currentState = state;
+      states.forEach((item) => {
+        item.classList.toggle('is-active', item.dataset.qrState === state);
+      });
+
+      if (state === 'waiting') {
+        qrTip.textContent = `请使用企业 App 扫描二维码（${countdown}s 后失效）`;
+        qrCode.classList.remove('is-scanned', 'is-confirmed');
+      }
+
+      if (state === 'scanned') {
+        qrTip.textContent = '扫描成功，请在手机上确认登录';
+        qrCode.classList.add('is-scanned');
+        qrCode.classList.remove('is-confirmed');
+      }
+
+      if (state === 'confirmed') {
+        qrTip.textContent = '登录成功，正在安全跳转';
+        qrCode.classList.add('is-scanned', 'is-confirmed');
+      }
+
+      if (state === 'expired') {
+        qrCode.classList.remove('is-scanned', 'is-confirmed');
+      }
+    }
+
+    function refreshQrCode() {
+      window.clearInterval(stateTimer);
+      window.clearTimeout(refreshTimer);
+      countdown = 60;
+      setQrState('waiting');
+
+      refreshTimer = window.setTimeout(() => {
+        setQrState('expired');
+      }, 60000);
+
+      stateTimer = window.setInterval(() => {
+        countdown -= 1;
+        if (countdown <= 0) {
+          window.clearInterval(stateTimer);
+          setQrState('expired');
+          return;
+        }
+        qrTip.textContent = `请使用企业 App 扫描二维码（${countdown}s 后失效）`;
+      }, 1000);
+    }
+
+    refreshButtons.forEach((button) => {
+      button.addEventListener('click', refreshQrCode);
+    });
+
+    copyLinkButton.addEventListener('click', async () => {
+      const originalText = copyLinkButton.innerHTML;
+      try {
+        await navigator.clipboard.writeText(`${window.location.origin}/login/qr`);
+        copyLinkButton.textContent = '链接已复制';
+      } catch (error) {
+        copyLinkButton.textContent = '复制失败';
+      }
+      window.setTimeout(() => {
+        copyLinkButton.innerHTML = originalText;
+      }, 1800);
+    });
+
+    window.setTimeout(() => {
+      if (currentState === 'waiting') {
+        setQrState('scanned');
+      }
+    }, 5000);
+
+    window.setTimeout(() => {
+      if (currentState === 'scanned') {
+        setQrState('confirmed');
+      }
+    }, 11000);
+
+    refreshQrCode();
+  </script>
 </body>
 </html>

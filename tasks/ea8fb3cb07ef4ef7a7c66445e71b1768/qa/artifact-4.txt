@@ -1,0 +1,3 @@
+
+建议保存为 `tests/capture-screenshots.js`：
+
