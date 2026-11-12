@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>统一身份认证 - 短信验证码登录</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- 本文件仅为设计稿，交互逻辑由前端在正式页面实现。 -->
+  <main class="login-shell">
+    <section class="brand-panel" aria-labelledby="brand-title">
+      <div class="brand-content">
+        <div class="brand-mark brand-mark--large" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none"><path d="M32 5 53 14v15c0 14-8.8 24.7-21 30C19.8 53.7 11 43 11 29V14l21-9Z" stroke="currentColor" stroke-width="2"/><path d="m22 31 7 7 14-16" stroke="currentColor" stroke-width="3"/></svg>
+        </div>
+        <p class="brand-product">企业统一身份认证</p>
+        <h1 id="brand-title">一次登录，安全访问所有企业应用</h1>
+        <p class="brand-lead">统一管理身份、权限与访问体验，让每一次连接都清晰可靠。</p>
+        <ul class="feature-list">
+          <li><span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 20 6v5c0 5-3.2 8.7-8 10-4.8-1.3-8-5-8-10V6l8-3Z"/><path d="m9 12 2 2 4-5"/></svg></span><span><strong>统一安全策略</strong><small>集中控制登录访问与身份策略</small></span></li>
+          <li><span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 9h8M8 13h5M8 17h3"/></svg></span><span><strong>清晰权限边界</strong><small>按应用与角色分配访问权限</small></span></li>
+          <li><span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16M7 4v6M17 4v6"/><rect x="4" y="7" width="16" height="13" rx="2"/><path d="M9 13h6"/></svg></span><span><strong>一致登录体验</strong><small>跨业务系统使用同一身份账户</small></span></li>
+        </ul>
+      </div>
+      <p class="brand-footer">企业服务门户 · 安全运行</p>
+    </section>
+
+    <section class="form-panel">
+      <div class="login-card">
+        <header class="card-heading">
+          <h2>登录</h2>
+          <p>使用企业统一身份继续</p>
+        </header>
+
+        <div class="login-tabs" role="tablist" aria-label="登录方式">
+          <button class="tab" role="tab" aria-selected="false">账号密码</button>
+          <button class="tab is-active" role="tab" aria-selected="true">短信验证码</button>
+          <button class="tab" role="tab" aria-selected="false">扫码登录</button>
+          <span class="tab-indicator" aria-hidden="true"></span>
+        </div>
+
+        <form class="login-form" novalidate>
+          <div class="field">
+            <label for="phone">手机号</label>
+            <div class="input-wrap">
+              <span class="input-icon" aria-hidden="true"><svg viewBox="0 0 20 20"><rect x="6" y="2" width="8" height="16" rx="2"/><path d="M9 5h2M9 15h2"/></svg></span>
+              <input id="phone" type="tel" inputmode="numeric" placeholder="请输入 11 位手机号" autocomplete="tel">
+            </div>
+            <p class="field-message" aria-live="polite"></p>
+          </div>
+
+          <div class="field">
+            <label for="sms-code">验证码</label>
+            <div class="input-wrap input-wrap--action">
+              <span class="input-icon" aria-hidden="true"><svg viewBox="0 0 20 20"><path d="M4 4h12v12H4z"/><path d="m7 10 2 2 4-5"/></svg></span>
+              <input id="sms-code" type="text" inputmode="numeric" placeholder="请输入 6 位验证码" autocomplete="one-time-code">
+              <button class="input-action" type="button">获取验证码</button>
+            </div>
+            <p class="field-message" aria-live="polite">验证码将发送至绑定手机号</p>
+          </div>
+
+          <div class="sms-note">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 9v4M10 6.5v.5"/></svg>
+            <span>未收到验证码？请检查手机网络后重新获取</span>
+          </div>
+
+          <button class="button button--primary button--full" type="submit">登录</button>
+        </form>
+
+        <div class="divider"><span>其他登录方式</span></div>
+        <div class="social-actions" aria-label="其他登录方式">
+          <button class="social-button" type="button" aria-label="企业标识登录"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M6 8h8M6 12h5"/></svg></button>
+          <button class="social-button" type="button" aria-label="办公账号登录"><svg viewBox="0 0 20 20"><rect x="3" y="6" width="14" height="11" rx="2"/><path d="M7 6V4h6v2M7 10h2M11 10h2M7 13h2M11 13h2"/></svg></button>
+          <button class="social-button" type="button" aria-label="安全设备登录"><svg viewBox="0 0 20 20"><path d="M10 2.5 16 5v4.5c0 3.6-2.4 6.3-6 8-3.6-1.7-6-4.4-6-8V5l6-2.5Z"/><path d="m7.5 10 1.6 1.6 3.4-3.7"/></svg></button>
+        </div>
+
+        <div class="agreement">
+          <label class="checkbox-label checkbox-label--agreement">
+            <input type="checkbox">
+            <span class="checkbox" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="m3 8 3 3 7-7"/></svg></span>
+            <span>我已阅读并同意<a href="#">《服务条款》</a><a href="#">《隐私政策》</a></span>
+          </label>
+          <p class="agreement-message" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

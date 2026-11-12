@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>会话已过期</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="modal-demo-page">
+  <!-- 本文件仅为设计稿，交互逻辑由前端在正式页面实现。 -->
+  <div class="modal-demo-background" aria-hidden="true">
+    <header class="app-header"><div class="app-brand"><span>企业服务门户</span></div></header>
+    <main class="app-main"><section class="welcome-card"><div><h1>上午好，张明</h1><p>欢迎回到企业服务门户。</p></div></section></main>
+  </div>
+  <div class="modal-overlay">
+    <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="expired-title" aria-describedby="expired-description">
+      <div class="modal-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v5M9 2h6M12 5v2"/></svg></div>
+      <h2 id="expired-title">会话已过期</h2>
+      <p id="expired-description">说明你的登录状态已失效，请重新登录以继续操作。</p>
+      <div class="modal-actions">
+        <button class="button button--primary button--full" type="button">重新登录</button>
+        <button class="button button--secondary button--full" type="button">取消</button>
+      </div>
+    </section>
+  </div>
+</body>
+</html>
