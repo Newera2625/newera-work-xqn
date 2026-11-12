@@ -1,0 +1,1 @@
+交付 UI-A 视觉方向一（极简文字排版风）原型：prototypes/ui-a/index.html 单文件（内联 CSS/JS，唯一外部资源为 QQ 头像，含 referrerpolicy 与内联 SVG 降级）及 README.md（调色板/字号/间距变量表、class 命名表、JS 接入点、与 UI-B 差异说明）；另含两个已标注废弃的中间分片文件可安全删除。

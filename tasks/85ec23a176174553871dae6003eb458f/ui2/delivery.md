@@ -1,0 +1,1 @@
+已完成「卡片杂志风」视觉原型 prototype-magazine.html（自包含单文件，内联 CSS/JS，零外部依赖，仅 QQ 头像为唯一外部请求）：包含吸顶导航与汉堡菜单、Hero 通栏、桌面 300px sticky 个人资料卡 + 主内容双栏、筛选胶囊 + 搜索框 + 三列文章卡片网格（桌面3/平板2/手机1）、关于我与时间线、联系区、三列页脚与返回顶部；配色严格为单一靛蓝主色 #4a5bd6 + 中性黑白灰 + 唯一辅助绿仅用于「已复制」状态；头像含 referrerpolicy="no-referrer"、onerror 内联 SVG 默认头像降级与失败提示；全站图标为内联 SVG、零 emoji、组件具备 hover/focus/active/disabled 四态，并附 CSS 变量表与类名规范供主实现员工复用。
