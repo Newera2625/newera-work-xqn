@@ -6,6 +6,7 @@ file=index.html
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>你好 · 个人博客</title>
+<meta name="description" content="你好，一个人的博客。写代码，也写生活。">
 <style>
   :root{
     --primary:#2F5BEA;
@@ -29,6 +30,7 @@ file=index.html
     --nav-h:64px;
     --maxw:1120px;
     --ease:cubic-bezier(.22,.61,.36,1);
+    --s1:8px; --s2:16px; --s3:24px; --s4:32px; --s5:48px; --s6:64px;
   }
   html[data-theme="dark"]{
     --primary:#6E8BFF;
@@ -56,7 +58,7 @@ file=index.html
     color:var(--text);
     font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
     font-size:16px;
-    line-height:1.7;
+    line-height:1.75;
     -webkit-font-smoothing:antialiased;
     transition:background-color .3s var(--ease), color .3s var(--ease);
     overflow-x:hidden;
@@ -64,8 +66,21 @@ file=index.html
   img{display:block;max-width:100%;}
   a{color:inherit;text-decoration:none;}
   button{font:inherit;color:inherit;}
+  h1,h2,h3,h4{margin:0;line-height:1.25;letter-spacing:-.2px;}
+  p{margin:0;}
+  ul{margin:0;padding:0;list-style:none;}
+  ::selection{background:var(--primary);color:#fff;}
 
   .wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  .section{padding:var(--s6) 0;}
+  .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s3);margin-bottom:var(--s4);}
+  .sec-title{font-size:26px;font-weight:800;display:flex;align-items:center;gap:12px;}
+  .sec-title .bar{width:4px;height:26px;border-radius:2px;background:var(--primary);}
+  .sec-sub{margin-top:6px;color:var(--text-soft);font-size:15px;max-width:640px;}
+  .link-more{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--text-soft);white-space:nowrap;transition:color .2s var(--ease);}
+  .link-more:hover{color:var(--primary);}
+  .link-more svg{width:14px;height:14px;transition:transform .2s var(--ease);}
+  .link-more:hover svg{transform:translateX(3px);}
 
   /* ---------- NAV ---------- */
   .nav{
@@ -106,7 +121,6 @@ file=index.html
   html[data-theme="dark"] .theme-btn .sun{display:none;}
   .menu-btn{display:none;}
 
-  /* mobile dropdown */
   .mobile-menu{
     position:fixed;top:var(--nav-h);left:12px;right:12px;z-index:99;
     background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
@@ -118,587 +132,880 @@ file=index.html
   .mobile-menu a:hover,.mobile-menu a.active{background:var(--primary-soft);color:var(--primary);}
 
   /* ---------- HERO ---------- */
-  .hero{padding:calc(var(--nav-h) + 72px) 0 88px;}
+  .hero{padding:calc(var(--nav-h) + 68px) 0 var(--s5);}
   .hero-card{
     display:flex;align-items:center;gap:44px;
     padding:46px;border:1px solid var(--line);border-radius:24px;
     background:var(--surface);box-shadow:var(--shadow-md);
   }
   .avatar{
-    position:relative;flex:0 0 auto;width:168px;height:168px;border-radius:50%;
+    position:relative;flex:0 0 auto;width:172px;height:172px;border-radius:50%;
     background:var(--bg-alt);border:1px solid var(--line);overflow:hidden;
     box-shadow:var(--shadow-md);
   }
   .avatar::after{
-    content:"";position:absolute;inset:0;border-radius:50%;
+    content:"";position:absolute;inset:0;border-radius:50%;pointer-events:none;
     box-shadow:inset 0 0 0 4px color-mix(in srgb, var(--primary) 16%, transparent);
   }
   .avatar img{width:100%;height:100%;object-fit:cover;}
   .avatar .fallback{width:100%;height:100%;display:none;align-items:center;justify-content:center;background:var(--primary-soft);}
-  .avatar .fallback svg{width:88px;height:88px;color:var(--primary);}
-  .avatar.loading .fallback{display:flex;}
+  .avatar .fallback svg{width:92px;height:92px;color:var(--primary);}
   .avatar.fallback-mode img{display:none;}
   .avatar.fallback-mode .fallback{display:flex;}
-  .hero-text h1{
-    margin:0 0 10px;font-size:46px;line-height:1.15;letter-spacing:-.5px;font-weight:800;
+  .hero-text h1{font-size:46px;font-weight:800;margin:0 0 10px;letter-spacing:-.5px;}
+  .hero-text .sign{margin:0 0 18px;font-size:17px;color:var(--text-soft);max-width:540px;}
+  .meta-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:22px;}
+  .qq-chip{
+    display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:var(--r-lg);
+    background:var(--primary-soft);color:var(--primary);font-size:14px;font-weight:600;letter-spacing:.4px;
   }
-  .hero-text .sign{margin:0 0 18px;font-size:17px;color:var(--text-soft);max-width:520px;}
-  .meta-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
-  .qq-pill{
-    display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 10px;
-    background:var(--primary-soft);color:var(--primary);border-radius:var(--r-lg);
-    font-size:14px;font-weight:600;letter-spacing:.3px;
+  .qq-chip svg{width:16px;height:16px;}
+  .status-chip{
+    display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:var(--r-lg);
+    border:1px solid var(--line);color:var(--text-soft);font-size:13.5px;
   }
-  .qq-pill svg{width:18px;height:18px;}
-  .socials{display:flex;gap:8px;}
-  .social{
-    width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
-    border:1px solid var(--line);color:var(--muted);background:var(--surface);
-    transition:all .2s var(--ease);
-  }
-  .social:hover{color:var(--primary);border-color:var(--primary);transform:translateY(-2px);box-shadow:var(--shadow-sm);}
-  .social svg{width:17px;height:17px;}
+  .status-chip .pulse{width:7px;height:7px;border-radius:50%;background:var(--primary);box-shadow:0 0 0 0 color-mix(in srgb,var(--primary) 60%,transparent);animation:pulse 2.2s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--primary) 55%,transparent);}70%{box-shadow:0 0 0 8px transparent;}100%{box-shadow:0 0 0 0 transparent;}}
   .hero-actions{display:flex;gap:12px;flex-wrap:wrap;}
   .btn{
     display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:var(--r-lg);
     font-size:15px;font-weight:600;border:1px solid transparent;cursor:pointer;
-    transition:all .2s var(--ease);
+    transition:background-color .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease), transform .15s var(--ease), box-shadow .2s var(--ease);
   }
-  .btn-primary{background:var(--primary);color:#fff;box-shadow:0 4px 14px color-mix(in srgb,var(--primary) 30%, transparent);}
-  .btn-primary:hover{background:var(--primary-hover);transform:translateY(-2px);box-shadow:0 8px 20px color-mix(in srgb,var(--primary) 34%, transparent);}
-  .btn-primary:active{transform:translateY(0);}
+  .btn svg{width:16px;height:16px;}
+  .btn:active{transform:translateY(1px);}
+  .btn:focus-visible{outline:2px solid var(--primary);outline-offset:3px;}
+  .btn-primary{background:var(--primary);color:#fff;box-shadow:var(--shadow-sm);}
+  .btn-primary:hover{background:var(--primary-hover);box-shadow:var(--shadow-md);}
   .btn-ghost{background:var(--surface);border-color:var(--line-strong);color:var(--text);}
   .btn-ghost:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-soft);}
-  .btn:focus-visible{outline:2px solid var(--primary);outline-offset:3px;}
-  .btn svg{width:16px;height:16px;}
 
-  /* ---------- SECTION ---------- */
-  section{scroll-margin-top:calc(var(--nav-h) + 20px);}
-  .sec{padding:36px 0 76px;}
-  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:28px;}
-  .sec-head h2{margin:0;font-size:28px;font-weight:800;letter-spacing:-.3px;}
-  .sec-head .sub{margin:6px 0 0;color:var(--muted);font-size:14.5px;}
-  .sec-link{font-size:14px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;transition:color .2s var(--ease);}
-  .sec-link:hover{color:var(--primary);}
-  .sec-link svg{width:15px;height:15px;}
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    margin-top:var(--s4);background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;
+  }
+  .stat{background:var(--surface);padding:22px 18px;text-align:center;transition:background-color .2s var(--ease);}
+  .stat:hover{background:var(--bg-alt);}
+  .stat b{display:block;font-size:26px;font-weight:800;color:var(--primary);letter-spacing:-.5px;}
+  .stat span{display:block;font-size:13px;color:var(--muted);margin-top:2px;}
+
+  /* ---------- MARQUEE / TAGS ---------- */
+  .stack-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:var(--s3);}
+  .tag{
+    display:inline-flex;align-items:center;padding:5px 12px;border-radius:var(--r-lg);
+    background:var(--bg-alt);border:1px solid var(--line);color:var(--text-soft);
+    font-size:12.5px;transition:all .2s var(--ease);cursor:default;
+  }
+  .tag:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-soft);}
+  .tag.primary{background:var(--primary-soft);border-color:transparent;color:var(--primary);font-weight:600;}
 
   /* ---------- POSTS ---------- */
-  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
-  .card{
-    border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);
-    padding:24px;box-shadow:var(--shadow-sm);
-    transition:transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+  .posts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s3);}
+  .post{
     display:flex;flex-direction:column;gap:12px;
+    padding:24px;border:1px solid var(--line);border-radius:var(--r-md);
+    background:var(--surface);box-shadow:var(--shadow-sm);cursor:pointer;
+    transition:transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
   }
-  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--line-strong);}
-  .card-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
-  .tag{
-    font-size:12.5px;font-weight:600;color:var(--primary);background:var(--primary-soft);
-    padding:4px 11px;border-radius:var(--r-lg);
+  .post:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--line-strong);}
+  .post:focus-visible{outline:2px solid var(--primary);outline-offset:3px;}
+  .post-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .post-date{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums;}
+  .post-date svg{width:13px;height:13px;}
+  .post h3{font-size:18px;font-weight:700;line-height:1.45;}
+  .post p{font-size:14.5px;color:var(--text-soft);flex:1;}
+  .post-foot{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px dashed var(--line);}
+  .post-tags{display:flex;gap:6px;flex-wrap:wrap;}
+  .post-tags .tag{padding:3px 10px;font-size:11.5px;}
+  .read-time{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;color:var(--muted);white-space:nowrap;}
+  .read-time svg{width:13px;height:13px;}
+  .post-cta{
+    display:inline-flex;align-items:center;gap:5px;font-size:13.5px;color:var(--primary);font-weight:600;
   }
-  .date{font-size:13px;color:var(--muted);}
-  .card h3{margin:0;font-size:19px;font-weight:700;letter-spacing:-.2px;line-height:1.45;}
-  .card p{margin:0;color:var(--text-soft);font-size:14.5px;
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-  .card-foot{
-    margin-top:auto;padding-top:14px;border-top:1px solid var(--line);
-    display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:13px;
+  .post-cta svg{width:14px;height:14px;transition:transform .2s var(--ease);}
+  .post:hover .post-cta svg{transform:translateX(3px);}
+
+  .featured{
+    grid-column:span 2;display:grid;grid-template-columns:1.05fr .95fr;gap:0;
+    padding:0;overflow:hidden;
   }
-  .readtime{display:inline-flex;align-items:center;gap:6px;}
-  .readtime svg{width:15px;height:15px;}
+  .featured-body{padding:30px;display:flex;flex-direction:column;gap:12px;}
+  .featured-visual{
+    position:relative;background:linear-gradient(150deg,var(--primary-soft),var(--bg-alt));
+    border-left:1px solid var(--line);display:flex;align-items:center;justify-content:center;min-height:220px;padding:24px;
+  }
+  .featured-visual .glyph{width:100%;max-width:210px;color:var(--primary);opacity:.9;}
+  .featured-badge{
+    position:absolute;top:16px;left:16px;padding:4px 12px;border-radius:var(--r-lg);
+    background:var(--primary);color:#fff;font-size:11.5px;font-weight:700;letter-spacing:.6px;
+  }
 
   /* ---------- ABOUT ---------- */
-  .about-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:20px;}
-  .panel{
-    border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);
-    padding:30px;box-shadow:var(--shadow-sm);
+  .about-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:var(--s3);align-items:start;}
+  .card{
+    padding:28px;border:1px solid var(--line);border-radius:var(--r-md);
+    background:var(--surface);box-shadow:var(--shadow-sm);
   }
-  .panel h3{margin:0 0 14px;font-size:18px;font-weight:700;}
-  .panel p{margin:0 0 14px;color:var(--text-soft);font-size:15px;}
-  .panel p:last-child{margin-bottom:0;}
-  .chips{display:flex;flex-wrap:wrap;gap:10px;}
-  .chip{
-    padding:7px 15px;border-radius:var(--r-lg);border:1px solid var(--line-strong);
-    font-size:13.5px;color:var(--text-soft);background:var(--bg-alt);
-    transition:all .2s var(--ease);
-  }
-  .chip:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-soft);}
+  .about-text p{margin-bottom:14px;color:var(--text-soft);font-size:15.5px;}
+  .about-text p:last-child{margin-bottom:0;}
+  .about-text strong{color:var(--text);font-weight:600;}
+  .fact-list{margin-top:var(--s3);display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-sm);overflow:hidden;}
+  .fact{background:var(--surface);padding:14px 16px;}
+  .fact span{display:block;font-size:12px;color:var(--muted);}
+  .fact b{font-size:14.5px;font-weight:600;}
+  .skills-title{font-size:15px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .skills-title svg{width:16px;height:16px;color:var(--primary);}
+  .skill{margin-bottom:18px;}
+  .skill:last-child{margin-bottom:0;}
+  .skill-head{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:7px;}
+  .skill-head b{font-weight:600;}
+  .skill-head span{color:var(--muted);font-variant-numeric:tabular-nums;}
+  .bar-track{height:7px;border-radius:4px;background:var(--bg-alt);overflow:hidden;}
+  .bar-fill{height:100%;border-radius:4px;background:var(--primary);width:0;transition:width 1s var(--ease);}
+  .timeline{margin-top:var(--s3);}
+  .tl-item{display:flex;gap:14px;padding:0 0 20px 0;position:relative;}
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-item::before{content:"";position:absolute;left:5px;top:16px;bottom:0;width:1px;background:var(--line);}
+  .tl-item:last-child::before{display:none;}
+  .tl-dot{width:11px;height:11px;border-radius:50%;background:var(--surface);border:2px solid var(--primary);flex:0 0 auto;margin-top:8px;position:relative;z-index:1;}
+  .tl-body b{display:block;font-size:14.5px;font-weight:600;}
+  .tl-body span{display:block;font-size:12.5px;color:var(--muted);margin-bottom:3px;}
+  .tl-body p{font-size:14px;color:var(--text-soft);}
+
+  /* ---------- GALLERY / QUOTES ---------- */
+  .note-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s3);}
+  .note{padding:22px;border-radius:var(--r-md);border:1px solid var(--line);background:var(--bg-alt);position:relative;}
+  .note::before{content:"";position:absolute;left:22px;top:0;width:36px;height:3px;border-radius:0 0 3px 3px;background:var(--primary);}
+  .note p{font-size:14.5px;color:var(--text-soft);}
+  .note footer{margin-top:12px;font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:8px;}
 
   /* ---------- GUESTBOOK ---------- */
-  .guest-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
-  .form-row{display:grid;grid-template-columns:200px 1fr;gap:12px;}
-  .field{
+  .gb-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);align-items:start;}
+  .gb-form{display:grid;gap:16px;}
+  .field label{display:block;font-size:13px;font-weight:600;color:var(--text-soft);margin-bottom:7px;}
+  .field label i{font-style:normal;color:var(--primary);margin-left:4px;}
+  .field input,.field textarea{
     width:100%;padding:11px 14px;border:1px solid var(--line-strong);border-radius:var(--r-sm);
-    background:var(--bg);color:var(--text);font-size:14.5px;transition:border-color .2s var(--ease), box-shadow .2s var(--ease);
+    background:var(--bg);color:var(--text);font-family:inherit;font-size:14.5px;
+    transition:border-color .2s var(--ease), box-shadow .2s var(--ease);
   }
-  .field::placeholder{color:var(--muted);}
-  .field:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 16%, transparent);}
-  textarea.field{min-height:96px;resize:vertical;line-height:1.6;}
-  .form-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;}
+  .field textarea{resize:vertical;min-height:120px;}
+  .field input::placeholder,.field textarea::placeholder{color:var(--muted);}
+  .field input:focus,.field textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 16%,transparent);}
+  .field.invalid input,.field.invalid textarea{border-color:var(--primary);background:var(--primary-soft);}
+  .field .err{font-size:12px;color:var(--primary);margin-top:6px;display:none;}
+  .field.invalid .err{display:block;}
+  .gb-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+  .gb-foot small{color:var(--muted);font-size:12.5px;}
   .toast{
-    font-size:13.5px;color:var(--primary);opacity:0;transition:opacity .25s var(--ease);
-    display:inline-flex;align-items:center;gap:6px;
+    display:flex;align-items:center;gap:10px;padding:11px 16px;border-radius:var(--r-sm);
+    background:var(--primary-soft);color:var(--primary);font-size:14px;font-weight:600;
+    opacity:0;transform:translateY(-6px);pointer-events:none;transition:all .25s var(--ease);
   }
-  .toast.show{opacity:1;}
-  .toast svg{width:15px;height:15px;}
-  .msg-list{max-height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding-right:4px;}
-  .msg-list::-webkit-scrollbar{width:6px;}
-  .msg-list::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:3px;}
-  .msg{border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px;background:var(--bg-alt);animation:fadeUp .3s var(--ease);}
-  .msg-head{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
-  .msg-avatar{
-    width:30px;height:30px;border-radius:50%;background:var(--primary-soft);color:var(--primary);
-    display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;
-  }
-  .msg-name{font-size:14px;font-weight:600;}
-  .msg-time{font-size:12.5px;color:var(--muted);margin-left:auto;}
-  .msg-body{margin:0;font-size:14.5px;color:var(--text-soft);white-space:pre-wrap;word-break:break-word;}
-  .empty{color:var(--muted);font-size:14px;text-align:center;padding:28px 10px;border:1px dashed var(--line-strong);border-radius:var(--r-sm);}
+  .toast.show{opacity:1;transform:none;}
+  .toast svg{width:16px;height:16px;flex:0 0 auto;}
+
+  .msgs{display:flex;flex-direction:column;gap:14px;max-height:520px;overflow-y:auto;padding-right:6px;}
+  .msgs::-webkit-scrollbar{width:6px;}
+  .msgs::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:3px;}
+  .msg{padding:16px 18px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--bg-alt);}
+  .msg-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:7px;}
+  .msg-name{font-weight:600;font-size:14.5px;display:flex;align-items:center;gap:8px;}
+  .avatar-mini{width:24px;height:24px;border-radius:50%;background:var(--primary-soft);color:var(--primary);display:inline-flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;}
+  .msg-time{font-size:12px;color:var(--muted);}
+  .msg p{font-size:14.5px;color:var(--text-soft);word-break:break-word;}
+  .empty{padding:40px 16px;text-align:center;color:var(--muted);font-size:14px;border:1px dashed var(--line-strong);border-radius:var(--r-sm);}
 
   /* ---------- FOOTER ---------- */
-  footer{border-top:1px solid var(--line);background:var(--bg-alt);padding:34px 0;}
-  .foot-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
-  .foot-inner p{margin:0;font-size:13.5px;color:var(--muted);}
-  .to-top{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;color:var(--muted);transition:color .2s var(--ease);}
-  .to-top:hover{color:var(--primary);}
+  .footer{border-top:1px solid var(--line);padding:var(--s5) 0 var(--s4);background:var(--bg-alt);}
+  .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:var(--s4);}
+  .foot-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;margin-bottom:12px;}
+  .foot-brand .dot{width:8px;height:8px;border-radius:50%;background:var(--primary);}
+  .foot-brand p{font-size:14px;color:var(--text-soft);max-width:320px;}
+  .foot-col h4{font-size:13px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-bottom:14px;font-weight:700;}
+  .foot-col li{margin-bottom:10px;}
+  .foot-col a,.foot-col span{font-size:14px;color:var(--text-soft);transition:color .2s var(--ease);display:inline-flex;align-items:center;gap:8px;}
+  .foot-col a:hover{color:var(--primary);}
+  .foot-col svg{width:15px;height:15px;color:var(--muted);}
+  .foot-col a:hover svg{color:var(--primary);}
+  .foot-bottom{
+    margin-top:var(--s4);padding-top:var(--s3);border-top:1px solid var(--line);
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    font-size:13px;color:var(--muted);
+  }
+  .to-top{
+    display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:var(--r-lg);
+    border:1px solid var(--line);background:var(--surface);color:var(--text-soft);cursor:pointer;font-size:13.5px;
+    transition:all .2s var(--ease);
+  }
+  .to-top:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-2px);}
   .to-top svg{width:15px;height:15px;}
 
   /* ---------- REVEAL ---------- */
-  .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s var(--ease), transform .6s var(--ease);}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s var(--ease), transform .6s var(--ease);}
   .reveal.in{opacity:1;transform:none;}
-
-  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    html{scroll-behavior:auto;}
+  }
 
   /* ---------- RESPONSIVE ---------- */
-  @media (max-width: 900px){
-    .wrap{padding:0 18px;}
+  @media (max-width: 1020px){
+    .posts-grid{grid-template-columns:repeat(2,1fr);}
+    .featured{grid-column:span 2;grid-template-columns:1fr;}
+    .featured-visual{border-left:none;border-top:1px solid var(--line);min-height:160px;}
+    .note-grid{grid-template-columns:repeat(2,1fr);}
+    .about-grid{grid-template-columns:1fr;}
+    .foot-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width: 860px){
     .nav-links{display:none;}
     .menu-btn{display:inline-flex;}
-    .hero{padding:calc(var(--nav-h) + 40px) 0 60px;}
-    .hero-card{flex-direction:column;text-align:center;padding:32px 24px;gap:24px;border-radius:20px;}
-    .avatar{width:132px;height:132px;}
-    .hero-text h1{font-size:36px;}
+    .stats{grid-template-columns:repeat(2,1fr);}
+    .hero-card{flex-direction:column;text-align:center;gap:26px;padding:34px 24px;}
+    .hero-text h1{font-size:38px;}
     .meta-row{justify-content:center;}
     .hero-actions{justify-content:center;}
-    .grid{grid-template-columns:1fr;}
-    .about-grid{grid-template-columns:1fr;}
-    .guest-grid{grid-template-columns:1fr;}
-    .form-row{grid-template-columns:1fr;}
-    .form-foot{flex-direction:column-reverse;align-items:stretch;gap:10px;}
-    .form-foot .btn{justify-content:center;}
-    .sec{padding:24px 0 56px;}
-    .sec-head h2{font-size:24px;}
-    .panel{padding:24px;}
+    .gb-grid{grid-template-columns:1fr;}
   }
-  @media (max-width: 420px){
+  @media (max-width: 640px){
+    .wrap{padding:0 18px;}
+    .section{padding:var(--s5) 0;}
+    .posts-grid{grid-template-columns:1fr;}
+    .featured{grid-column:span 1;}
+    .note-grid{grid-template-columns:1fr;}
+    .fact-list{grid-template-columns:1fr;}
+    .section-head{flex-direction:column;align-items:flex-start;gap:12px;}
+    .sec-title{font-size:22px;}
+    .hero{padding-top:calc(var(--nav-h) + 44px);}
     .hero-text h1{font-size:32px;}
-    .sec-head{flex-direction:column;align-items:flex-start;}
-    .btn{padding:10px 18px;font-size:14px;}
-  }
-  @media (prefers-reduced-motion: reduce){
-    *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
-    html{scroll-behavior:auto;}
+    .hero-text .sign{font-size:15.5px;}
+    .avatar{width:132px;height:132px;}
+    .foot-grid{grid-template-columns:1fr;}
+    .foot-bottom{flex-direction:column;align-items:flex-start;}
+    .card{padding:22px;}
   }
 </style>
 </head>
 <body>
 
+<!-- ================= NAV ================= -->
 <header class="nav" id="nav">
   <div class="wrap nav-inner">
     <a href="#home" class="logo"><span class="dot"></span>你好</a>
     <nav class="nav-links" id="navLinks">
-      <a href="#home" data-target="home" class="active">首页</a>
-      <a href="#posts" data-target="posts">文章</a>
-      <a href="#about" data-target="about">关于我</a>
-      <a href="#guestbook" data-target="guestbook">留言</a>
+      <a href="#home" class="active">首页</a>
+      <a href="#posts">文章</a>
+      <a href="#about">关于我</a>
+      <a href="#notes">随笔</a>
+      <a href="#guestbook">留言</a>
     </nav>
     <div class="nav-actions">
-      <button class="icon-btn theme-btn" id="themeBtn" type="button" aria-label="切换主题" title="切换深浅色">
-        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.2M12 19.4v2.2M4.2 12H2M22 12h-2.2M5.6 5.6 4 4M20 20l-1.6-1.6M18.4 5.6 20 4M4 20l1.6-1.6"/></svg>
-        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>
+      <button class="icon-btn theme-btn" id="themeBtn" type="button" aria-label="切换主题">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.2 12H2M22 12h-2.2M6.3 6.3 4.8 4.8M19.2 19.2l-1.5-1.5M17.7 6.3l1.5-1.5M4.8 19.2l1.5-1.5"/>
+        </svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.5 14.2A8.6 8.6 0 0 1 9.8 3.5a8.6 8.6 0 1 0 10.7 10.7z"/>
+        </svg>
       </button>
       <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="打开菜单" aria-expanded="false">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
       </button>
     </div>
   </div>
 </header>
 
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#home" data-target="home" class="active">首页</a>
-  <a href="#posts" data-target="posts">文章</a>
-  <a href="#about" data-target="about">关于我</a>
-  <a href="#guestbook" data-target="guestbook">留言</a>
+  <a href="#home">首页</a>
+  <a href="#posts">文章</a>
+  <a href="#about">关于我</a>
+  <a href="#notes">随笔</a>
+  <a href="#guestbook">留言</a>
 </div>
 
-<main>
-  <!-- HERO -->
-  <section class="hero" id="home">
-    <div class="wrap">
-      <div class="hero-card reveal">
-        <div class="avatar loading" id="avatarBox">
-          <img id="avatarImg" alt="QQ 头像" referrerpolicy="no-referrer"
-               src="https://q1.qlogo.cn/g?b=qq&nk=3627236036&s=640"
-               onerror="this.style.display='none';document.getElementById('avatarBox').classList.remove('loading');document.getElementById('avatarBox').classList.add('fallback-mode');"
-               onload="document.getElementById('avatarBox').classList.remove('loading');">
-          <div class="fallback">
-            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="32" cy="24" r="11"/>
-              <path d="M12 56c0-11 9-18 20-18s20 7 20 18"/>
+<!-- ================= HERO ================= -->
+<section class="hero" id="home">
+  <div class="wrap">
+    <div class="hero-card reveal">
+      <div class="avatar loading" id="avatar">
+        <img id="avatarImg" alt="QQ 头像"
+             src="https://q1.qlogo.cn/g?b=qq&nk=3627236036&s=640"
+             referrerpolicy="no-referrer">
+        <div class="fallback" aria-hidden="true">
+          <svg viewBox="0 0 96 96" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="48" cy="48" r="44" fill="currentColor" opacity=".08"/>
+            <circle cx="48" cy="38" r="16"/>
+            <path d="M16 82c4-16 16-24 32-24s28 8 32 24"/>
+          </svg>
+        </div>
+      </div>
+      <div class="hero-text">
+        <h1>你好</h1>
+        <p class="sign">写代码，也写生活。这里存放着我这些年读过的书、踩过的坑，以及一些还不成熟的想法。</p>
+        <div class="meta-row">
+          <span class="qq-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2.6c-5 0-9 3.2-9 7.2 0 2.3 1.3 4.4 3.4 5.7v2.9l2.7-1.5c.9.2 1.9.3 2.9.3 5 0 9-3.2 9-7.4s-4-7.2-9-7.2z"/>
+              <circle cx="8.8" cy="10" r="1" fill="currentColor" stroke="none"/>
+              <circle cx="15.2" cy="10" r="1" fill="currentColor" stroke="none"/>
             </svg>
+            QQ 3627236036
+          </span>
+          <span class="status-chip"><span class="pulse"></span>持续写作第 1287 天</span>
+        </div>
+        <div class="hero-actions">
+          <a href="#posts" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 5.5h16M4 12h16M4 18.5h10"/>
+            </svg>
+            浏览文章
+          </a>
+          <a href="#guestbook" class="btn btn-ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a8 8 0 0 1-8 8H4l2.2-3.2A8 8 0 1 1 21 12z"/>
+            </svg>
+            给我留言
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats reveal">
+      <div class="stat"><b>38</b><span>已发布文章</span></div>
+      <div class="stat"><b>12,406</b><span>累计阅读</span></div>
+      <div class="stat"><b>1,204</b><span>条留言</span></div>
+      <div class="stat"><b>26</b><span>开源项目</span></div>
+    </div>
+
+    <div class="stack-row reveal">
+      <span class="tag primary"># 长期更新</span>
+      <span class="tag"># 前端工程</span>
+      <span class="tag"># 读书笔记</span>
+      <span class="tag"># 设计</span>
+      <span class="tag"># 独立开发</span>
+      <span class="tag"># 摄影</span>
+      <span class="tag"># 旅行</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= POSTS ================= -->
+<section class="section" id="posts">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <h2 class="sec-title"><span class="bar"></span>我的文章</h2>
+        <p class="sec-sub">技术笔记、生活随笔与一些不合时宜的想法。挑一篇读读，也许正好是你现在需要的。</p>
+      </div>
+      <a href="#posts" class="link-more">查看全部
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="posts-grid" id="postGrid"></div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <h2 class="sec-title"><span class="bar"></span>关于我</h2>
+        <p class="sec-sub">一个喜欢把复杂问题拆解成简单步骤的前端工程师，长期在浏览器与编辑器之间来回。</p>
+      </div>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-text card reveal">
+        <p>你好，我是一名专注于<strong>前端体验与可视化</strong>的开发者。日常工作是把设计稿翻译成可维护的组件，把散落的流程梳理成顺手的工具，再把那些重复出现的细节沉淀成规范。</p>
+        <p>我不喜欢炫技，但相信克制的设计能让人把注意力放回内容本身。业余时间写点开源项目、拍点胶片、读几本和代码无关的书，保持对世界的好奇心。</p>
+        <p>如果这里的某篇文章刚好帮到了你，或者你发现了可以做得更好的地方，欢迎在留言区告诉我。</p>
+
+        <div class="fact-list">
+          <div class="fact"><span>所在城市</span><b>杭州 · 中国</b></div>
+          <div class="fact"><span>职业</span><b>前端工程师</b></div>
+          <div class="fact"><span>博客上线</span><b>2019 年 3 月</b></div>
+          <div class="fact"><span>邮箱联系</span><b>hi@nihao.dev</b></div>
+        </div>
+
+        <div class="timeline">
+          <div class="tl-item">
+            <span class="tl-dot"></span>
+            <div class="tl-body">
+              <span>2023 — 至今</span>
+              <b>某科技公司 · 高级前端工程师</b>
+              <p>负责中后台设计体系与组件库建设，主导三个内部工具从零到一落地。</p>
+            </div>
+          </div>
+          <div class="tl-item">
+            <span class="tl-dot"></span>
+            <div class="tl-body">
+              <span>2020 — 2023</span>
+              <b>独立产品开发</b>
+              <p>做过两款面向独立开发者的效率工具，累计服务超过两万用户。</p>
+            </div>
+          </div>
+          <div class="tl-item">
+            <span class="tl-dot"></span>
+            <div class="tl-body">
+              <span>2019 — 2020</span>
+              <b>加入第一份正式工作</b>
+              <p>从写业务页面开始，慢慢学会如何让代码变得更好读。</p>
+            </div>
           </div>
         </div>
-        <div class="hero-text">
-          <h1>你好</h1>
-          <p class="sign">写代码，也写生活。把每一次思考都整理成可以回看的笔记。</p>
-          <div class="meta-row">
-            <span class="qq-pill">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.9 2 2.8 5.7 2.8 10.2c0 2.5 1.4 4.7 3.6 6.1l-.8 3.3c-.1.5.5.9.9.6l3.1-2c.8.1 1.6.2 2.4.2 5.1 0 9.2-3.7 9.2-8.2S17.1 2 12 2zM8.9 11.6a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6zm6.2 0a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6z"/></svg>
-              QQ 3627236036
-            </span>
-            <span class="socials">
-              <a class="social" href="#" title="邮件" aria-label="邮件">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
-              </a>
-              <a class="social" href="#" title="GitHub" aria-label="GitHub">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.3-4.3-2.2-6-2.7m12 5v-3.4c0-1 .1-1.4-.5-2 2.3-.3 4.5-1.1 4.5-5a3.9 3.9 0 0 0-1.1-2.7 3.6 3.6 0 0 0-.1-2.7s-.9-.3-3 1.1a10.3 10.3 0 0 0-5.4 0C6.5 5.5 5.6 5.8 5.6 5.8a3.6 3.6 0 0 0-.1 2.7A3.9 3.9 0 0 0 4.4 11.2c0 3.9 2.2 4.7 4.5 5-.4.4-.5.7-.5 1v3.5"/></svg>
-              </a>
-              <a class="social" href="#guestbook" title="留言" aria-label="留言">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H4l2.3-2.9A8 8 0 1 1 21 12z"/></svg>
-              </a>
-            </span>
+      </div>
+
+      <div class="reveal">
+        <div class="card">
+          <h3 class="skills-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m12 3 2.2 4.6L19 8.5l-3.5 3.4.8 4.8-4.3-2.3-4.3 2.3.8-4.8L5 8.5l4.8-.9L12 3z"/>
+            </svg>
+            技能与工具
+          </h3>
+          <div class="skill">
+            <div class="skill-head"><b>前端工程</b><span>92%</span></div>
+            <div class="bar-track"><div class="bar-fill" data-w="92"></div></div>
           </div>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#guestbook">
-              联系我
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
-            </a>
-            <a class="btn btn-ghost" href="#posts">
-              查看文章
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v13M6 13l6 6 6-6"/></svg>
-            </a>
+          <div class="skill">
+            <div class="skill-head"><b>界面与交互设计</b><span>84%</span></div>
+            <div class="bar-track"><div class="bar-fill" data-w="84"></div></div>
+          </div>
+          <div class="skill">
+            <div class="skill-head"><b>后端与数据库</b><span>68%</span></div>
+            <div class="bar-track"><div class="bar-fill" data-w="68"></div></div>
+          </div>
+          <div class="skill">
+            <div class="skill-head"><b>写作与内容</b><span>75%</span></div>
+            <div class="bar-track"><div class="bar-fill" data-w="75"></div></div>
+          </div>
+
+          <div class="stack-row">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">TypeScript</span>
+            <span class="tag">React</span>
+            <span class="tag">Vue</span>
+            <span class="tag">Node.js</span>
+            <span class="tag">Vite</span>
+            <span class="tag">Figma</span>
+            <span class="tag">Python</span>
+            <span class="tag">SQL</span>
+            <span class="tag">Docker</span>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:24px;">
+          <h3 class="skills-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="16" rx="3"/><path d="M8 2.5v3M16 2.5v3M3 10h18"/>
+            </svg>
+            常用工具
+          </h3>
+          <div class="stack-row">
+            <span class="tag">VS Code</span>
+            <span class="tag">Git</span>
+            <span class="tag">Figma</span>
+            <span class="tag">iTerm</span>
+            <span class="tag">Obsidian</span>
+            <span class="tag">Blender</span>
+            <span class="tag">Lightroom</span>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- POSTS -->
-  <section class="sec" id="posts">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <div>
-          <h2>我的文章</h2>
-          <p class="sub">记录一些值得回头看的东西</p>
-        </div>
-        <a class="sec-link" href="#posts">查看全部
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
-        </a>
-      </div>
-      <div class="grid" id="postGrid"></div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section class="sec" id="about">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <div>
-          <h2>关于我</h2>
-          <p class="sub">一个长期主义者，喜欢把复杂的事做简单</p>
-        </div>
-      </div>
-      <div class="about-grid">
-        <div class="panel reveal">
-          <h3>简介</h3>
-          <p>你好，我是一名热爱折腾的开发者。白天写代码、画界面，晚上写字、拍照、听播客，喜欢把日常里的碎片整理成结构化的知识。</p>
-          <p>我相信好的产品来自克制的设计，也相信长期输出比短期爆发更重要。这个博客就是我的小角落，用来存放技术笔记、生活随笔和一些不太成熟的想法。</p>
-          <p>如果你看到这里，欢迎在下方留言聊聊，我会尽量回复。</p>
-        </div>
-        <div class="panel reveal">
-          <h3>技能</h3>
-          <div class="chips">
-            <span class="chip">HTML</span>
-            <span class="chip">CSS</span>
-            <span class="chip">JavaScript</span>
-            <span class="chip">TypeScript</span>
-            <span class="chip">Vue</span>
-            <span class="chip">React</span>
-            <span class="chip">UI 设计</span>
-            <span class="chip">Node.js</span>
-            <span class="chip">Git</span>
-            <span class="chip">性能优化</span>
-          </div>
-        </div>
+<!-- ================= NOTES ================= -->
+<section class="section" id="notes" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <h2 class="sec-title"><span class="bar"></span>随手记</h2>
+        <p class="sec-sub">不是成体系的文章，只是那些值得被记下来的一点点想法。</p>
       </div>
     </div>
-  </section>
-
-  <!-- GUESTBOOK -->
-  <section class="sec" id="guestbook">
-    <div class="wrap">
-      <div class="sec-head reveal">
-        <div>
-          <h2>留言</h2>
-          <p class="sub">留下你的想法，我会一条一条看</p>
-        </div>
+    <div class="note-grid">
+      <div class="note reveal">
+        <p>把复杂的事情讲清楚，本身就是一种设计能力。写代码如此，写文档如此，介绍自己也是如此。</p>
+        <footer>2024-11-02 · 关于表达</footer>
       </div>
-      <div class="guest-grid">
-        <form class="panel reveal" id="msgForm" novalidate>
-          <h3>写留言</h3>
-          <div class="form-row">
-            <input class="field" id="msgName" type="text" placeholder="你的昵称" maxlength="20" autocomplete="nickname">
-            <textarea class="field" id="msgText" placeholder="说点什么吧..." maxlength="300"></textarea>
-          </div>
-          <div class="form-foot">
-            <span class="toast" id="toast">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
-              提交成功
-            </span>
-            <button class="btn btn-primary" type="submit">提交留言</button>
-          </div>
-        </form>
-        <div class="panel reveal">
-          <h3>全部留言 <span id="msgCount" style="color:var(--muted);font-weight:500;font-size:14px;">(0)</span></h3>
-          <div class="msg-list" id="msgList">
-            <div class="empty">还没有留言，来写第一条吧</div>
-          </div>
-        </div>
+      <div class="note reveal">
+        <p>凌晨写下的代码，第二天总要重读一遍。能跑不等于写对了，能读懂才算。</p>
+        <footer>2024-09-18 · 关于代码</footer>
+      </div>
+      <div class="note reveal">
+        <p>好的工具应该让人察觉不到它的存在，它只是在恰当的时候出现，然后消失。</p>
+        <footer>2024-07-05 · 关于产品</footer>
       </div>
     </div>
-  </section>
-</main>
+  </div>
+</section>
 
-<footer>
-  <div class="wrap foot-inner">
-    <p>© <span id="year">2025</span> 你好 · 用心记录每一篇笔记</p>
-    <a class="to-top" href="#home" id="toTop">
-      回到顶部
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M6 12l6-6 6 6"/></svg>
-    </a>
+<!-- ================= GUESTBOOK ================= -->
+<section class="section" id="guestbook">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <h2 class="sec-title"><span class="bar"></span>留言板</h2>
+        <p class="sec-sub">任何想法、建议或单纯的路过打卡，都欢迎留在这里。留言只保存在当前页面，刷新后清空。</p>
+      </div>
+    </div>
+
+    <div class="gb-grid">
+      <form class="card gb-form reveal" id="gbForm" novalidate>
+        <div class="toast" id="toast" role="status">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+          <span id="toastText">留言已提交</span>
+        </div>
+        <div class="field" id="fName">
+          <label for="name">你的昵称<i>*</i></label>
+          <input id="name" name="name" type="text" maxlength="24" placeholder="怎么称呼你？" autocomplete="nickname">
+          <div class="err">请填写昵称</div>
+        </div>
+        <div class="field" id="fMsg">
+          <label for="message">留言内容<i>*</i></label>
+          <textarea id="message" name="message" maxlength="500" placeholder="想说的话都可以写在这里……"></textarea>
+          <div class="err">留言内容不能为空</div>
+        </div>
+        <div class="gb-foot">
+          <small id="counter">0 / 500</small>
+          <button class="btn btn-primary" type="submit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21.5 2.5 11 13M21.5 2.5l-6.7 19-3.8-8.5L2.5 9.2l19-6.7z"/>
+            </svg>
+            提交留言
+          </button>
+        </div>
+      </form>
+
+      <div class="card reveal">
+        <h3 class="skills-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12a8 8 0 0 1-8 8H4l2.2-3.2A8 8 0 1 1 21 12z"/>
+          </svg>
+          全部留言
+          <span class="tag primary" id="msgCount" style="margin-left:auto;">0</span>
+        </h3>
+        <div class="msgs" id="msgs"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-brand"><span class="dot"></span>你好</div>
+        <p>一个安静写字的地方。感谢你读到这里，也欢迎留下你的想法。</p>
+      </div>
+      <div class="foot-col">
+        <h4>导航</h4>
+        <ul>
+          <li><a href="#home">首页</a></li>
+          <li><a href="#posts">文章</a></li>
+          <li><a href="#about">关于我</a></li>
+          <li><a href="#notes">随笔</a></li>
+          <li><a href="#guestbook">留言</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>联系</h4>
+        <ul>
+          <li><a href="https://wpa.qq.com/msgrd?v=3&amp;uin=3627236036&amp;site=qq&amp;menu=yes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.6c-5 0-9 3.2-9 7.2 0 2.3 1.3 4.4 3.4 5.7v2.9l2.7-1.5c.9.2 1.9.3 2.9.3 5 0 9-3.2 9-7.4s-4-7.2-9-7.2z"/></svg>
+            QQ 3627236036</a></li>
+          <li><a href="mailto:hi@nihao.dev">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+            hi@nihao.dev</a></li>
+          <li><a href="https://github.com/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.3-4.3-2.2-6-2.7m12 5.2v-3.4a3 3 0 0 0-.8-2.3c2.6-.3 5.4-1.3 5.4-5.9a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.6 11.6 0 0 0-6 0C6.6 3 5.6 3.3 5.6 3.3a4.3 4.3 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.2 9.7c0 4.6 2.8 5.6 5.4 5.9a3 3 0 0 0-.8 2.3V21"/></svg>
+            GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> 你好 · 用心记录每一篇笔记</span>
+      <button class="to-top" id="toTop" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        回到顶部
+      </button>
+    </div>
   </div>
 </footer>
 
 <script>
-(function () {
-  'use strict';
+(function(){
+  "use strict";
 
-  /* ---------- Theme ---------- */
-  var root = document.documentElement;
-  var themeBtn = document.getElementById('themeBtn');
-  var saved = null;
-  try { saved = localStorage.getItem('blog-theme'); } catch (e) { saved = null; }
-  if (saved === 'dark' || saved === 'light') {
-    root.setAttribute('data-theme', saved);
-  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    root.setAttribute('data-theme', 'dark');
-  }
-  themeBtn.addEventListener('click', function () {
-    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    try { localStorage.setItem('blog-theme', next); } catch (e) {}
-  });
-
-  /* ---------- Avatar fallback ---------- */
-  var avatarBox = document.getElementById('avatarBox');
-  var avatarImg = document.getElementById('avatarImg');
-  function useFallback() {
-    avatarBox.classList.remove('loading');
-    avatarBox.classList.add('fallback-mode');
-    avatarImg.style.display = 'none';
-  }
-  avatarImg.addEventListener('error', useFallback);
-  avatarImg.addEventListener('load', function () {
-    avatarBox.classList.remove('loading');
-  });
-  setTimeout(function () {
-    if (avatarImg.complete && avatarImg.naturalWidth === 0) useFallback();
-  }, 4000);
-
-  /* ---------- Posts ---------- */
+  /* ---------- DATA ---------- */
   var posts = [
     {
-      title: '用 CSS 变量搭建一套克制的设计系统',
-      date: '2025-03-18',
-      tag: '前端',
-      read: '3 分钟',
-      summary: '从颜色、间距到圆角与阴影，用统一的变量把视觉规范落到代码里，避免设计稿与实现之间的偏差。'
+      title:"从零搭建一套属于前端的设计系统",
+      date:"2024-12-08", tags:["设计系统","CSS"], minutes:8,
+      excerpt:"把散落在各个项目里的按钮、输入框和间距规范重新梳理，用一套变量与组件把它们收拢起来。",
+      featured:true
     },
     {
-      title: '个人博客的第二版：一个页面能有多简单',
-      date: '2025-02-06',
-      tag: '随笔',
-      read: '5 分钟',
-      summary: '删掉所有多余的功能之后，只留下头像、文章、关于和留言。轻量、可维护、打开即用。'
+      title:"浏览器里的渲染管线到底发生了什么",
+      date:"2024-11-19", tags:["性能","JavaScript"], minutes:12,
+      excerpt:"从 HTML 到第一帧画面，解析、样式计算、布局与绘制分别承担了什么工作，如何真正减少重排。"
     },
     {
-      title: '深浅色主题切换的几种实现方式',
-      date: '2025-01-22',
-      tag: '交互',
-      read: '4 分钟',
-      summary: '对比 data-theme 属性、CSS 变量与 prefers-color-scheme 的配合方式，并处理刷新后的状态保持问题。'
+      title:"用 Canvas 写一个轻量的图表库",
+      date:"2024-10-27", tags:["Canvas","可视化"], minutes:15,
+      excerpt:"不需要任何依赖，只用几组数学变换就能把数据变成折线与柱状图，顺便复习一遍三角函数。"
     },
     {
-      title: 'IntersectionObserver 实现的滚动进场动画',
-      date: '2024-12-30',
-      tag: 'JavaScript',
-      read: '2 分钟',
-      summary: '用浏览器原生 API 监听元素进入视口，触发一次性的淡入上移效果，性能比滚动事件更稳定。'
+      title:"写给自己的效率脚本合集",
+      date:"2024-09-30", tags:["效率","工具"], minutes:6,
+      excerpt:"批量重命名、图片压缩、目录清理，这些每天都要做一遍的小事，交给脚本处理更省心。"
+    },
+    {
+      title:"把 Markdown 变成漂亮的知识卡片",
+      date:"2024-08-14", tags:["Markdown","排版"], minutes:9,
+      excerpt:"记录了标题层级、引用块、代码块与表格的样式细节，让纯文本也拥有清晰的视觉层次。"
+    },
+    {
+      title:"深夜写代码时，我在想些什么",
+      date:"2024-07-02", tags:["随笔","生活"], minutes:5,
+      excerpt:"凌晨一点的办公室只剩下键盘声，这时候写的代码往往最诚实，也最容易留下技术债。"
     }
   ];
+
+  var seedMsgs = [
+    {name:"林一", time:"2024-12-20 21:14", text:"设计系统那篇看完了，变量分层的方式很清晰，准备照着在团队里试一次。"},
+    {name:"阿May", time:"2024-12-18 10:32", text:"渲染管线那篇讲得比官方文档好懂，收藏了。"},
+    {name:"陈默", time:"2024-12-15 19:05", text:"谢谢你的文章，关于克制设计的那段话我读了两遍。"},
+    {name:"wonder", time:"2024-12-09 08:47", text:"Canvas 图表那篇能不能补一版带交互的示例？"}
+  ];
+
+  /* ---------- POSTS RENDER ---------- */
+  var ICONS = {
+    calendar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>',
+    clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>',
+    arrow:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M12 5l7 7-7 7"/></svg>'
+  };
+  var FEATURED_GLYPH = '<svg class="glyph" viewBox="0 0 240 200" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+
+    '<rect x="18" y="30" width="86" height="140" rx="10"/><rect x="118" y="30" width="104" height="64" rx="10"/>'+
+    '<rect x="118" y="106" width="104" height="64" rx="10"/><path d="M34 56h54M34 76h38M34 128h54M34 148h30"/>'+
+    '<path d="M136 62h68M136 138h44"/></svg>';
+
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function postCard(p){
+    var tags = p.tags.map(function(t){ return '<span class="tag">'+esc(t)+'</span>'; }).join('');
+    return '<article class="post reveal" tabindex="0">'+
+      '<div class="post-top"><span class="post-date">'+ICONS.calendar+p.date+'</span>'+
+      '<span class="read-time">'+ICONS.clock+p.minutes+' 分钟</span></div>'+
+      '<h3>'+esc(p.title)+'</h3>'+
+      '<p>'+esc(p.excerpt)+'</p>'+
+      '<div class="post-foot"><div class="post-tags">'+tags+'</div>'+
+      '<span class="post-cta">阅读全文'+ICONS.arrow+'</span></div>'+
+    '</article>';
+  }
+
+  function featuredCard(p){
+    var tags = p.tags.map(function(t){ return '<span class="tag">'+esc(t)+'</span>'; }).join('');
+    return '<article class="post featured reveal" tabindex="0">'+
+      '<div class="featured-body">'+
+        '<div class="post-top"><span class="post-date">'+ICONS.calendar+p.date+'</span>'+
+        '<span class="read-time">'+ICONS.clock+p.minutes+' 分钟</span></div>'+
+        '<h3>'+esc(p.title)+'</h3>'+
+        '<p>'+esc(p.excerpt)+'</p>'+
+        '<div class="post-foot"><div class="post-tags">'+tags+'</div>'+
+        '<span class="post-cta">阅读全文'+ICONS.arrow+'</span></div>'+
+      '</div>'+
+      '<div class="featured-visual"><span class="featured-badge">置顶</span>'+FEATURED_GLYPH+'</div>'+
+    '</article>';
+  }
+
   var grid = document.getElementById('postGrid');
-  var clockSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 1.8"/></svg>';
-  posts.forEach(function (p) {
-    var card = document.createElement('article');
-    card.className = 'card reveal';
-    card.innerHTML =
-      '<div class="card-top"><span class="tag"></span><span class="date"></span></div>' +
-      '<h3></h3>' +
-      '<p></p>' +
-      '<div class="card-foot"><span class="readtime">' + clockSvg + '阅读 ' + p.read + '</span>' +
-      '<span class="more">阅读全文</span></div>';
-    card.querySelector('.tag').textContent = p.tag;
-    card.querySelector('.date').textContent = p.date;
-    card.querySelector('h3').textContent = p.title;
-    card.querySelector('p').textContent = p.summary;
-    card.addEventListener('click', function () {
-      card.querySelector('h3').textContent = p.title + '（示例内容，暂未开放阅读）';
-    });
-    grid.appendChild(card);
+  var html = '';
+  posts.forEach(function(p){
+    html += p.featured ? featuredCard(p) : postCard(p);
   });
+  grid.innerHTML = html;
 
-  /* ---------- Guestbook ---------- */
-  var form = document.getElementById('msgForm');
-  var nameInput = document.getElementById('msgName');
-  var textInput = document.getElementById('msgText');
-  var list = document.getElementById('msgList');
-  var count = document.getElementById('msgCount');
+  /* ---------- GUESTBOOK ---------- */
+  var msgsEl = document.getElementById('msgs');
+  var countEl = document.getElementById('msgCount');
+  var list = seedMsgs.slice();
+
+  function renderMsgs(){
+    if(!list.length){
+      msgsEl.innerHTML = '<div class="empty">还没有留言，来写下第一条吧。</div>';
+    }else{
+      msgsEl.innerHTML = list.map(function(m){
+        var initial = esc(m.name.charAt(0) || '·');
+        return '<div class="msg">'+
+          '<div class="msg-top"><span class="msg-name"><span class="avatar-mini">'+initial+'</span>'+esc(m.name)+'</span>'+
+          '<span class="msg-time">'+esc(m.time)+'</span></div>'+
+          '<p>'+esc(m.text)+'</p></div>';
+      }).join('');
+    }
+    countEl.textContent = list.length;
+  }
+  renderMsgs();
+
+  var form = document.getElementById('gbForm');
+  var nameEl = document.getElementById('name');
+  var msgEl = document.getElementById('message');
+  var fName = document.getElementById('fName');
+  var fMsg = document.getElementById('fMsg');
+  var counter = document.getElementById('counter');
   var toast = document.getElementById('toast');
-  var messages = [];
+  var toastText = document.getElementById('toastText');
 
-  function fmtTime(d) {
-    var p = function (n) { return (n < 10 ? '0' : '') + n; };
-    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
-  }
-
-  function render() {
-    list.innerHTML = '';
-    if (!messages.length) {
-      var empty = document.createElement('div');
-      empty.className = 'empty';
-      empty.textContent = '还没有留言，来写第一条吧';
-      list.appendChild(empty);
-    } else {
-      messages.forEach(function (m) {
-        var item = document.createElement('div');
-        item.className = 'msg';
-        var head = document.createElement('div');
-        head.className = 'msg-head';
-        var av = document.createElement('span');
-        av.className = 'msg-avatar';
-        av.textContent = m.name.slice(0, 1).toUpperCase();
-        var nm = document.createElement('span');
-        nm.className = 'msg-name';
-        nm.textContent = m.name;
-        var tm = document.createElement('span');
-        tm.className = 'msg-time';
-        tm.textContent = m.time;
-        head.appendChild(av); head.appendChild(nm); head.appendChild(tm);
-        var body = document.createElement('p');
-        body.className = 'msg-body';
-        body.textContent = m.text;
-        item.appendChild(head); item.appendChild(body);
-        list.appendChild(item);
-      });
-    }
-    count.textContent = '(' + messages.length + ')';
-  }
-
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var name = nameInput.value.trim();
-    var text = textInput.value.trim();
-    if (!name || !text) {
-      (name ? textInput : nameInput).focus();
-      toast.textContent = '昵称与留言内容都需要填写';
-      toast.classList.add('show');
-      setTimeout(function () { toast.classList.remove('show'); }, 2200);
-      return;
-    }
-    messages.unshift({ name: name, text: text, time: fmtTime(new Date()) });
-    render();
-    nameInput.value = '';
-    textInput.value = '';
-    toast.textContent = '提交成功';
-    toast.classList.add('show');
-    setTimeout(function () { toast.classList.remove('show'); }, 2200);
+  msgEl.addEventListener('input', function(){
+    counter.textContent = msgEl.value.length + ' / 500';
+    if(msgEl.value.trim()) fMsg.classList.remove('invalid');
+  });
+  nameEl.addEventListener('input', function(){
+    if(nameEl.value.trim()) fName.classList.remove('invalid');
   });
 
-  render();
-
-  /* ---------- Nav scroll & active state ---------- */
-  var nav = document.getElementById('nav');
-  var sections = ['home', 'posts', 'about', 'guestbook'];
-  var navAnchors = Array.prototype.slice.call(document.querySelectorAll('[data-target]'));
-  function onScroll() {
-    if (window.scrollY > 8) nav.classList.add('scrolled');
-    else nav.classList.remove('scrolled');
-    var pos = window.scrollY + (nav.offsetHeight + 90);
-    var current = sections[0];
-    sections.forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el && el.offsetTop <= pos) current = id;
-    });
-    navAnchors.forEach(function (a) {
-      a.classList.toggle('active', a.getAttribute('data-target') === current);
-    });
+  function nowStr(){
+    var d = new Date();
+    function p(n){ return (n<10?'0':'')+n; }
+    return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+' '+p(d.getHours())+':'+p(d.getMinutes());
   }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  onScroll();
 
-  /* ---------- Mobile menu ---------- */
+  var toastTimer = null;
+  function showToast(text){
+    toastText.textContent = text;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 2600);
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = nameEl.value.trim();
+    var text = msgEl.value.trim();
+    var ok = true;
+    if(!name){ fName.classList.add('invalid'); ok = false; }
+    if(!text){ fMsg.classList.add('invalid'); ok = false; }
+    if(!ok){ showToast('请先填写昵称与留言内容'); return; }
+
+    list.unshift({name:name, time:nowStr(), text:text});
+    renderMsgs();
+    msgsEl.scrollTop = 0;
+    form.reset();
+    counter.textContent = '0 / 500';
+    showToast('留言提交成功，感谢你的分享');
+  });
+
+  /* ---------- THEME ---------- */
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeBtn');
+  try{
+    var saved = localStorage.getItem('nihao-theme');
+    if(saved === 'dark' || saved === 'light'){ root.setAttribute('data-theme', saved); }
+  }catch(err){}
+  themeBtn.addEventListener('click', function(){
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try{ localStorage.setItem('nihao-theme', next); }catch(err){}
+  });
+
+  /* ---------- NAV / MOBILE ---------- */
+  var nav = document.getElementById('nav');
   var menuBtn = document.getElementById('menuBtn');
   var mobileMenu = document.getElementById('mobileMenu');
-  menuBtn.addEventListener('click', function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll('#navLinks a'));
+  var sections = ['home','posts','about','notes','guestbook'].map(function(id){
+    return document.getElementById(id);
+  });
+
+  function onScroll(){
+    nav.classList.toggle('scrolled', window.scrollY > 12);
+    var y = window.scrollY + (nav.offsetHeight || 64) + 40;
+    var idx = 0;
+    sections.forEach(function(s,i){ if(s && s.offsetTop <= y) idx = i; });
+    links.forEach(function(a,i){ a.classList.toggle('active', i === idx); });
+    Array.prototype.forEach.call(mobileMenu.querySelectorAll('a'), function(a,i){
+      a.classList.toggle('active', i === idx);
+    });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  menuBtn.addEventListener('click', function(){
     var open = mobileMenu.classList.toggle('open');
     menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
-  mobileMenu.querySelectorAll('a').forEach(function (a) {
-    a.addEventListener('click', function () {
+  mobileMenu.addEventListener('click', function(e){
+    if(e.target.tagName === 'A'){
       mobileMenu.classList.remove('open');
-      menuBtn.setAttribute('aria-expanded', 'false');
-    });
-  });
-  document.addEventListener('click', function (e) {
-    if (mobileMenu.classList.contains('open') &&
-        !mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-      mobileMenu.classList.remove('open');
-      menuBtn.setAttribute('aria-expanded', 'false');
+      menuBtn.setAttribute('aria-expanded','false');
     }
   });
 
-  /* ---------- Reveal on scroll ---------- */
-  var revealEls = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in');
-          io.unobserve(entry.target);
+  /* ---------- REVEAL ---------- */
+  var revealTargets = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          en.target.classList.add('in');
+          io.unobserve(en.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    revealEls.forEach(function (el, i) {
-      el.style.transitionDelay = (Math.min(i, 5) * 60) + 'ms';
-      io.observe(el);
-    });
-  } else {
-    revealEls.forEach(function (el) { el.classList.add('in'); });
+    },{threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+    revealTargets.forEach(function(el){ io.observe(el); });
+  }else{
+    revealTargets.forEach(function(el){ el.classList.add('in'); });
   }
 
-  /* ---------- Misc ---------- */
+  /* ---------- SKILL BARS ---------- */
+  var bars = document.querySelectorAll('.bar-fill');
+  function fillBars(){
+    bars.forEach(function(b){ b.style.width = b.getAttribute('data-w') + '%'; });
+  }
+  setTimeout(fillBars, 380);
+
+  /* ---------- AVATAR FALLBACK ---------- */
+  var avatar = document.getElementById('avatar');
+  var avatarImg = document.getElementById('avatarImg');
+  avatarImg.addEventListener('load', function(){
+    avatar.classList.remove('loading');
+    avatar.classList.remove('fallback-mode');
+  });
+  avatarImg.addEventListener('error', function(){
+    avatar.classList.remove('loading');
+    avatar.classList.add('fallback-mode');
+  });
+  setTimeout(function(){
+    if(!avatarImg.complete || avatarImg.naturalWidth === 0){
+      avatar.classList.remove('loading');
+      avatar.classList.add('fallback-mode');
+    }
+  }, 4000);
+
+  /* ---------- MISC ---------- */
   document.getElementById('year').textContent = new Date().getFullYear();
+  document.getElementById('toTop').addEventListener('click', function(){
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+
+  grid.addEventListener('click', function(e){
+    var card = e.target.closest('.post');
+    if(card) showToast('演示版暂未开放正文，完整文章即将上线');
+  });
 })();
 </script>
 </body>
