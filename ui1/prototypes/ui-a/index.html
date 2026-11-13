@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="NewEra 的个人博客，记录前端技术与随笔。">
+<title>NewEra · 个人博客</title>
+<style>
+/* UI-A · 极简文字排版风 (Typographic Editorial) — 单文件原型
+   颜色仅允许出现在 :root 与 [data-theme="dark"] 定义块内 */
+:root{
+  --c-primary:#4a5bd6; --c-primary-hover:#3f4ec0; --c-primary-active:#33409e;
+  --c-primary-soft:#eef0fd; --c-primary-fade:rgba(74,91,214,.12); --c-on-primary:#ffffff;
+  --c-bg:#ffffff; --c-bg-sub:#fafafa; --c-text:#16181d; --c-text-2:#4b5058;
+  --c-text-3:#858b94; --c-line:#e6e8ec; --c-line-2:#f0f1f4;
+  --c-accent:#b5703c;
+  --shadow-xs:0 1px 2px rgba(16,18,22,.04); --shadow-pop:0 8px 28px rgba(16,18,22,.10);
+  --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC",sans-serif;
+  --font-serif:"Songti SC","SimSun",Georgia,"Times New Roman",serif;
+  --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Courier New",monospace;
+  --fs-display:clamp(2.75rem,8vw,5.5rem); --fs-h1:2.25rem; --fs-h2:1.5rem;
+  --fs-h3:1.125rem; --fs-body:1rem; --fs-sm:.875rem; --fs-xs:.75rem;
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px;
+  --sp-6:32px; --sp-7:48px; --sp-8:64px; --sp-9:96px; --sp-10:128px;
+  --radius-sm:4px; --radius-md:6px; --radius-pill:999px;
+  --content-max:720px; --wide-max:1120px; --header-h:64px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+[data-theme="dark"]{
+  --c-primary:#7b89e8; --c-primary-hover:#8f9bf0; --c-primary-active:#a5aff5;
+  --c-primary-soft:#1d2140; --c-primary-fade:rgba(123,137,232,.16); --c-on-primary:#0f1115;
+  --c-bg:#0f1115; --c-bg-sub:#14161b; --c-text:#e9eaee; --c-text-2:#b0b5be;
+  --c-text-3:#7d838d; --c-line:#24272e; --c-line-2:#1c1f25; --c-accent:#d59a63;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.35); --shadow-pop:0 8px 28px rgba(0,0,0,.45);
+}
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; scroll-padding-top:calc(var(--header-h) + var(--sp-4)); }
+body{ margin:0; background:var(--c-bg); color:var(--c-text); font-family:var(--font-sans);
+  font-size:var(--fs-body); line-height:1.8; -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale; overflow-x:hidden;
+  transition:background-color .3s var(--ease), color .3s var(--ease); }
+h1,h2,h3,h4{ margin:0; font-weight:400; letter-spacing:-.02em; line-height:1.3; }
+p{ margin:0; } ul,ol{ margin:0; padding:0; list-style:none; }
+img{ max-width:100%; display:block; } a{ color:inherit; text-decoration:none; }
+button,input{ font:inherit; color:inherit; }
+button{ background:none; border:none; padding:0; cursor:pointer; }
+[hidden]{ display:none !important; }
+::selection{ background:var(--c-primary-fade); color:var(--c-text); }
+:focus-visible{ outline:2px solid var(--c-primary); outline-offset:4px; border-radius:var(--radius-sm); }
+.skip-link{ position:fixed; left:var(--sp-4); top:-60px; z-index:200; background:var(--c-primary);
+  color:var(--c-on-primary); padding:10px 18px; border-radius:var(--radius-md);
+  font-size:var(--fs-sm); transition:top .2s var(--ease); }
+.skip-link:focus{ top:var(--sp-3); }
+.icon{ width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.5;
+  stroke-linecap:round; stroke-linejoin:round; display:block; }
+.icon-sm{ width:16px; height:16px; } .icon-xs{ width:14px; height:14px; }
+
+/* 顶部导航 */
+.site-header{ position:sticky; top:0; z-index:100; background:var(--c-bg);
+  border-bottom:1px solid var(--c-line); transition:background-color .3s var(--ease); }
+@supports (backdrop-filter:blur(4px)) or (-webkit-backdrop-filter:blur(4px)){
+  .site-header.is-scrolled{ background:color-mix(in srgb,var(--c-bg) 78%,transparent);
+    -webkit-backdrop-filter:blur(12px) saturate(1.2); backdrop-filter:blur(12px) saturate(1.2); }
+}
+.header-inner{ max-width:var(--wide-max); margin:0 auto; height:var(--header-h);
+  padding-inline:var(--sp-6); display:flex; align-items:center; gap:var(--sp-5); }
+.brand{ display:flex; align-items:center; gap:var(--sp-3); margin-right:auto; min-width:0; }
+.brand-avatar{ width:26px; height:26px; flex:0 0 auto; border-radius:50%; overflow:hidden;
+  border:1px solid var(--c-line); box-shadow:var(--shadow-xs); background:var(--c-bg-sub); }
+.brand-avatar img{ width:100%; height:100%; object-fit:cover; }
+.brand-name{ font-size:var(--fs-sm); letter-spacing:.06em; color:var(--c-text); white-space:nowrap; }
+.nav{ display:flex; align-items:center; gap:var(--sp-6); }
+.nav-link{ position:relative; display:block; font-size:var(--fs-sm); color:var(--c-text-2);
+  padding:var(--sp-2) 0; transition:color .2s var(--ease); }
+.nav-link::after{ content:""; position:absolute; left:0; right:0; bottom:0; height:2px;
+  background:var(--c-primary); transform:scaleX(0); transform-origin:left;
+  transition:transform .25s var(--ease); }
+.nav-link:hover{ color:var(--c-text); }
+.nav-link:hover::after{ transform:scaleX(1); }
+.nav-link.is-active{ color:var(--c-primary); }
+.nav-link.is-active::after{ transform:scaleX(1); }
+.header-actions{ display:flex; align-items:center; gap:var(--sp-2); }
+.icon-btn{ width:36px; height:36px; display:grid; place-items:center; border-radius:var(--radius-sm);
+  color:var(--c-text-2); transition:background-color .2s var(--ease), color .2s var(--ease); }
+.icon-btn:hover{ background:var(--c-bg-sub); color:var(--c-text); }
+.icon-btn:active{ transform:translateY(1px); }
+.icon-btn:disabled{ opacity:.45; cursor:not-allowed; }
+.icon-btn .icon{ width:18px; height:18px; }
+.theme-toggle .icon-moon{ display:none; }
+[data-theme="dark"] .theme-toggle .icon-moon{ display:block; }
+[data-theme="dark"] .theme-toggle .icon-sun{ display:none; }
+.nav-toggle{ display:none; position:relative; }
+.nav-toggle .bar{ position:absolute; left:9px; width:18px; height:1.5px; background:currentColor;
+  border-radius:2px; transition:transform .25s var(--ease), opacity .18s var(--ease); }
+.nav-toggle .bar-1{ transform:translateY(-5px); }
+.nav-toggle .bar-2{ transform:translateY(0); }
+.nav-toggle .bar-3{ transform:translateY(5px); }
+.nav-toggle[aria-expanded="true"] .bar-1{ transform:rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .bar-2{ opacity:0; }
+.nav-toggle[aria-expanded="true"] .bar-3{ transform:rotate(-45deg); }
+.mobile-menu{ overflow:hidden; max-height:0; border-top:1px solid transparent;
+  transition:max-height .3s var(--ease), border-color .3s var(--ease); background:var(--c-bg); }
+.mobile-menu.is-open{ max-height:320px; border-top-color:var(--c-line); }
+.mobile-menu nav{ padding:var(--sp-3) var(--sp-6) var(--sp-5); display:flex; flex-direction:column; }
+.mobile-menu .nav-link{ font-size:1.125rem; padding:var(--sp-3) 0; }
+.mobile-menu .nav-link::after{ display:none; }
+.mobile-menu .nav-link.is-active{ color:var(--c-primary); }
+.scroll-progress{ height:2px; width:100%; background:var(--c-primary-fade);
+  opacity:0; transition:opacity .25s var(--ease); }
+.scroll-progress.is-active{ opacity:1; }
+.scroll-progress > span{ display:block; height:100%; width:100%; background:var(--c-primary);
+  transform-origin:left center; transform:scaleX(var(--p,0)); }
+
+/* 通用区块 */
+main{ display:block; }
+.section-inner{ max-width:var(--content-max); margin:0 auto; padding-inline:var(--sp-5); }
+.section-head{ margin-bottom:var(--sp-7); }
+.section-eyebrow{ font-size:var(--fs-xs); letter-spacing:.16em; text-transform:uppercase;
+  color:var(--c-text-3); margin-bottom:var(--sp-3); }
+.section-title{ font-size:var(--fs-h1); letter-spacing:-.02em; }
+.section-head .rule{ height:1px; background:var(--c-line); margin-top:var(--sp-5); border:0; }
+.section-sub{ font-size:var(--fs-sm); color:var(--c-text-3); }
+.section-sub .count{ color:var(--c-text-2); }
+
+/* Hero */
+.hero{ min-height:min(88vh,760px); display:flex; flex-direction:column; align-items:center;
+  justify-content:center; text-align:center; padding-block:var(--sp-9) var(--sp-8);
+  border-bottom:1px solid var(--c-line); }
+.hero-avatar{ width:clamp(96px,18vw,144px); height:clamp(96px,18vw,144px); border-radius:50%;
+  overflow:hidden; border:1px solid var(--c-line); box-shadow:var(--shadow-xs);
+  background:var(--c-bg-sub); position:relative; }
+.hero-avatar img{ width:100%; height:100%; object-fit:cover; }
+.avatar-fallback-note{ font-size:var(--fs-xs); color:var(--c-text-3); margin-top:var(--sp-3); display:none; }
+.is-fallback .avatar-fallback-note{ display:block; }
+.is-fallback{ border-style:dashed; }
+.hero-eyebrow{ margin-top:var(--sp-6); font-size:var(--fs-xs); letter-spacing:.16em;
+  text-transform:uppercase; color:var(--c-text-3); }
+.hero-name{ font-family:var(--font-serif); font-size:var(--fs-display); font-weight:300;
+  letter-spacing:-.03em; line-height:1.05; margin-top:var(--sp-3); }
+.hero-qq{ margin-top:var(--sp-4); font-size:var(--fs-xs); letter-spacing:.14em;
+  text-transform:uppercase; color:var(--c-text-3); }
+.hero-qq .mono{ font-family:var(--font-mono); letter-spacing:.04em; color:var(--c-text-2); }
+.hero-signature{ margin-top:var(--sp-5); font-size:var(--fs-h3); color:var(--c-text-2);
+  max-width:34ch; line-height:1.7; }
+.hero-actions{ margin-top:var(--sp-7); display:flex; flex-wrap:wrap; justify-content:center; gap:var(--sp-3); }
+.scroll-hint{ margin-top:var(--sp-8); color:var(--c-text-3); animation:float 2.4s ease-in-out infinite;
+  transition:color .2s var(--ease); }
+.scroll-hint:hover{ color:var(--c-primary); }
+@keyframes float{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(6px); } }
+
+/* 按钮 */
+.btn{ display:inline-flex; align-items:center; justify-content:center; gap:var(--sp-2);
+  padding:12px 28px; border-radius:var(--radius-md); font-size:var(--fs-sm); letter-spacing:.02em;
+  border:1px solid transparent; white-space:nowrap;
+  transition:background-color .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease), transform .12s var(--ease); }
+.btn:active{ transform:translateY(1px); }
+.btn:disabled{ opacity:.45; cursor:not-allowed; transform:none; }
+.btn-primary{ background:var(--c-primary); color:var(--c-on-primary); }
+.btn-primary:hover:not(:disabled){ background:var(--c-primary-hover); }
+.btn-primary:active:not(:disabled){ background:var(--c-primary-active); }
+.btn-ghost{ background:transparent; color:var(--c-text); border-color:var(--c-line); }
+.btn-ghost:hover:not(:disabled){ border-color:var(--c-primary); color:var(--c-primary); }
+.btn-ghost:active:not(:disabled){ border-color:var(--c-primary-active); color:var(--c-primary-active); }
+.btn-sm{ padding:7px 14px; font-size:var(--fs-xs); }
+
+/* 文章列表 */
+.posts{ padding-block:var(--sp-9); }
+.post-toolbar{ display:flex; align-items:center; justify-content:space-between; gap:var(--sp-5);
+  flex-wrap:wrap; margin-bottom:var(--sp-6); }
+.tag-filter{ display:flex; flex-wrap:wrap; gap:var(--sp-2); }
+.tag{ border:1px solid var(--c-line); background:transparent; color:var(--c-text-2);
+  border-radius:var(--radius-pill); padding:6px 16px; font-size:var(--fs-sm);
+  transition:background-color .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease); }
+.tag:hover{ border-color:var(--c-primary); color:var(--c-primary); }
+.tag.is-active{ background:var(--c-primary); border-color:var(--c-primary); color:var(--c-on-primary); }
+.tag:disabled{ opacity:.45; cursor:not-allowed; }
+.search{ position:relative; display:flex; align-items:center; gap:var(--sp-2); background:var(--c-bg-sub);
+  border:1px solid var(--c-line); border-radius:var(--radius-md); padding:0 var(--sp-3);
+  min-width:240px; transition:border-color .2s var(--ease), box-shadow .2s var(--ease); }
+.search .icon{ color:var(--c-text-3); flex:0 0 auto; }
+.search input{ border:none; background:transparent; outline:none; padding:9px 0; width:100%; font-size:var(--fs-sm); }
+.search input::placeholder{ color:var(--c-text-3); }
+.search:focus-within{ border-color:var(--c-primary); box-shadow:0 0 0 3px var(--c-primary-fade); }
+.post-list{ border-top:1px solid var(--c-line); }
+.post-item{ border-bottom:1px solid var(--c-line); transition:background-color .25s var(--ease); }
+.post-item:hover{ background:var(--c-bg-sub); }
+.post-item-inner{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,38%); gap:var(--sp-6);
+  align-items:center; padding-block:var(--sp-6); }
+.post-body{ min-width:0; }
+.post-meta{ display:flex; align-items:center; flex-wrap:wrap; gap:var(--sp-2); font-size:var(--fs-xs);
+  color:var(--c-text-3); letter-spacing:.03em; }
+.post-meta .dot{ color:var(--c-line); }
+.post-title{ font-size:var(--fs-h2); letter-spacing:-.01em; line-height:1.35; margin-top:var(--sp-2); }
+.post-title a{ transition:color .2s var(--ease); }
+.post-item:hover .post-title a{ color:var(--c-primary); }
+.post-title a:focus-visible{ outline:2px solid var(--c-primary); outline-offset:4px; }
+.post-excerpt{ margin-top:var(--sp-3); font-size:var(--fs-body); color:var(--c-text-2); line-height:1.75;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.post-tags{ display:flex; flex-wrap:wrap; gap:var(--sp-2); margin-top:var(--sp-4); }
+.tag-xs{ font-size:var(--fs-xs); color:var(--c-text-2); background:var(--c-bg-sub);
+  border-radius:var(--radius-pill); padding:3px 10px; display:inline-flex; align-items:center; gap:6px; }
+.post-item:hover .tag-xs{ background:var(--c-line-2); }
+.tag-xs::before{ content:""; width:4px; height:4px; border-radius:50%;
+  background:var(--c-primary); opacity:.65; }
+.post-cover{ aspect-ratio:4/3; border-radius:var(--radius-md); border:1px solid var(--c-line);
+  background:var(--c-bg-sub); position:relative; overflow:hidden; transition:transform .3s var(--ease); }
+.post-item:hover .post-cover{ transform:scale(1.03); }
+.post-cover::before,.post-cover::after{ content:""; position:absolute; inset:0;
+  background-image:var(--cover,none); background-size:cover; background-position:center; }
+.post-cover::after{ background-image:var(--cover2,none); }
+.cover-1{ --cover:repeating-linear-gradient(135deg,var(--c-primary-fade) 0 14px,transparent 14px 28px);
+  --cover2:radial-gradient(circle at 78% 26%,var(--c-primary-fade) 0 26%,transparent 27%); }
+.cover-2{ --cover:linear-gradient(160deg,transparent 42%,var(--c-primary-fade) 42% 58%,transparent 58%);
+  --cover2:radial-gradient(circle at 24% 72%,var(--c-primary-fade) 0 22%,transparent 23%); }
+.cover-3{ --cover:repeating-linear-gradient(0deg,var(--c-line-2) 0 1px,transparent 1px 18px);
+  --cover2:linear-gradient(115deg,var(--c-primary-fade) 0 34%,transparent 35%); }
+.cover-4{ --cover:radial-gradient(circle at 50% 50%,var(--c-primary-fade) 0 30%,transparent 31%),
+  radial-gradient(circle at 50% 50%,transparent 0 46%,var(--c-line-2) 46% 47%,transparent 47%);
+  --cover2:linear-gradient(0deg,var(--c-primary-fade) 0 12%,transparent 12%); }
+.cover-5{ --cover:conic-gradient(from 200deg at 70% 70%,var(--c-primary-fade) 0 22%,transparent 22% 100%);
+  --cover2:repeating-linear-gradient(90deg,transparent 0 12px,var(--c-line-2) 12px 13px); }
+.cover-6{ --cover:linear-gradient(45deg,var(--c-primary-fade) 0 18%,transparent 18% 40%,var(--c-primary-fade) 40% 52%,transparent 52%);
+  --cover2:radial-gradient(circle at 16% 20%,var(--c-line-2) 0 12%,transparent 13%); }
+.empty-state{ text-align:center; padding:var(--sp-8) 0; border-bottom:1px solid var(--c-line); }
+.empty-illustration{ width:160px; height:120px; margin:0 auto var(--sp-5); display:block; }
+.empty-title{ font-size:var(--fs-h3); color:var(--c-text); }
+.empty-state .btn{ margin-top:var(--sp-5); }
+
+/* 文章详情 */
+.post-detail{ padding-block:var(--sp-8) var(--sp-9); }
+.detail-inner{ max-width:var(--content-max); margin:0 auto; padding-inline:var(--sp-5); }
+.back-link{ display:inline-flex; align-items:center; gap:var(--sp-2); font-size:var(--fs-sm);
+  color:var(--c-text-2); transition:color .2s var(--ease); }
+.back-link .icon{ transition:transform .2s var(--ease); }
+.back-link:hover{ color:var(--c-primary); }
+.back-link:hover .icon{ transform:translateX(-2px); }
+.detail-title{ font-size:var(--fs-h1); line-height:1.25; margin-top:var(--sp-5); letter-spacing:-.02em; }
+.detail-meta{ margin-top:var(--sp-4); padding-bottom:var(--sp-5); border-bottom:1px solid var(--c-line); }
+.detail-content{ font-size:var(--fs-body); line-height:1.9; color:var(--c-text); }
+.detail-content p{ margin-top:var(--sp-5); max-width:36em; }
+.detail-content > *:first-child{ margin-top:0; }
+.detail-content h2{ font-size:var(--fs-h2); margin-top:var(--sp-7); margin-bottom:var(--sp-4);
+  padding-left:var(--sp-4); border-left:2px solid var(--c-primary); }
+.detail-content h3{ font-size:var(--fs-h3); margin-top:var(--sp-6); margin-bottom:var(--sp-3); font-weight:500; }
+.detail-content ul,.detail-content ol{ margin-top:var(--sp-4); padding-left:1.25em; max-width:36em; }
+.detail-content ul{ list-style:disc; } .detail-content ol{ list-style:decimal; }
+.detail-content li{ margin-top:var(--sp-2); }
+.detail-content li::marker{ color:var(--c-text-3); }
+.detail-content blockquote{ margin:var(--sp-6) 0; max-width:36em; border-left:2px solid var(--c-primary);
+  background:var(--c-primary-fade); padding:var(--sp-4) var(--sp-5); font-size:1.0625rem; color:var(--c-text-2); }
+.detail-content pre{ margin:var(--sp-6) 0; background:var(--c-bg-sub); border:1px solid var(--c-line);
+  border-radius:var(--radius-md); padding:var(--sp-4) var(--sp-5); overflow-x:auto;
+  font-family:var(--font-mono); font-size:var(--fs-sm); line-height:1.7; color:var(--c-text); }
+.detail-content pre code{ background:none; padding:0; font-size:inherit; color:inherit; border:none; }
+.detail-content code{ font-family:var(--font-mono); font-size:.9em; background:var(--c-bg-sub);
+  border:1px solid var(--c-line-2); border-radius:var(--radius-sm); padding:1px 5px; color:var(--c-primary-active); }
+.detail-content hr{ border:0; border-top:1px solid var(--c-line); margin:var(--sp-7) 0; }
+.post-nav{ margin-top:var(--sp-9); padding-top:var(--sp-6); border-top:1px solid var(--c-line);
+  display:grid; grid-template-columns:1fr 1fr; gap:0; }
+.post-nav-item{ display:flex; flex-direction:column; gap:var(--sp-2);
+  padding:var(--sp-2) var(--sp-6) var(--sp-2) 0; transition:color .2s var(--ease); }
+.post-nav-item + .post-nav-item{ border-left:1px solid var(--c-line); padding-left:var(--sp-6);
+  padding-right:0; align-items:flex-end; text-align:right; }
+.post-nav-label{ font-size:var(--fs-xs); color:var(--c-text-3); letter-spacing:.1em; text-transform:uppercase; }
+.post-nav-title{ font-size:var(--fs-body); color:var(--c-text); transition:color .2s var(--ease); }
+.post-nav-item:hover .post-nav-title{ color:var(--c-primary); }
+.post-nav-item.is-disabled{ opacity:.4; pointer-events:none; }
+
+/* 关于我 */
+.about{ padding-block:var(--sp-9); border-top:1px solid var(--c-line); }
+.about-grid{ display:grid; grid-template-columns:120px minmax(0,1fr); gap:var(--sp-7); align-items:start; }
+.about-avatar{ width:120px; height:120px; border-radius:50%; overflow:hidden;
+  border:1px solid var(--c-line); box-shadow:var(--shadow-xs); background:var(--c-bg-sub); }
+.about-avatar img{ width:100%; height:100%; object-fit:cover; }
+.about-text p{ color:var(--c-text-2); max-width:62ch; }
+.about-text p + p{ margin-top:var(--sp-4); }
+.skill-list{ display:flex; flex-wrap:wrap; gap:var(--sp-2); margin-top:var(--sp-5); }
+.qq-row{ margin-top:var(--sp-6); display:flex; align-items:center; gap:var(--sp-3); flex-wrap:wrap; }
+.qq-row .mono{ font-family:var(--font-mono); font-size:var(--fs-body); letter-spacing:.04em; }
+.copy-btn{ display:inline-flex; align-items:center; gap:6px; border:1px solid var(--c-line);
+  border-radius:var(--radius-md); padding:6px 12px; font-size:var(--fs-xs); color:var(--c-text-2);
+  transition:border-color .2s var(--ease), color .2s var(--ease); }
+.copy-btn:hover{ border-color:var(--c-primary); color:var(--c-primary); }
+.copy-btn.is-copied{ color:var(--c-accent); border-color:var(--c-accent); }
+.copy-btn.is-error{ color:var(--c-accent); border-color:var(--c-accent); }
+.social-list{ margin-top:var(--sp-6); display:flex; flex-direction:column; gap:var(--sp-3); }
+.social-list a{ display:inline-flex; align-items:center; gap:var(--sp-3); color:var(--c-text);
+  font-size:var(--fs-body); width:fit-content; transition:color .2s var(--ease); }
+.social-list .icon{ color:var(--c-text-3); transition:color .2s var(--ease); }
+.social-list .ext{ color:var(--c-text-3); margin-left:2px; }
+.social-list a:hover{ color:var(--c-primary); }
+.social-list a:hover .icon{ color:var(--c-primary); }
+.contact{ padding-block:var(--sp-8); border-top:1px solid var(--c-line); }
+.contact .section-sub a{ color:var(--c-primary); border-bottom:1px solid var(--c-primary-fade); }
+.contact .section-sub a:hover{ border-bottom-color:var(--c-primary); }
+
+/* 页脚 */
+.site-footer{ border-top:1px solid var(--c-line); padding-block:var(--sp-8); text-align:center; }
+.footer-avatar{ width:48px; height:48px; margin:0 auto var(--sp-4); border-radius:50%; overflow:hidden;
+  border:1px solid var(--c-line); box-shadow:var(--shadow-xs); background:var(--c-bg-sub); }
+.footer-avatar img{ width:100%; height:100%; object-fit:cover; }
+.footer-sig{ font-size:var(--fs-body); color:var(--c-text-2); }
+.footer-copy{ font-size:var(--fs-xs); color:var(--c-text-3); margin-top:var(--sp-2); }
+.to-top{ position:fixed; right:var(--sp-5); bottom:var(--sp-5); z-index:90; width:36px; height:36px;
+  border-radius:50%; border:1px solid var(--c-line); background:var(--c-bg); display:grid; place-items:center;
+  color:var(--c-text-2); box-shadow:var(--shadow-xs);
+  transition:color .2s var(--ease), border-color .2s var(--ease), transform .2s var(--ease), opacity .2s var(--ease); }
+.to-top .icon{ transition:transform .2s var(--ease); }
+.to-top:hover{ color:var(--c-primary); border-color:var(--c-primary); }
+.to-top:hover .icon{ transform:translateY(-2px); }
+.to-top:active{ transform:translateY(1px); }
+.to-top.is-hidden{ opacity:0; pointer-events:none; }
+
+/* 入场动效 */
+.reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s var(--ease), transform .6s var(--ease); }
+.reveal.is-visible{ opacity:1; transform:none; }
+@media (prefers-reduced-motion:reduce){
+  html{ scroll-behavior:auto; }
+  *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important;
+    transition-duration:.001ms !important; scroll-behavior:auto !important; }
+  .reveal{ opacity:1; transform:none; }
+  .scroll-hint{ animation:none; }
+}
+/* 响应式 */
+@media (max-width:1024px){
+  .post-item-inner{ gap:var(--sp-5); grid-template-columns:minmax(0,1fr) minmax(0,34%); }
+}
+@media (max-width:768px){
+  :root{ --fs-h1:1.75rem; --fs-h2:1.25rem; --sp-9:64px; --sp-8:48px; }
+  .header-inner{ padding-inline:var(--sp-4); gap:var(--sp-3); }
+  .nav{ display:none; } .nav-toggle{ display:block; }
+  .mobile-menu nav{ padding-inline:var(--sp-4); }
+  .section-inner,.detail-inner{ padding-inline:var(--sp-4); }
+  .hero{ padding-block:var(--sp-8) var(--sp-7); }
+  .post-item-inner{ grid-template-columns:minmax(0,1fr); gap:var(--sp-4); padding-block:var(--sp-5); }
+  .post-cover{ aspect-ratio:16/9; order:-1; }
+  .post-toolbar{ flex-direction:column; align-items:stretch; gap:var(--sp-4); }
+  .search{ min-width:0; width:100%; }
+  .about-grid{ grid-template-columns:minmax(0,1fr); gap:var(--sp-5); justify-items:center; }
+  .about-text{ text-align:left; width:100%; }
+  .skill-list,.social-list{ justify-content:center; }
+  .social-list{ align-items:center; }
+  .qq-row{ justify-content:center; }
+  .post-nav{ grid-template-columns:minmax(0,1fr); }
+  .post-nav-item{ padding-right:0; }
+  .post-nav-item + .post-nav-item{ border-left:none; border-top:1px solid var(--c-line);
+    padding-left:0; padding-top:var(--sp-5); margin-top:var(--sp-4); align-items:flex-start; text-align:left; }
+  .to-top{ right:var(--sp-3); bottom:var(--sp-3); width:32px; height:32px; }
+}
+@media (max-width:420px){ .hero-actions .btn{ width:100%; } }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">跳到主内容</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a class="brand" href="#home" aria-label="NewEra 首页">
+      <span class="brand-avatar" data-avatar></span>
+      <span class="brand-name">NewEra</span>
+    </a>
+    <nav class="nav" aria-label="主导航">
+      <a class="nav-link is-active" href="#home" data-nav="home">首页</a>
+      <a class="nav-link" href="#posts" data-nav="posts">文章</a>
+      <a class="nav-link" href="#about" data-nav="about">关于我</a>
+      <a class="nav-link" href="#contact" data-nav="contact">联系</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn theme-toggle" id="themeToggle" type="button" aria-label="切换深浅主题" title="切换主题">
+        <svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+        <svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>
+      </button>
+      <button class="icon-btn nav-toggle" id="navToggle" type="button" aria-label="展开菜单" aria-expanded="false" aria-controls="mobileMenu">
+        <span class="bar bar-1"></span><span class="bar bar-2"></span><span class="bar bar-3"></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <nav aria-label="移动端导航">
+      <a class="nav-link is-active" href="#home" data-nav="home">首页</a>
+      <a class="nav-link" href="#posts" data-nav="posts">文章</a>
+      <a class="nav-link" href="#about" data-nav="about">关于我</a>
+      <a class="nav-link" href="#contact" data-nav="contact">联系</a>
+    </nav>
+  </div>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"><span></span></div>
+</header>
+
+<main id="main">
+  <section id="home" class="hero">
+    <div class="hero-avatar" data-avatar></div>
+    <p class="hero-eyebrow">个人博客</p>
+    <h1 class="hero-name">NewEra</h1>
+    <p class="hero-qq">QQ <span class="mono">3627236036</span></p>
+    <p class="hero-signature">写代码，也写字。记录一些值得回看的想法。</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#posts">查看文章</a>
+      <a class="btn btn-ghost" href="#contact">联系我</a>
+    </div>
+    <a class="scroll-hint" href="#posts" aria-label="向下滚动查看文章">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15M6 13l6 6 6-6"></path></svg>
+    </a>
+  </section>
+
+  <section id="posts" class="posts">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <p class="section-eyebrow">Articles</p>
+        <h2 class="section-title">文章</h2>
+        <p class="section-sub" style="margin-top:var(--sp-3)">共 <span class="count" id="postCount">6</span> 篇</p>
+        <hr class="rule">
+      </div>
+      <div class="post-toolbar reveal">
+        <div class="tag-filter" role="group" aria-label="按标签筛选">
+          <button class="tag is-active" type="button" data-tag="all">全部</button>
+          <button class="tag" type="button" data-tag="前端">前端</button>
+          <button class="tag" type="button" data-tag="随笔">随笔</button>
+          <button class="tag" type="button" data-tag="工具">工具</button>
+          <button class="tag" type="button" data-tag="教程">教程</button>
+        </div>
+        <div class="search">
+          <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.6-3.6"></path></svg>
+          <input type="search" id="searchInput" placeholder="搜索标题、摘要或标签" aria-label="搜索文章">
+        </div>
+      </div>
+      <div class="post-list" id="postList">
+        <article class="post-item" data-post-id="1">
+          <div class="post-item-inner">
+            <div class="post-body">
+              <div class="post-meta"><time datetime="2024-05-18">2024-05-18</time><span class="dot">·</span><span>8 分钟</span></div>
+              <h3 class="post-title"><a href="#post/1">把页面写薄一点：从重排版到排版系统</a></h3>
+              <p class="post-excerpt">当一个页面需要靠边框和阴影来划分区域，往往说明结构本身还不够清晰。这篇文章记录了一次把卡片墙拆成单栏排版的全过程。</p>
+              <ul class="post-tags"><li class="tag-xs">前端</li><li class="tag-xs">教程</li></ul>
+            </div>
+            <div class="post-cover cover-1" aria-hidden="true"></div>
+          </div>
+        </article>
+        <article class="post-item" data-post-id="2">
+          <div class="post-item-inner">
+            <div class="post-body">
+              <div class="post-meta"><time datetime="2024-04-02">2024-04-02</time><span class="dot">·</span><span>6 分钟</span></div>
+              <h3 class="post-title"><a href="#post/2">用 CSS 变量管理一套可切换的主题</a></h3>
+              <p class="post-excerpt">深色与浅色并非两套样式，而是同一套语义变量的两组取值。把这件事想清楚之后，主题切换只需要改一个属性。</p>
+              <ul class="post-tags"><li class="tag-xs">前端</li></ul>
+            </div>
+            <div class="post-cover cover-2" aria-hidden="true"></div>
+          </div>
+        </article>
+        <article class="post-item" data-post-id="3">
+          <div class="post-item-inner">
+            <div class="post-body">
+              <div class="post-meta"><time datetime="2024-03-11">2024-03-11</time><span class="dot">·</span><span>5 分钟</span></div>
+              <h3 class="post-title"><a href="#post/3">写给自己的工具清单</a></h3>
+              <p class="post-excerpt">整理日常反复使用的小工具，顺手写成自己的版本。它们大多只有几百行代码，却比任何插件都更贴合我的习惯。</p>
+              <ul class="post-tags"><li class="tag-xs">工具</li></ul>
+            </div>
+            <div class="post-cover cover-3" aria-hidden="true"></div>
+          </div>
+        </article>
+        <article class="post-item" data-post-id="4">
+          <div class="post-item-inner">
+            <div class="post-body">
+              <div class="post-meta"><time datetime="2024-02-20">2024-02-20</time><span class="dot">·</span><span>7 分钟</span></div>
+              <h3 class="post-title"><a href="#post/4">关于阅读这件事的一点记录</a></h3>
+              <p class="post-excerpt">读得快不等于读得多。记录一段调整阅读节奏的过程：从每天刷完若干篇，到真正留下可以被复述的内容。</p>
+              <ul class="post-tags"><li class="tag-xs">随笔</li></ul>
+            </div>
+            <div class="post-cover cover-4" aria-hidden="true"></div>
+          </div>
+        </article>
+        <article class="post-item" data-post-id="5">
+          <div class="post-item-inner">
+            <div class="post-body">
+              <div class="post-meta"><time datetime="2024-01-08">2024-01-08</time><span class="dot">·</span><span>9 分钟</span></div>
+              <h3 class="post-title"><a href="#post/5">单文件网页也可以做得很完整</a></h3>
+              <p class="post-excerpt">不依赖构建工具、不引入框架，把结构、样式与脚本写进同一个文件。这个约束反而逼出了更清晰的取舍。</p>
+              <ul class="post-tags"><li class="tag-xs">前端</li><li class="tag-xs">教程</li></ul>
+            </div>
+            <div class="post-cover cover-5" aria-hidden="true"></div>
+          </div>
+        </article>
+        <article class="post-item" data-post-id="6">
+          <div class="post-item-inner">
+            <div class="post-body">
+              <div class="post-meta"><time datetime="2023-12-24">2023-12-24</time><span class="dot">·</span><span>4 分钟</span></div>
+              <h3 class="post-title"><a href="#post/6">年度小结与明年的三件小事</a></h3>
+              <p class="post-excerpt">不写宏大的总结，只列三件明年想完成的小事：把博客迁移、把工具整理成册、每周写一篇随笔。</p>
+              <ul class="post-tags"><li class="tag-xs">随笔</li></ul>
+            </div>
+            <div class="post-cover cover-6" aria-hidden="true"></div>
+          </div>
+        </article>
+      </div>
+      <div class="empty-state" id="emptyState" hidden>
+        <svg class="empty-illustration" viewBox="0 0 160 120" aria-hidden="true">
+          <rect x="30" y="16" width="100" height="88" rx="4" fill="none" stroke="currentColor" stroke-opacity=".35" stroke-width="1.5"/>
+          <line x1="48" y1="44" x2="112" y2="44" stroke="currentColor" stroke-opacity=".25" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="48" y1="60" x2="96" y2="60" stroke="currentColor" stroke-opacity=".18" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="48" y1="76" x2="80" y2="76" stroke="currentColor" stroke-opacity=".18" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="44" y1="88" x2="88" y2="88" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="118" cy="26" r="9" fill="none" stroke="currentColor" stroke-opacity=".28" stroke-width="1.5"/>
+          <line x1="113" y1="26" x2="123" y2="26" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <p class="empty-title">没有找到相关文章</p>
+        <button class="btn btn-ghost" id="clearFilter" type="button">清空筛选</button>
+      </div>
+    </div>
+  </section>
+
+  <article id="post-detail" class="post-detail" hidden>
+    <div class="detail-inner">
+      <button class="back-link" id="backToList" type="button">
+        <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+        <span>返回列表</span>
+      </button>
+      <h1 class="detail-title">把页面写薄一点：从重排版到排版系统</h1>
+      <div class="post-meta detail-meta">
+        <time datetime="2024-05-18">2024-05-18</time><span class="dot">·</span><span>8 分钟</span><span class="dot">·</span><span>前端</span><span class="dot">·</span><span>教程</span>
+      </div>
+      <div class="detail-content">
+        <p>很长一段时间里，我的页面都是靠边框、阴影和色块堆出来的。看上去整齐，但改一处就要动十处。这种结构有一个共同的名字：重排版。真正需要被解决的问题，从来不是把东西摆得好看，而是弄清楚它们之间的关系。</p>
+        <h2>从视觉分组转向结构分组</h2>
+        <p>重排版页面的典型症状是：所有内容都在强调自己，于是没有任何内容真正突出。解决办法往往不是去掉视觉标记，而是先让结构承担起分组的工作——用间距、用层级、用一条细分隔线，让阅读路径自己浮现出来。</p>
+        <ul>
+          <li>先确定内容的自然顺序，而不是先挑视觉样式。</li>
+          <li>用一组克制的分隔手段（线、留白、字号差）替代多套边框方案。</li>
+          <li>把强调色留给真正需要被点击或被追踪的位置。</li>
+        </ul>
+        <blockquote><p>排版不是把元素放到合适的位置，而是让顺序本身变得可以读懂。</p></blockquote>
+        <h2>把设计决策收敛成变量</h2>
+        <p>当页面开始变薄，最先能感受到收益的是维护成本。下面这套变量把颜色、间距与字号都集中起来，任何一次调整都只需要改一个地方。</p>
+        <pre><code>:root{
+  --c-primary: #4a5bd6;
+  --c-text:    #16181d;
+  --c-line:    #e6e8ec;
+  --sp-4: 16px;
+  --fs-body: 1rem;
+}</code></pre>
+        <p>变量名要短，但要能读懂。写 <code>--sp-4</code> 的时候心里要清楚它代表的是节奏，而不是数字本身。</p>
+        <h3>一些实践上的取舍</h3>
+        <ol>
+          <li>同色系优先：强调色永远只有一个，多出来的颜色最后都会变成噪音。</li>
+          <li>阴影只留给浮层与焦点环，常态元素一律保持平整。</li>
+          <li>字体层级靠字号与字重拉开，不要靠颜色堆叠。</li>
+        </ol>
+        <p>做完这些之后，页面并没有变得更华丽，但它变得更耐看了——而耐看本来就是排版最容易达成的目标。</p>
+      </div>
+      <nav class="post-nav" aria-label="文章导航">
+        <a class="post-nav-item" href="#post/4">
+          <span class="post-nav-label">上一篇</span>
+          <span class="post-nav-title">用 CSS 变量管理一套可切换的主题</span>
+        </a>
+        <a class="post-nav-item" href="#post/2">
+          <span class="post-nav-label">下一篇</span>
+          <span class="post-nav-title">写给自己的工具清单</span>
+        </a>
+      </nav>
+    </div>
+  </article>
+
+  <section id="about" class="about">
+    <div class="section-inner">
+      <div class="section-head reveal">
+        <p class="section-eyebrow">About</p>
+        <h2 class="section-title">关于我</h2>
+        <hr class="rule">
+      </div>
+      <div class="about-grid reveal">
+        <div class="about-avatar" data-avatar></div>
+        <div class="about-text">
+          <p>前端开发者，习惯把复杂的东西做简单。日常工作以界面实现与交互细节为主，偶尔写点工具，偶尔记录一些不成体系的想法。</p>
+          <p>这个博客是我的个人笔记：技术上的取舍、阅读后的残留、以及一些想把思路理清楚的事。写下来，是为了以后还能看懂自己当时的判断。</p>
+          <ul class="skill-list">
+            <li class="tag-xs">HTML</li><li class="tag-xs">CSS</li><li class="tag-xs">JavaScript</li>
+            <li class="tag-xs">响应式布局</li><li class="tag-xs">无障碍</li><li class="tag-xs">性能优化</li>
+          </ul>
+          <div class="qq-row">
+            <span class="mono">3627236036</span>
+            <button class="copy-btn" id="copyQQ" type="button">
+              <svg class="icon icon-xs" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"></path></svg>
+              <span id="copyQQText">复制</span>
+            </button>
+          </div>
+          <ul class="social-list">
+            <li>
+              <a href="https://example.com/chat" target="_blank" rel="noopener noreferrer">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9 9 0 0 1-3.9-.9L3 20.5l1.6-4.4A8.3 8.3 0 0 1 3.6 11 8.4 8.4 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"></path></svg>
+                <span>QQ 聊天</span>
+                <svg class="icon icon-xs ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M19 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4"></path></svg>
+              </a>
+            </li>
+            <li>
+              <a href="https://example.com/zone" target="_blank" rel="noopener noreferrer">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="17" height="16" rx="2"></rect><circle cx="9" cy="10" r="2"></circle><path d="M14 9h4M14 13h4M7 16c1.2-1.6 3.8-1.6 5 0"></path></svg>
+                <span>QQ 空间</span>
+                <svg class="icon icon-xs ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M19 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4"></path></svg>
+              </a>
+            </li>
+            <li>
+              <a href="https://example.com/github" target="_blank" rel="noopener noreferrer">
+                <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4 1.3-4-2.2-6-2.7m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6.2 0C6.3 3.1 5.2 3.4 5.2 3.4a4.3 4.3 0 0 0-.1 3.2A4.6 4.6 0 0 0 3.8 9.8c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"></path></svg>
+                <span>GitHub</span>
+                <svg class="icon icon-xs ext" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 5h5v5M19 5l-8 8M19 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4"></path></svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="section-inner">
+      <p class="section-sub">写邮件到 <a href="mailto:example@example.com">example@example.com</a></p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-avatar" data-avatar></div>
+  <p class="footer-sig">写代码，也写字。</p>
+  <p class="footer-copy">© <span id="year">2025</span> NewEra</p>
+</footer>
+
+<button class="to-top" id="toTop" type="button" aria-label="返回顶部">
+  <svg class="icon icon-sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V5M6 11l6-6 6 6"></path></svg>
+</button>
+
+<script>
+(function () {
+  'use strict';
+  /* 1. 头像：统一注入 + 加载失败降级（内联 SVG 默认头像） */
+  var AVATAR_URL = 'https://q1.qlogo.cn/g?b=qq&nk=3627236036&s=640';
+  function defaultAvatarSVG() {
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    var c1 = dark ? '#2c3480' : '#6b78e2';
+    var c2 = dark ? '#151935' : '#3f4ec0';
+    var fg = dark ? '#c9d0f8' : '#ffffff';
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">' +
+      '<defs><radialGradient id="g" cx="34%" cy="28%" r="82%">' +
+      '<stop offset="0%" stop-color="' + c1 + '"/><stop offset="100%" stop-color="' + c2 + '"/>' +
+      '</radialGradient></defs>' +
+      '<rect width="160" height="160" fill="url(#g)"/>' +
+      '<path d="M28 112c14-26 30-39 48-39s34 13 48 39" fill="none" stroke="' + fg + '" stroke-opacity=".35" stroke-width="5" stroke-linecap="round"/>' +
+      '<circle cx="80" cy="70" r="20" fill="none" stroke="' + fg + '" stroke-opacity=".85" stroke-width="5"/>' +
+      '<circle cx="80" cy="70" r="5" fill="' + fg + '"/>' +
+      '<text x="80" y="140" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="' + fg + '" fill-opacity=".9">N</text>' +
+      '</svg>';
+  }
+  function svgDataURI(svg) { return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); }
+  function markFallback(box) {
+    box.classList.add('is-fallback');
+    var parent = box.parentNode;
+    if (!parent || parent.querySelector('.avatar-fallback-note')) return;
+    var note = document.createElement('p');
+    note.className = 'avatar-fallback-note';
+    note.textContent = '头像加载失败，已使用默认头像';
+    parent.insertBefore(note, box.nextSibling);
+  }
+  function initAvatar(box) {
+    if (box.getAttribute('data-avatar-ready') === '1') return;
+    box.setAttribute('data-avatar-ready', '1');
+    var img = document.createElement('img');
+    img.alt = 'NewEra 的 QQ 头像';
+    img.loading = 'lazy'; img.decoding = 'async'; img.referrerPolicy = 'no-referrer';
+    img.addEventListener('error', function () {
+      img.removeAttribute('src');
+      img.src = svgDataURI(defaultAvatarSVG());
+      markFallback(box);
+    });
+    box.appendChild(img);
+  }
+  function initAvatars() {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-avatar]'), initAvatar);
+  }
+  /* 2. 主题切换 + localStorage 持久化 */
+  var THEME_KEY = 'newera-theme';
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    var toggle = document.getElementById('themeToggle');
+    if (toggle) toggle.setAttribute('aria-label', theme === 'dark' ? '切换到浅色主题' : '切换到深色主题');
+  }
+  function initTheme() {
+    var saved = null;
+    try { saved = localStorage.getItem(THEME_KEY); } catch (e) { saved = null; }
+    if (saved === 'light' || saved === 'dark') applyTheme(saved);
+    else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) applyTheme('dark');
+    else applyTheme('light');
+    var toggle = document.getElementById('themeToggle');
+    if (!toggle) return;
+    toggle.addEventListener('click', function () {
+      var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      try { localStorage.setItem(THEME_KEY, next); } catch (e) { /* 忽略写入失败 */ }
+    });
+  }
+  /* 3. 顶部导航：滚动样式 + 移动端菜单 + 返回顶部 */
+  function initHeader() {
+    var header = document.getElementById('siteHeader');
+    var toggle = document.getElementById('navToggle');
+    var menu = document.getElementById('mobileMenu');
+    var toTop = document.getElementById('toTop');
+    function onScroll() {
+      var y = window.pageYOffset || document.documentElement.scrollTop;
+      if (header) header.classList.toggle('is-scrolled', y > 8);
+      if (toTop) toTop.classList.toggle('is-hidden', y < 320);
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    function closeMenu() {
+      if (!toggle || !menu) return;
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', '展开菜单');
+      menu.classList.remove('is-open');
+    }
+    if (toggle && menu) {
+      toggle.addEventListener('click', function () {
+        var open = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+        toggle.setAttribute('aria-label', open ? '展开菜单' : '收起菜单');
+        menu.classList.toggle('is-open', !open);
+      });
+      menu.addEventListener('click', function (e) { if (e.target.closest('a')) closeMenu(); });
+      window.addEventListener('resize', function () { if (window.innerWidth > 768) closeMenu(); });
+    }
+    if (toTop) toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  }
+  /* 4. 当前区块高亮 */
+  function initNavSpy() {
+    var links = Array.prototype.slice.call(document.querySelectorAll('.nav-link[data-nav]'));
+    if (!links.length) return;
+    var sections = ['home','posts','about','contact']
+      .map(function (id) { return document.getElementById(id); }).filter(Boolean);
+    function update() {
+      var pos = (window.pageYOffset || document.documentElement.scrollTop) + 120;
+      var current = sections.length ? sections[0].id : 'home';
+      sections.forEach(function (sec) { if (sec.offsetTop <= pos) current = sec.id; });
+      if (sections.length && window.innerHeight + window.pageYOffset >= document.body.scrollHeight - 4) {
+        current = sections[sections.length - 1].id;
+      }
+      links.forEach(function (a) { a.classList.toggle('is-active', a.getAttribute('data-nav') === current); });
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+  /* 5. 入场动效 */
+  function initReveal() {
+    var items = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+    if (!items.length) return;
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { entry.target.classList.add('is-visible'); io.unobserve(entry.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    items.forEach(function (el) { io.observe(el); });
+  }
+  /* 6. 年份生成 */
+  function initYear() {
+    var el = document.getElementById('year');
+    if (el) el.textContent = String(new Date().getFullYear());
+  }
+  /* 7. 阅读进度条 */
+  function initProgress() {
+    var bar = document.getElementById('scrollProgress');
+    if (!bar) return;
+    var fill = bar.querySelector('span');
+    function update() {
+      var doc = document.documentElement;
+      var max = doc.scrollHeight - window.innerHeight;
+      var p = max > 0 ? (window.pageYOffset || doc.scrollTop) / max : 0;
+      p = Math.min(1, Math.max(0, p));
+      fill.style.setProperty('--p', p.toFixed(4));
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+  /* 8. 详情视图演示（路由逻辑由 JS 方向实现） */
+  function initDetailDemo() {
+    var detail = document.getElementById('post-detail');
+    var posts = document.getElementById('posts');
+    var back = document.getElementById('backToList');
+    var bar = document.getElementById('scrollProgress');
+    if (!detail || !posts) return;
+    function showDetail() {
+      posts.hidden = true; detail.hidden = false;
+      if (bar) bar.classList.add('is-active');
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+    function showList() {
+      detail.hidden = true; posts.hidden = false;
+      if (bar) bar.classList.remove('is-active');
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+    if (back) back.addEventListener('click', showList);
+    window.newEraView = { showDetail: showDetail, showList: showList };
+  }
+  /* 9. 复制 QQ 号 */
+  function initCopy() {
+    var btn = document.getElementById('copyQQ');
+    var label = document.getElementById('copyQQText');
+    if (!btn || !label) return;
+    var QQ = '3627236036';
+    var timer = null;
+    function restore() {
+      clearTimeout(timer);
+      btn.classList.remove('is-copied','is-error');
+      label.textContent = '复制';
+    }
+    function done(ok) {
+      clearTimeout(timer);
+      btn.classList.remove('is-copied','is-error');
+      if (ok) { btn.classList.add('is-copied'); label.textContent = '已复制'; }
+      else { btn.classList.add('is-error'); label.textContent = '请手动复制'; }
+      timer = setTimeout(restore, 1500);
+    }
+    function fallbackCopy() {
+      var ta = document.createElement('textarea');
+      ta.value = QQ; ta.setAttribute('readonly','');
+      ta.style.position = 'fixed'; ta.style.top = '-1000px'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      return ok;
+    }
+    btn.addEventListener('click', function () {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(QQ).then(function () { done(true); })
+          .catch(function () { done(fallbackCopy()); });
+      } else { done(fallbackCopy()); }
+    });
+  }
+  /* 10. 启动 */
+  function boot() {
+    initTheme(); initAvatars(); initHeader(); initNavSpy(); initReveal();
+    initYear(); initProgress(); initDetailDemo(); initCopy();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+</body>
+</html>

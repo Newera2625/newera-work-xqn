@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="NewEra 的个人博客：技术文章、随笔与联系方式。">
+<meta name="theme-color" content="#ffffff">
+<title>NewEra · 个人博客</title>
+<script>
+/* 主题预置：首屏渲染前确定主题，避免闪白 */
+(function(){try{var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}document.documentElement.setAttribute('data-theme',t);}catch(e){document.documentElement.setAttribute('data-theme','light');}})();
+</script>
+<style>
+/* ===== 1. 设计令牌 ===== */
+:root{
+--brand:#4a5bd6;--brand-strong:#3a49b8;--brand-soft:rgba(74,91,214,.10);--brand-softer:rgba(74,91,214,.06);--focus-ring:rgba(74,91,214,.45);
+--bg:#ffffff;--bg-elevated:#f7f8fa;--text:#1a1d23;--text-muted:#5b6472;--border:#e3e6ec;--border-subtle:#eef0f4;
+--accent:#2f8f6f;--accent-soft:rgba(47,143,111,.12);
+--shadow-sm:0 1px 2px rgba(16,20,28,.06);--shadow-md:0 6px 18px rgba(16,20,28,.08);--shadow-lg:0 14px 34px rgba(16,20,28,.14);
+--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:24px;--space-6:32px;--space-7:48px;--space-8:72px;
+--radius-sm:6px;--radius-md:10px;--radius-lg:16px;--radius-pill:999px;
+--fs-xs:12px;--fs-sm:14px;--fs-base:16px;--fs-lg:18px;--fs-xl:22px;--fs-2xl:28px;--fs-3xl:36px;
+--font-sans:system-ui,-apple-system,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+--font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+--container:1120px;--header-h:64px;
+}
+[data-theme="dark"]{
+--brand:#7c8af0;--brand-strong:#93a0f5;--brand-soft:rgba(124,138,240,.14);--brand-softer:rgba(124,138,240,.08);--focus-ring:rgba(124,138,240,.55);
+--bg:#0f1115;--bg-elevated:#161a21;--text:#e8eaef;--text-muted:#9aa3b2;--border:#262c36;--border-subtle:#1d222b;
+--accent:#4fb894;--accent-soft:rgba(79,184,148,.16);
+--shadow-sm:0 1px 2px rgba(0,0,0,.4);--shadow-md:0 6px 18px rgba(0,0,0,.45);--shadow-lg:0 16px 38px rgba(0,0,0,.58);
+}
+/* ===== 2. 基础重置 ===== */
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:var(--fs-base);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
+body.is-locked{overflow:hidden}
+h1,h2,h3{line-height:1.25;letter-spacing:-.01em;margin:0;font-weight:650}
+p{margin:0}
+a{color:var(--brand);text-decoration:none;transition:color .18s ease}
+a:hover{color:var(--brand-strong)}
+img{max-width:100%}
+button,input{font:inherit;color:inherit}
+code,pre{font-family:var(--font-mono)}
+.container{width:100%;max-width:var(--container);margin-inline:auto;padding-inline:var(--space-5)}
+@media(max-width:768px){.container{padding-inline:var(--space-4)}}
+@media(max-width:420px){.container{padding-inline:20px}}
+.skip-link{position:absolute;left:var(--space-4);top:-60px;z-index:300;padding:var(--space-2) var(--space-4);background:var(--brand);color:#fff;border-radius:var(--radius-md);transition:top .2s ease}
+.skip-link:focus{top:var(--space-3);color:#fff}
+:focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px}
+/* ===== 3. 通用组件 ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:var(--space-2);padding:10px 20px;border-radius:var(--radius-md);border:1px solid transparent;font-size:var(--fs-sm);font-weight:600;cursor:pointer;background:transparent;transition:background-color .18s,border-color .18s,color .18s,box-shadow .18s,transform .12s;white-space:nowrap}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{cursor:not-allowed;opacity:.45;transform:none;box-shadow:none}
+.btn--primary{background:var(--brand);color:#fff;box-shadow:var(--shadow-sm)}
+.btn--primary:hover:not(:disabled){background:var(--brand-strong);color:#fff;box-shadow:var(--shadow-md)}
+.btn--ghost{border-color:var(--border);background:var(--bg);color:var(--text)}
+.btn--ghost:hover:not(:disabled){border-color:var(--brand);color:var(--brand);background:var(--brand-softer)}
+.btn--quiet{border-color:transparent;color:var(--text-muted);padding:6px 10px}
+.btn--quiet:hover:not(:disabled){color:var(--brand);background:var(--brand-softer)}
+.btn--sm{padding:6px 12px;font-size:var(--fs-xs)}
+.icon{width:20px;height:20px;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.icon--sm{width:16px;height:16px}
+.pill{display:inline-flex;align-items:center;padding:3px 10px;border-radius:var(--radius-pill);background:var(--brand-soft);color:var(--brand-strong);font-size:var(--fs-xs);font-weight:600}
+/* ===== 4. 顶部导航 ===== */
+.site-header{position:sticky;top:0;z-index:100;background:transparent;border-bottom:1px solid transparent;transition:background-color .22s,border-color .22s}
+.site-header.is-scrolled{background:rgba(255,255,255,.84);-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);border-bottom-color:var(--border-subtle)}
+[data-theme="dark"] .site-header.is-scrolled{background:rgba(15,17,21,.84)}
+.site-header__inner{height:var(--header-h);display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)}
+.brand{display:inline-flex;align-items:center;gap:var(--space-3);color:var(--text);font-weight:700;font-size:var(--fs-lg)}
+.avatar{position:relative;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;overflow:hidden;background:var(--bg-elevated);border:1px solid var(--border-subtle);box-shadow:var(--shadow-md);flex:none}
+.avatar--xs{width:28px;height:28px}
+.avatar--sm{width:40px;height:40px}
+.avatar--lg{width:160px;height:160px}
+.avatar img,.avatar .avatar-fallback{width:100%;height:100%;object-fit:cover;display:block}
+.avatar .avatar-fallback{display:flex}
+.avatar-fallback svg{width:100%;height:100%;display:block}
+.avatar-note{margin-top:var(--space-3);font-size:var(--fs-xs);color:var(--text-muted)}
+.nav{display:flex;align-items:center;gap:var(--space-4)}
+.nav__list{display:flex;align-items:center;gap:var(--space-5);list-style:none;margin:0;padding:0}
+.nav__link{position:relative;display:inline-block;padding:6px 2px;color:var(--text-muted);font-size:var(--fs-sm);font-weight:600}
+.nav__link::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--brand);border-radius:var(--radius-pill);transform:scaleX(0);transform-origin:left;transition:transform .18s ease}
+.nav__link:hover{color:var(--text)}
+.nav__link.is-active{color:var(--brand)}
+.nav__link.is-active::after{transform:scaleX(1)}
+.nav__actions{display:flex;align-items:center;gap:var(--space-2)}
+.icon-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:var(--radius-md);border:1px solid var(--border);background:var(--bg);color:var(--text-muted);cursor:pointer;transition:color .18s,border-color .18s,background-color .18s,transform .12s}
+.icon-btn:hover{color:var(--brand);border-color:var(--brand);background:var(--brand-softer)}
+.icon-btn:active{transform:translateY(1px)}
+#nav-toggle{display:none}
+.theme-toggle .icon--moon{display:none}
+[data-theme="dark"] .theme-toggle .icon--sun{display:none}
+[data-theme="dark"] .theme-toggle .icon--moon{display:block}
+.nav-panel{position:fixed;inset:var(--header-h) 0 0 0;z-index:99;background:var(--bg);padding:var(--space-5) var(--space-4);display:none}
+.nav-panel.is-open{display:block}
+.nav-panel__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-2)}
+.nav-panel__list a{display:block;padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);color:var(--text);font-size:var(--fs-lg);font-weight:600;border:1px solid transparent}
+.nav-panel__list a:hover,.nav-panel__list a.is-active{color:var(--brand);background:var(--brand-softer);border-color:var(--border-subtle)}
+@media(max-width:768px){.nav__list{display:none}#nav-toggle{display:inline-flex}}
+/* ===== 5. 阅读进度条 ===== */
+.reading-progress{position:fixed;top:var(--header-h);left:0;right:0;height:3px;z-index:101;pointer-events:none}
+.reading-progress__bar{display:block;height:100%;width:100%;background:var(--brand);transform:scaleX(0);transform-origin:left;transition:transform .08s linear}
+/* ===== 6. Hero ===== */
+.hero{padding-block:var(--space-8) var(--space-7);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;top:-180px;left:50%;width:560px;height:560px;transform:translateX(-50%);background:radial-gradient(circle,var(--brand-softer) 0%,transparent 62%);pointer-events:none}
+.hero__inner{position:relative;display:flex;flex-direction:column;align-items:center;gap:var(--space-4)}
+.hero__avatar-wrap{position:relative}
+.hero__avatar-wrap::after{content:"";position:absolute;inset:-14px;border-radius:50%;background:radial-gradient(circle,var(--brand-soft) 0%,transparent 68%);z-index:-1}
+.hero__name{font-size:var(--fs-3xl)}
+.hero__role{color:var(--text-muted);font-size:var(--fs-sm);letter-spacing:.06em;text-transform:uppercase}
+.hero__qq{display:inline-flex;align-items:center;gap:var(--space-3);padding:6px 6px 6px 14px;border-radius:var(--radius-pill);background:var(--brand-soft);color:var(--brand-strong);font-weight:600;font-size:var(--fs-sm)}
+.hero__qq .qq-number{letter-spacing:.04em}
+.copy-inline{border:1px solid var(--border);background:var(--bg);color:var(--text-muted);border-radius:var(--radius-pill);padding:3px 10px;font-size:var(--fs-xs);cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:color .18s,border-color .18s,background-color .18s}
+.copy-inline:hover{color:var(--brand);border-color:var(--brand)}
+.copy-inline.is-copied{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.hero__signature{max-width:34em;color:var(--text-muted);font-size:var(--fs-lg)}
+.hero__actions{display:flex;gap:var(--space-3);flex-wrap:wrap;justify-content:center;margin-top:var(--space-2)}
+.hero__scroll{margin-top:var(--space-5);color:var(--text-muted);display:inline-flex;flex-direction:column;align-items:center;gap:var(--space-2);font-size:var(--fs-xs);letter-spacing:.08em}
+.hero__scroll .icon{animation:floaty 2s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+@media(max-width:768px){.hero{padding-block:var(--space-7) var(--space-6)}.hero__name{font-size:var(--fs-2xl)}.hero__signature{font-size:var(--fs-base)}.avatar--lg{width:112px;height:112px}.hero__actions{width:100%}.hero__actions .btn{flex:1 1 140px}}
+/* ===== 7. 区块通用 ===== */
+.section{padding-block:var(--space-7);border-top:1px solid var(--border-subtle)}
+.section__head{margin-bottom:var(--space-6)}
+.section__eyebrow{color:var(--brand);font-size:var(--fs-xs);font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.section__title{font-size:var(--fs-2xl);margin-top:var(--space-2)}
+.section__subtitle{color:var(--text-muted);margin-top:var(--space-2);max-width:46em}
+/* ===== 8. 文章列表 ===== */
+.posts__toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-4);margin-bottom:var(--space-5)}
+.filter{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.filter__btn{padding:7px 16px;border-radius:var(--radius-pill);border:1px solid var(--border);background:transparent;color:var(--text-muted);font-size:var(--fs-sm);font-weight:600;cursor:pointer;transition:color .18s,background-color .18s,border-color .18s,transform .12s}
+.filter__btn:hover{color:var(--brand);border-color:var(--brand);background:var(--brand-softer)}
+.filter__btn:active{transform:translateY(1px)}
+.filter__btn.is-active{background:var(--brand);border-color:var(--brand);color:#fff}
+.filter__btn.is-active:hover{background:var(--brand-strong);border-color:var(--brand-strong);color:#fff}
+.search{position:relative;flex:1 1 260px;min-width:0}
+.search .icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none}
+.search input{width:100%;padding:10px 14px 10px 38px;border-radius:var(--radius-md);border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:var(--fs-sm);appearance:none;-webkit-appearance:none;transition:border-color .18s,box-shadow .18s}
+.search input::placeholder{color:var(--text-muted)}
+.search input:hover{border-color:var(--brand)}
+.search input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
+.search input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+.posts__count{width:100%;color:var(--text-muted);font-size:var(--fs-sm)}
+.post-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--space-6)}
+.post-card{display:flex;flex-direction:column;background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-sm);cursor:pointer;transition:transform .2s,box-shadow .2s,border-color .2s}
+.post-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--border-subtle)}
+.post-card:active{transform:translateY(-1px);box-shadow:var(--shadow-md)}
+.post-card:focus-within{outline:2px solid var(--focus-ring);outline-offset:3px}
+.post-card__cover{position:relative;height:160px;overflow:hidden;background:linear-gradient(135deg,var(--cover-a,var(--brand)),var(--cover-b,var(--border-subtle)))}
+.post-card__cover::before{content:"";position:absolute;right:-30px;top:-30px;width:140px;height:140px;border-radius:50%;border:2px solid var(--cover-shape,rgba(255,255,255,.35))}
+.post-card__cover::after{content:"";position:absolute;left:-20px;bottom:-50px;width:150px;height:120px;border-radius:12px;transform:rotate(-18deg);background:var(--cover-shape-2,rgba(255,255,255,.18))}
+.post-card__cover>span{position:absolute;left:var(--space-4);bottom:var(--space-4);color:var(--cover-text,#fff);font-size:var(--fs-xs);font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.92}
+.post-card__body{padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-3);flex:1}
+.post-card__title{font-size:var(--fs-lg);line-height:1.4}
+.post-card__title a{color:var(--text);background-image:linear-gradient(var(--brand),var(--brand));background-repeat:no-repeat;background-position:0 100%;background-size:0 1px;transition:color .2s,background-size .24s}
+.post-card:hover .post-card__title a,.post-card__title a:focus-visible{color:var(--brand);background-size:100% 1px}
+.post-card__summary{color:var(--text-muted);font-size:var(--fs-sm);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-clamp:2;overflow:hidden;max-height:3.2em}
+.post-card__meta{display:flex;align-items:center;gap:var(--space-2);color:var(--text-muted);font-size:var(--fs-xs)}
+.post-card__tags{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:auto;padding-top:var(--space-2)}
+.empty-state{display:flex;flex-direction:column;align-items:center;gap:var(--space-3);padding:var(--space-8) var(--space-4);text-align:center;border:1px dashed var(--border);border-radius:var(--radius-lg);background:var(--bg-elevated);color:var(--text-muted)}
+.empty-state svg{width:180px;height:140px;color:var(--brand);opacity:.8}
+.empty-state__title{color:var(--text);font-size:var(--fs-lg);font-weight:650}
+.empty-state__hint{font-size:var(--fs-sm)}
+/* ===== 9. 文章详情 ===== */
+.post-detail{padding-block:var(--space-6) var(--space-8)}
+.post-detail[hidden]{display:none}
+.detail-top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-3);margin-bottom:var(--space-5)}
+.detail-layout{display:grid;grid-template-columns:minmax(0,1fr) 240px;gap:var(--space-7);align-items:start}
+@media(max-width:1024px){.detail-layout{grid-template-columns:minmax(0,1fr)}.toc{display:none}}
+.detail-header{margin-bottom:var(--space-5)}
+.detail-title{font-size:var(--fs-3xl);margin-bottom:var(--space-3)}
+.detail-meta{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-3);color:var(--text-muted);font-size:var(--fs-sm)}
+.detail-tags{display:flex;gap:var(--space-2);flex-wrap:wrap}
+.detail-cover{height:220px;border-radius:var(--radius-lg);overflow:hidden;position:relative;margin-bottom:var(--space-6);background:linear-gradient(135deg,var(--cover-a,var(--brand)),var(--cover-b,var(--border-subtle)))}
+.detail-cover::before{content:"";position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;border:2px solid var(--cover-shape,rgba(255,255,255,.35))}
+.detail-cover::after{content:"";position:absolute;left:10%;bottom:-70px;width:260px;height:160px;border-radius:16px;transform:rotate(-14deg);background:var(--cover-shape-2,rgba(255,255,255,.18))}
+.prose{max-width:720px}
+.prose h2{font-size:var(--fs-xl);margin:var(--space-6) 0 var(--space-3);scroll-margin-top:calc(var(--header-h) + 24px)}
+.prose p{margin-bottom:var(--space-4);color:var(--text)}
+.prose ul,.prose ol{margin:0 0 var(--space-4);padding-left:1.4em;color:var(--text)}
+.prose li{margin-bottom:var(--space-2)}
+.prose li::marker{color:var(--brand)}
+.prose blockquote{margin:var(--space-5) 0;padding:var(--space-4) var(--space-5);border-left:3px solid var(--brand);background:var(--brand-softer);border-radius:0 var(--radius-md) var(--radius-md) 0;color:var(--text-muted)}
+.prose pre{position:relative;margin:0 0 var(--space-5);padding:var(--space-5) var(--space-4) var(--space-4);background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-md);overflow-x:auto;font-size:var(--fs-sm);line-height:1.7;color:var(--text)}
+.prose pre::before{content:attr(data-lang);position:absolute;top:6px;right:10px;font-size:var(--fs-xs);letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted)}
+.prose code{font-size:.95em}
+.prose p code,.prose li code{padding:2px 6px;border-radius:var(--radius-sm);background:var(--bg-elevated);border:1px solid var(--border-subtle)}
+.toc{position:sticky;top:calc(var(--header-h) + var(--space-5));border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-4) var(--space-5);background:var(--bg)}
+.toc__title{font-size:var(--fs-xs);letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);margin-bottom:var(--space-3)}
+.toc__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-2)}
+.toc__list a{display:block;color:var(--text-muted);font-size:var(--fs-sm);line-height:1.5;padding-left:10px;border-left:2px solid var(--border)}
+.toc__list a:hover{color:var(--brand)}
+.toc__list a.is-active{color:var(--brand);border-left-color:var(--brand);font-weight:600}
+.post-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-4);margin-top:var(--space-7);padding-top:var(--space-5);border-top:1px solid var(--border-subtle)}
+@media(max-width:768px){.post-nav{grid-template-columns:minmax(0,1fr)}}
+.post-nav__btn{display:flex;flex-direction:column;gap:var(--space-1);text-align:left;padding:var(--space-4);border-radius:var(--radius-lg);border:1px solid var(--border);background:var(--bg);cursor:pointer;transition:border-color .18s,box-shadow .18s,transform .12s}
+.post-nav__btn:hover:not(:disabled){border-color:var(--brand);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.post-nav__btn:active:not(:disabled){transform:translateY(0)}
+.post-nav__btn:disabled{opacity:.45;cursor:not-allowed}
+.post-nav__btn span{color:var(--text-muted);font-size:var(--fs-xs);font-weight:600;letter-spacing:.08em}
+.post-nav__btn strong{color:var(--text);font-size:var(--fs-sm);font-weight:600}
+.post-nav__btn:hover:not(:disabled) strong{color:var(--brand)}
+.post-nav__btn--next{text-align:right;align-items:flex-end}
+/* ===== 10. 关于我 ===== */
+.about__grid{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:var(--space-7);align-items:start}
+@media(max-width:1024px){.about__grid{grid-template-columns:minmax(0,1fr);gap:var(--space-6)}}
+.about__text p{color:var(--text-muted);margin-bottom:var(--space-4)}
+.about__text strong{color:var(--text)}
+.skills{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-5)}
+.skills__label{width:100%;color:var(--text-muted);font-size:var(--fs-xs);letter-spacing:.12em;text-transform:uppercase;margin-bottom:var(--space-1)}
+.social-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--space-2)}
+.social-list a{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);border:1px solid var(--border);color:var(--text);font-size:var(--fs-sm);font-weight:600;transition:border-color .18s,color .18s,background-color .18s,transform .12s}
+.social-list a:hover{color:var(--brand);border-color:var(--brand);background:var(--brand-softer);transform:translateX(2px)}
+.social-list a:active{transform:translateX(0)}
+.social-list a .icon{color:var(--brand)}
+.social-list small{margin-left:auto;color:var(--text-muted);font-weight:400;font-size:var(--fs-xs)}
+.qq-panel{margin-top:var(--space-5);padding:var(--space-4) var(--space-5);border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--bg-elevated);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-3)}
+.qq-panel__label{color:var(--text-muted);font-size:var(--fs-xs);letter-spacing:.1em;text-transform:uppercase}
+.qq-panel__row{display:flex;align-items:center;gap:var(--space-3)}
+.qq-panel__number{font-family:var(--font-mono);font-size:var(--fs-lg);font-weight:700;letter-spacing:.04em}
+.qq-panel__number.is-highlight{color:var(--brand)}
+/* ===== 11. 页脚 ===== */
+.site-footer{border-top:1px solid var(--border-subtle);padding-block:var(--space-6);background:var(--bg-elevated)}
+.site-footer__inner{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);flex-wrap:wrap}
+.site-footer__left{display:flex;align-items:center;gap:var(--space-3)}
+.site-footer__copy{font-size:var(--fs-sm);color:var(--text-muted)}
+.site-footer__copy strong{color:var(--text)}
+.site-footer__sig{font-size:var(--fs-xs);color:var(--text-muted)}
+.site-footer__right{display:flex;align-items:center;gap:var(--space-4)}
+@media(max-width:768px){.site-footer__inner{flex-direction:column;align-items:flex-start}}
+/* ===== 12. Toast ===== */
+.toast{position:fixed;left:50%;bottom:var(--space-6);transform:translate(-50%,12px);z-index:200;padding:10px 18px;border-radius:var(--radius-md);background:var(--text);color:var(--bg);font-size:var(--fs-sm);box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:opacity .22s,transform .22s}
+.toast.is-visible{opacity:1;transform:translate(-50%,0)}
+.toast--success{background:var(--accent);color:#fff}
+/* ===== 13. 滚动淡入 ===== */
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
+.reveal.is-visible{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.hero__scroll .icon{animation:none}.reading-progress__bar{transition:none}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">跳到主内容</a>
+<header class="site-header" id="site-header">
+<div class="container site-header__inner">
+<a class="brand" href="#home" data-target="home"><span class="avatar avatar--xs"><img class="avatar-img" src="https://q1.qlogo.cn/g?b=qq&nk=3627236036&s=640" alt="NewEra 的头像" referrerpolicy="no-referrer" loading="lazy"></span><span>NewEra</span></a>
+<nav class="nav" aria-label="主导航">
+<ul class="nav__list" id="nav-list">
+<li><a class="nav__link is-active" href="#home" data-target="home">首页</a></li>
+<li><a class="nav__link" href="#posts" data-target="posts">文章</a></li>
+<li><a class="nav__link" href="#about" data-target="about">关于我</a></li>
+<li><a class="nav__link" href="#about" data-target="contact">联系</a></li>
+</ul>
+<div class="nav__actions">
+<button class="icon-btn theme-toggle" id="theme-toggle" type="button" aria-label="切换深色模式" aria-pressed="false">
+<svg class="icon icon--sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"></circle><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"></path></svg>
+<svg class="icon icon--moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.6 8.6 0 0 1 9.8 3.5a8.6 8.6 0 1 0 10.7 10.7z"></path></svg>
+</button>
+<button class="icon-btn" id="nav-toggle" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-panel">
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+</button>
+</div>
+</nav>
+</div>
+</header>
+<div class="nav-panel" id="nav-panel" hidden>
+<ul class="nav-panel__list">
+<li><a href="#home" data-target="home">首页</a></li>
+<li><a href="#posts" data-target="posts">文章</a></li>
+<li><a href="#about" data-target="about">关于我</a></li>
+<li><a href="#about" data-target="contact">联系</a></li>
+</ul>
+</div>
+<div class="reading-progress" id="reading-progress" role="progressbar" aria-label="阅读进度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden><span class="reading-progress__bar" id="reading-progress-bar"></span></div>
+<main id="main">
+<section id="home" class="hero" aria-labelledby="hero-name">
+<div class="container hero__inner">
+<div class="hero__avatar-wrap reveal"><span class="avatar avatar--lg"><img class="avatar-img" src="https://q1.qlogo.cn/g?b=qq&nk=3627236036&s=640" alt="NewEra 的头像" referrerpolicy="no-referrer"></span></div>
+<div class="hero__meta reveal"><p class="hero__role">Front-end Engineer · Blog</p><h1 class="hero__name" id="hero-name">NewEra</h1></div>
+<div class="hero__qq reveal"><span class="qq-number">QQ 3627236036</span>
+<button class="copy-inline" id="copy-qq" type="button" data-copy="3627236036" aria-label="复制 QQ 号"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"></rect><path d="M5 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V5"></path></svg><span class="copy-inline__text">复制</span></button>
+</div>
+<p class="hero__signature reveal">写代码，也写点别的。记录前端实践、工具效率与偶尔的思考。</p>
+<div class="hero__actions reveal"><a class="btn btn--primary" href="#posts" data-target="posts">查看文章</a><a class="btn btn--ghost" href="#about" data-target="contact">联系我</a></div>
+<a class="hero__scroll" href="#posts" data-target="posts" aria-label="向下滚动查看文章"><span>SCROLL</span><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></a>
+</div>
+</section>
+<section id="posts" class="section posts" aria-labelledby="posts-title">
+<div class="container">
+<div class="section__head reveal"><p class="section__eyebrow">Writing</p><h2 class="section__title" id="posts-title">文章</h2><p class="section__subtitle">前端实践、工具方法与一些不成体系的随笔，按标签筛选或直接搜索关键词。</p></div>
+<div class="posts__toolbar reveal">
+<div class="filter" role="group" aria-label="按标签筛选" id="filter-group">
+<button class="filter__btn is-active" type="button" data-tag="all" aria-pressed="true">全部</button>
+<button class="filter__btn" type="button" data-tag="前端" aria-pressed="false">前端</button>
+<button class="filter__btn" type="button" data-tag="随笔" aria-pressed="false">随笔</button>
+<button class="filter__btn" type="button" data-tag="工具" aria-pressed="false">工具</button>
+<button class="filter__btn" type="button" data-tag="教程" aria-pressed="false">教程</button>
+</div>
+<div class="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.5 4.5"></path></svg><input type="search" id="search-input" placeholder="搜索标题、摘要或标签" aria-label="搜索文章" autocomplete="off"></div>
+<p class="posts__count" id="posts-count" aria-live="polite">共 6 篇文章</p>
+</div>
+<div class="post-grid" id="post-grid"></div>
+<div class="empty-state" id="empty-state" hidden>
+<svg viewBox="0 0 180 140" role="img" aria-label="没有找到结果"><circle cx="82" cy="62" r="34" fill="none" stroke="currentColor" stroke-width="2" stroke-dasharray="6 7" opacity=".55"></circle><circle cx="82" cy="62" r="22" fill="none" stroke="currentColor" stroke-width="1.5" opacity=".35"></circle><path d="M107 88l24 26" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path><path d="M20 118h140" stroke="currentColor" stroke-width="1.5" opacity=".28" stroke-linecap="round"></path><path d="M36 104h22M36 96h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".3"></path><path d="M124 40l8 8-16 16-8-8z" fill="currentColor" opacity=".18"></path></svg>
+<p class="empty-state__title">没有找到相关文章</p>
+<p class="empty-state__hint">换个关键词，或清空当前的标签筛选。</p>
+<button class="btn btn--ghost" id="reset-filters" type="button">清空筛选</button>
+</div>
+</div>
+</section>
+<article id="post-detail" class="post-detail" hidden aria-labelledby="detail-title">
+<div class="container">
+<div class="detail-top">
+<button class="btn btn--quiet" id="back-to-posts" type="button"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"></path></svg>返回文章列表</button>
+<button class="btn btn--quiet" id="back-to-top" type="button"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V6M6 12l6-6 6 6"></path></svg>回到顶部</button>
+</div>
+<div class="detail-layout">
+<div>
+<header class="detail-header"><h1 class="detail-title" id="detail-title"></h1>
+<div class="detail-meta"><time id="detail-date"></time><span aria-hidden="true">·</span><span id="detail-reading"></span><span class="detail-tags" id="detail-tags"></span></div>
+</header>
+<div class="detail-cover" id="detail-cover" aria-hidden="true"></div>
+<div class="prose" id="detail-body"></div>
+<nav class="post-nav" aria-label="文章翻页">
+<button class="post-nav__btn post-nav__btn--prev" id="prev-post" type="button"><span>上一篇文章</span><strong></strong></button>
+<button class="post-nav__btn post-nav__btn--next" id="next-post" type="button"><span>下一篇文章</span><strong></strong></button>
+</nav>
+</div>
+<aside class="toc" id="toc" aria-label="文章目录"><p class="toc__title">目录</p><ul class="toc__list" id="toc-list"></ul></aside>
+</div>
+</div>
+</article>
+<section id="about" class="section about" aria-labelledby="about-title">
+<div class="container">
+<div class="section__head reveal"><p class="section__eyebrow">About</p><h2 class="section__title" id="about-title">关于我</h2><p class="section__subtitle">一名习惯把想法写下来的前端开发者。</p></div>
+<div class="about__grid">
+<div class="about__text reveal">
+<p>你好，我是 <strong>NewEra</strong>。日常写前端，喜欢把界面拆成一个个可复用的部分，再用 CSS 变量把它们收拢到同一套语言里。</p>
+<p>工作之外，我会折腾一些小工具：批量改名、整理下载目录、把重复的操作压进一个脚本。这个博客用来存放这些零碎的经验，也存放一些与代码无关的随笔。</p>
+<p>如果你在某个主题上遇到和我类似的问题，欢迎通过 QQ 或邮件找我交流。乐于分享，也乐于被指出错误。</p>
+<div class="skills"><span class="skills__label">常用技能</span><span class="pill">HTML / 语义化</span><span class="pill">CSS 架构</span><span class="pill">JavaScript (ES6+)</span><span class="pill">响应式布局</span><span class="pill">无障碍</span><span class="pill">性能优化</span><span class="pill">Shell 脚本</span></div>
+</div>
+<div class="reveal">
+<ul class="social-list">
+<li><a href="https://wpa.qq.com/msgrd?v=3&amp;uin=3627236036&amp;site=qq&amp;menu=yes" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4h9A1.5 1.5 0 0 1 16 5.5v6a1.5 1.5 0 0 1-1.5 1.5H9l-3.6 3v-3H5.5A1.5 1.5 0 0 1 4 11.5z"></path><path d="M8 8.5h6M8 11h4" stroke-linecap="round"></path></svg><span>QQ 聊天</span><small>加我好友</small></a></li>
+<li><a href="https://user.qzone.qq.com/3627236036" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle><path d="M8.4 9.4h4.2a3 3 0 1 1 0 6H8.4z" stroke-linejoin="round"></path></svg><span>QQ 空间</span><small>看看近况</small></a></li>
+<li><a href="https://github.com/NewEra" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19c-4 .9-4-2-5-2.5M15 21v-3.4c0-1 .1-1.4-.5-2 2.3-.3 4.5-1.1 4.5-5a3.9 3.9 0 0 0-1.1-2.7 3.6 3.6 0 0 0-.1-2.7s-.9-.3-3 1.1a10.3 10.3 0 0 0-5.4 0C7.3 4.5 6.4 4.8 6.4 4.8a3.6 3.6 0 0 0-.1 2.7A3.9 3.9 0 0 0 5.2 10.2c0 3.9 2.2 4.7 4.5 5-.3.3-.6.8-.7 1.6 0 0-1.3.5-3.6-.6"></path></svg><span>GitHub</span><small>代码与笔记</small></a></li>
+<li><a href="mailto:newera@example.com" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.5"></rect><path d="M4 7.5l8 5.5 8-5.5" stroke-linecap="round" stroke-linejoin="round"></path></svg><span>邮箱</span><small>newera@example.com</small></a></li>
+</ul>
+<div class="qq-panel" id="contact">
+<span class="qq-panel__label">联系方式</span>
+<div class="qq-panel__row"><span class="qq-panel__number qq-number" id="qq-number">3627236036</span>
+<button class="btn btn--ghost btn--sm" id="copy-qq-about" type="button" data-copy="3627236036"><svg class="icon icon--sm" viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"></rect><path d="M5 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V5"></path></svg><span class="copy-inline__text">复制</span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<footer class="site-footer">
+<div class="container site-footer__inner">
+<div class="site-footer__left"><span class="avatar avatar--sm"><img class="avatar-img" src="https://q1.qlogo.cn/g?b=qq&nk=3627236036&s=640" alt="NewEra 的头像" referrerpolicy="no-referrer" loading="lazy"></span>
+<div><p class="site-footer__copy">© <span id="year">2024</span> <strong>NewEra</strong></p><p class="site-footer__sig">保持记录，保持克制。</p></div></div>
+<div class="site-footer__right"><span class="site-footer__sig">QQ 3627236036</span>
+<button class="icon-btn" id="footer-top" type="button" aria-label="返回顶部"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V6M6 12l6-6 6 6"></path></svg></button></div>
+</div>
+</footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+/* ===== 1. 常量与文章数据 ===== */
+var SITE={name:'NewEra',qq:'3627236036',avatar:'https://q1.qlogo.cn/g?b=qq&nk=3627236036&s=640'};
+var COVER_THEMES={
+brand:{a:'var(--brand)',b:'var(--brand-strong)',shape:'rgba(255,255,255,.34)',shape2:'rgba(255,255,255,.16)',text:'#fff'},
+neutral:{a:'var(--bg-elevated)',b:'var(--border)',shape:'rgba(74,91,214,.28)',shape2:'rgba(74,91,214,.10)',text:'var(--text)'},
+soft:{a:'var(--brand-soft)',b:'var(--bg-elevated)',shape:'rgba(74,91,214,.22)',shape2:'rgba(74,91,214,.08)',text:'var(--brand-strong)'}};
+var POSTS=[
+{id:'single-file-blog',title:'把博客压缩进一个 HTML 文件',summary:'用原生 HTML、CSS 与 JavaScript 搭建一个零依赖的单文件站点，双击即可运行。',date:'2024-05-12',dateText:'2024 年 5 月 12 日',readingTime:8,tags:['前端','教程'],cover:{from:'brand',to:'brand'},body:[
+{type:'h2',text:'为什么选择单文件'},
+{type:'p',text:'写博客最容易滑向的路线是：先搭框架，再装依赖，接着配置构建，最后为了一个静态页面引入一整套工具链。页面本身可能不到两百行，配置文件却要写上几百行。'},
+{type:'p',text:'单文件的方式把复杂度重新压回内容本身。样式写进一个 style 标签，脚本写在 body 末尾，读写顺序清晰，也没有构建产物需要维护。'},
+{type:'ul',items:['零外部依赖，双击 index.html 就能打开','没有构建步骤，改完刷新即可看到结果','可以直接托管在任意静态空间，不需要服务端']},
+{type:'h2',text:'结构怎么组织'},
+{type:'p',text:'我习惯把内容数据放在脚本最前面，渲染函数放在后面。这样只要替换数据数组，展示逻辑完全不需要动。'},
+{type:'code',lang:'html',text:'<main id="main">\n  <section id="home"></section>\n  <section id="posts"></section>\n</main>'},
+{type:'quote',text:'工具是为了让内容更容易被维护，而不是让内容看起来很忙。'}]},
+{id:'daily-scripts',title:'我常用的五个效率脚本',summary:'批量改名、整理下载目录、生成占位图，这些重复的操作最后都被我收进了几个几十行的脚本里。',date:'2024-04-28',dateText:'2024 年 4 月 28 日',readingTime:6,tags:['工具'],cover:{from:'neutral',to:'neutral'},body:[
+{type:'h2',text:'重复三次以上的操作值得写下来'},
+{type:'p',text:'我给自己定了一条很简单的标准：一个操作如果一个月内要重复三次以上，就应该把它变成脚本。哪怕脚本只有十几行，也比每次手动点更省心。'},
+{type:'h2',text:'整理下载目录'},
+{type:'p',text:'下载文件夹是最容易失控的地方。我写了一个小脚本，按扩展名自动归类，遇到同名文件时自动追加序号。'},
+{type:'code',lang:'bash',text:'#!/usr/bin/env bash\nfor f in "$1"/*; do\n  ext="${f##*.}"\n  mkdir -p "$1/$ext" && mv "$f" "$1/$ext/"\ndone'},
+{type:'h2',text:'批量重命名'},
+{type:'p',text:'把空格换成短横线、去掉中文括号、统一日期前缀，用一段 for 循环加 sed 就够了。'},
+{type:'ol',items:['先在测试目录跑一遍，确认结果符合预期','再把脚本收进固定目录，用别名调用','给脚本写一行注释，说明它解决什么问题']},
+{type:'quote',text:'脚本不是为了炫技，是为了让你在下午三点少做一次重复劳动。'}]},
+{id:'slow-thinking',title:'关于专注与慢思考',summary:'写得越快不一定读得越多。记录一些关于注意力分配与延迟满足的朴素体会。',date:'2024-03-19',dateText:'2024 年 3 月 19 日',readingTime:5,tags:['随笔'],cover:{from:'soft',to:'soft'},body:[
+{type:'h2',text:'快是一种错觉'},
+{type:'p',text:'信息流把读得快包装成一种能力，但我越来越怀疑这种能力的价值。真正被记住的东西，往往来自在某段内容上停留得足够久。'},
+{type:'p',text:'读完一篇文章立刻能说出三个要点时，它大概率只是被扫了一遍。能复述结构、举出反例，才谈得上消化。'},
+{type:'h2',text:'给自己留一点延迟'},
+{type:'ul',items:['看完一个主题，隔一天再写自己的总结','不追热点，把想写的东西先存进草稿','每天只读一个主题，读透比读多重要']},
+{type:'quote',text:'把速度当成目标时，方向就容易被忽略了。'}]},
+{id:'css-custom-properties',title:'CSS 自定义属性：一套令牌走天下',summary:'把颜色、间距、圆角和字号收进一组变量，主题切换就变成改一行声明的事。',date:'2024-02-27',dateText:'2024 年 2 月 27 日',readingTime:9,tags:['前端'],cover:{from:'brand',to:'soft'},body:[
+{type:'h2',text:'变量是设计系统的最小单位'},
+{type:'p',text:'自定义属性最大的价值不是省事，而是让设计决定从代码里独立出来。颜色不再散落在组件中，而是集中在可以被整体替换的地方。'},
+{type:'code',lang:'css',text:':root {\n  --brand: #4a5bd6;\n  --space-4: 16px;\n  --radius-md: 10px;\n}\n\n.btn {\n  padding: 10px 20px;\n  border-radius: var(--radius-md);\n  color: var(--brand);\n}'},
+{type:'h2',text:'深色主题怎么写'},
+{type:'p',text:'深色模式不应是一套独立重写，而应该是同一批语义的另一组取值。用属性选择器覆盖变量，组件样式一行都不用改。'},
+{type:'code',lang:'css',text:'[data-theme="dark"] {\n  --bg: #0f1115;\n  --text: #e8eaef;\n  --brand: #7c8af0;\n}'},
+{type:'h2',text:'命名要有语义'},
+{type:'ul',items:['用 --text-muted 而不是 --gray-500','让变量名描述用途，值可以随时替换','同一种语义只保留一个变量名，避免近义重复']},
+{type:'quote',text:'主题切换要注意首屏闪白：先在 head 里写好主题，再由主脚本接管。'}]},
+{id:'reading-progress-bar',title:'从零写一个阅读进度条',summary:'一行进度只依赖两件事：正文区间的滚动比例，以及 requestAnimationFrame 的节流更新。',date:'2024-01-15',dateText:'2024 年 1 月 15 日',readingTime:7,tags:['教程','前端'],cover:{from:'soft',to:'neutral'},body:[
+{type:'h2',text:'进度条要表达什么'},
+{type:'p',text:'进度条不是装饰，它回答的是这篇还剩多少。因此计算基准应该是正文的高度，否则页脚会让进度提前跑满。'},
+{type:'h2',text:'计算比例'},
+{type:'p',text:'用正文容器的顶边位置减去视口顶边位置作为已滚动的距离，再除以正文总高度减去视口高度，就得到了 0 到 1 的比例。'},
+{type:'code',lang:'javascript',text:'function getProgress() {\n  const rect = body.getBoundingClientRect();\n  const total = rect.height - window.innerHeight;\n  if (total <= 0) return 1;\n  const passed = -rect.top;\n  return Math.min(1, Math.max(0, passed / total));\n}'},
+{type:'h2',text:'用 transform 而不是 width'},
+{type:'p',text:'把进度条做成 scaleX 的变换，比不断修改 width 性能更好，因为它不会触发布局，只做合成层的工作。'},
+{type:'code',lang:'css',text:'.reading-progress__bar {\n  height: 100%;\n  width: 100%;\n  transform: scaleX(0);\n  transform-origin: left;\n}'},
+{type:'quote',text:'滚动事件频率很高，用 requestAnimationFrame 合并多次触发，就能保持跟手同时压下开销。'}]},
+{id:'year-in-review',title:'写给自己的年度总结',summary:'不追热点、不列数字，只记录这一年真正改变了工作方式的几个瞬间。',date:'2023-12-30',dateText:'2023 年 12 月 30 日',readingTime:4,tags:['随笔'],cover:{from:'neutral',to:'soft'},body:[
+{type:'h2',text:'一个没有主角的年份'},
+{type:'p',text:'回头看这一年，没有某个项目一锤定音，也没有一次彻底推翻重来。大部分时间都花在把东西做得更顺手这类小事上，而这些小事累积成了习惯。'},
+{type:'h2',text:'三个留下来的改变'},
+{type:'ol',items:['把阅读和写作固定在同一时段，效率比熬夜更稳定','所有重复操作都收敛成了脚本，桌面干净了很多','开始认真写注释，写给三个月后的自己看']},
+{type:'h2',text:'还没做好的部分'},
+{type:'p',text:'输出仍然不稳定，好的时候一个月能写三篇，差的时候一篇也没有。问题不在时间，而在于我总想把每篇写完整，于是迟迟不动笔。'},
+{type:'quote',text:'允许自己写得不完美，往往更容易开始。'}]}];
+</script>
+</body>
+</html>
