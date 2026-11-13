@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="沈屿，独立设计师与前端开发者。界面设计、品牌视觉与前端实现，作品案例与联系方式。">
+<meta name="theme-color" content="#0f1115">
+<title>沈屿 — 独立设计师与前端开发者</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body id="top">
+
+<a class="skip-link" href="#main">跳转到主要内容</a>
+
+<header class="site-header">
+  <!-- 纯 CSS 导航状态锚点：使用 :target 实现展开与点击链接后自动收起 -->
+  <span id="nav-open" class="nav-state" aria-hidden="true"></span>
+  <span id="nav-close" class="nav-state" aria-hidden="true"></span>
+
+  <div class="container header-inner">
+    <a class="brand" href="#top" aria-label="沈屿，返回首页">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 15.5 12 5.5l7 10"></path>
+          <path d="M8.6 19h6.8"></path>
+        </svg>
+      </span>
+      <span class="brand-text">
+        <strong>沈屿</strong>
+        <em>Shen Yu</em>
+      </span>
+    </a>
+
+    <a class="burger burger-open" href="#nav-open" aria-label="打开导航菜单" aria-controls="site-nav">
+      <span class="burger-line" aria-hidden="true"></span>
+      <span class="burger-line" aria-hidden="true"></span>
+      <span class="burger-line" aria-hidden="true"></span>
+    </a>
+    <a class="burger burger-close" href="#nav-close" aria-label="关闭导航菜单" aria-controls="site-nav">
+      <span class="burger-line" aria-hidden="true"></span>
+      <span class="burger-line" aria-hidden="true"></span>
+      <span class="burger-line" aria-hidden="true"></span>
+    </a>
+
+    <nav class="nav-menu" id="site-nav" aria-label="主导航">
+      <a class="nav-link" href="#about">关于</a>
+      <a class="nav-link" href="#works">作品</a>
+      <a class="nav-link" href="#contact">联系</a>
+      <a class="btn btn-primary btn-sm nav-cta" href="#contact">开始合作</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span>可接新项目 · 2025 年第四季度</p>
+        <h1 id="hero-title">用设计的语言<br>把复杂想法<br><span class="accent">做成清晰的产品</span></h1>
+        <p class="hero-sub">我是沈屿，一名独立设计师与前端开发者。八年里与创业团队一起打磨界面系统，让每一次点击都更笃定、更快，也更容易被理解。</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#works">
+            查看作品
+            <svg class="btn-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M5 12h13"></path><path d="m12.5 5.5 6.5 6.5-6.5 6.5"></path>
+            </svg>
+          </a>
+          <a class="btn btn-ghost" href="#contact">联系我</a>
+        </div>
+        <ul class="hero-meta">
+          <li>杭州 · 可远程协作</li>
+          <li>时区 GMT+8</li>
+          <li>平均 24 小时内回复</li>
+        </ul>
+      </div>
+
+      <div class="hero-visual">
+        <div class="art" role="img" aria-label="抽象几何插画：由层叠的半透明面板、圆形与线条构成的界面草图">
+          <span class="art-grid" aria-hidden="true"></span>
+          <span class="art-panel" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="art-orb" aria-hidden="true"></span>
+          <span class="art-ring" aria-hidden="true"></span>
+          <span class="art-chip" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <ul class="stats">
+        <li class="stat"><strong>8</strong><span>年独立执业</span></li>
+        <li class="stat"><strong>42</strong><span>个交付项目</span></li>
+        <li class="stat"><strong>18</strong><span>家合作团队</span></li>
+        <li class="stat"><strong>12</strong><span>项行业认可</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section about" id="about" aria-labelledby="about-title">
+    <div class="container about-grid">
+      <div class="about-copy">
+        <p class="kicker">关于我</p>
+        <h2 id="about-title">设计与代码之间，<br>只差一次认真沟通</h2>
+        <p>白天写设计规范与界面结构，晚上把它们变成能跑的代码。用同一套思考方式对待像素和逻辑，所以我交付的不只是好看的稿子，而是能长期维护的界面系统。</p>
+        <p>合作对象从三人创业团队到上市公司，我习惯先把问题弄清楚，再决定用什么形式呈现。交付前会附带一份可落地的规范文档，让团队接得住，也改得动。</p>
+        <ul class="tag-list" aria-label="能力关键词">
+          <li>设计系统</li>
+          <li>界面与交互</li>
+          <li>品牌视觉</li>
+          <li>前端实现</li>
+          <li>动效细节</li>
+          <li>无障碍</li>
+        </ul>
+      </div>
+
+      <div class="skills" aria-labelledby="skills-title">
+        <h3 class="skills-title" id="skills-title">能力分布</h3>
+        <ul class="skill-list">
+          <li class="skill">
+            <div class="skill-head"><span>界面与交互设计</span><span class="skill-value">94%</span></div>
+            <div class="skill-bar"><span style="width:94%"></span></div>
+          </li>
+          <li class="skill">
+            <div class="skill-head"><span>前端实现</span><span class="skill-value">88%</span></div>
+            <div class="skill-bar"><span style="width:88%"></span></div>
+          </li>
+          <li class="skill">
+            <div class="skill-head"><span>品牌与视觉</span><span class="skill-value">76%</span></div>
+            <div class="skill-bar"><span style="width:76%"></span></div>
+          </li>
+        </ul>
+        <p class="skills-note">过去一年的工作重心：复杂表单、数据密集型界面，以及品牌官网的动效叙事。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section works" id="works" aria-labelledby="works-title">
+    <div class="container">
+      <header class="section-head">
+        <div>
+          <p class="kicker">作品</p>
+          <h2 id="works-title">精选项目</h2>
+        </div>
+        <p class="section-desc">四个能代表我工作方式的项目：从问题定义、视觉方案到可交付的代码，一次做完。</p>
+      </header>
+
+      <ul class="work-grid">
+        <li class="work-card">
+          <div class="thumb thumb-1" role="img" aria-label="作品一缩略图：深色渐变背景上的半透明面板与蓝色圆形">
+            <span class="work-index">01</span>
+            <span class="t-panel" aria-hidden="true"></span>
+            <span class="t-bars" aria-hidden="true"></span>
+            <span class="t-orb" aria-hidden="true"></span>
+          </div>
+          <div class="work-body">
+            <h3 class="work-title">Halo 数据控制台</h3>
+            <p class="work-desc">为 SaaS 团队重构仪表盘，把 120 多个零散页面收敛成一套可扩展的组件与栅格规范。</p>
+            <ul class="work-tags">
+              <li>设计系统</li>
+              <li>数据可视化</li>
+              <li>前端实现</li>
+            </ul>
+            <div class="work-foot">
+              <span class="work-type">产品设计 · 2024</span>
+              <a class="work-more" href="#contact">
+                查看案例
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h13"></path><path d="m12.5 5.5 6.5 6.5-6.5 6.5"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </li>
+
+        <li class="work-card">
+          <div class="thumb thumb-2" role="img" aria-label="作品二缩略图：深色网格背景上的蓝色圆环与半透明面板">
+            <span class="work-index">02</span>
+            <span class="t-ring" aria-hidden="true"></span>
+            <span class="t-panel" aria-hidden="true"></span>
+            <span class="t-bars" aria-hidden="true"></span>
+          </div>
+          <div class="work-body">
+            <h3 class="work-title">Vela 品牌官网</h3>
+            <p class="work-desc">从品牌定位到上线动效，用一套克制的蓝色语言，讲述一家航天初创公司的技术故事。</p>
+            <ul class="work-tags">
+              <li>品牌视觉</li>
+              <li>叙事动效</li>
+              <li>前端开发</li>
+            </ul>
+            <div class="work-foot">
+              <span class="work-type">品牌官网 · 2024</span>
+              <a class="work-more" href="#contact">
+                查看案例
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h13"></path><path d="m12.5 5.5 6.5 6.5-6.5 6.5"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </li>
+
+        <li class="work-card">
+          <div class="thumb thumb-3" role="img" aria-label="作品三缩略图：浅蓝背景上的白色卡片与蓝色圆形">
+            <span class="work-index">03</span>
+            <span class="t-panel" aria-hidden="true"></span>
+            <span class="t-orb" aria-hidden="true"></span>
+            <span class="t-bars" aria-hidden="true"></span>
+          </div>
+          <div class="work-body">
+            <h3 class="work-title">Note 协作应用</h3>
+            <p class="work-desc">移动优先的协作编辑器，离线同步与冲突提示都做到毫秒级响应，弱网环境同样可用。</p>
+            <ul class="work-tags">
+              <li>交互设计</li>
+              <li>移动端</li>
+              <li>离线同步</li>
+            </ul>
+            <div class="work-foot">
+              <span class="work-type">产品设计 · 2023</span>
+              <a class="work-more" href="#contact">
+                查看案例
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h13"></path><path d="m12.5 5.5 6.5 6.5-6.5 6.5"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </li>
+
+        <li class="work-card">
+          <div class="thumb thumb-4" role="img" aria-label="作品四缩略图：浅蓝背景上的深色卡片与蓝色圆形">
+            <span class="work-index">04</span>
+            <span class="t-panel" aria-hidden="true"></span>
+            <span class="t-orb" aria-hidden="true"></span>
+            <span class="t-bars" aria-hidden="true"></span>
+          </div>
+          <div class="work-body">
+            <h3 class="work-title">Atelier 电商改版</h3>
+            <p class="work-desc">重构商品详情与结算流程，转化率提升 27%，同时把移动端首屏加载压到 1.1 秒。</p>
+            <ul class="work-tags">
+              <li>电商体验</li>
+              <li>性能优化</li>
+              <li>设计规范</li>
+            </ul>
+            <div class="work-foot">
+              <span class="work-type">电商 · 2023</span>
+              <a class="work-more" href="#contact">
+                查看案例
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h13"></path><path d="m12.5 5.5 6.5 6.5-6.5 6.5"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer" id="contact">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <span class="brand-mark brand-mark-lg" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 15.5 12 5.5l7 10"></path>
+          <path d="M8.6 19h6.8"></path>
+        </svg>
+      </span>
+      <p class="footer-name">沈屿</p>
+      <p class="footer-line">独立设计师与前端开发者<br>把复杂的问题，做成清晰的产品。</p>
+    </div>
+
+    <div class="footer-col">
+      <h2 class="footer-title">联系</h2>
+      <a class="footer-mail" href="mailto:hello@shenyu.design">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="5" width="18" height="14" rx="3"></rect>
+          <path d="m4 7 8 6 8-6"></path>
+        </svg>
+        hello@shenyu.design
+      </a>
+      <p class="footer-note">工作日 10:00 – 19:00，通常在 24 小时内回复。</p>
+    </div>
+
+    <div class="footer-col">
+      <h2 class="footer-title">Elsewhere</h2>
+      <ul class="footer-social">
+        <li><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        <li><a href="https://dribbble.com/" target="_blank" rel="noopener noreferrer">Dribbble</a></li>
+        <li><a href="https://www.zhihu.com/" target="_blank" rel="noopener noreferrer">知乎专栏</a></li>
+      </ul>
+      <p class="footer-note">也接受长期远程合作与设计顾问咨询。</p>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <p>© 2025 沈屿 · 保留所有权利</p>
+    <a class="to-top" href="#top">
+      回到顶部
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 19V6"></path><path d="m5.5 11.5 6.5-6 6.5 6"></path>
+      </svg>
+    </a>
+  </div>
+</footer>
+
+</body>
+</html>
