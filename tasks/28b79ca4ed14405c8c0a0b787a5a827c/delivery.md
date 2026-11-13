@@ -1,0 +1,707 @@
+```text
+file=index.html
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>你好 · 个人博客</title>
+<style>
+  :root{
+    --primary:#2F5BEA;
+    --primary-hover:#2447C4;
+    --primary-soft:#EEF2FF;
+    --primary-soft-dark:#1A2340;
+    --bg:#FFFFFF;
+    --bg-alt:#F7F8FA;
+    --surface:#FFFFFF;
+    --text:#111318;
+    --text-soft:#4A5058;
+    --muted:#8A9099;
+    --line:#E4E7EC;
+    --line-strong:#D3D8E0;
+    --shadow-sm:0 1px 2px rgba(17,19,24,.04), 0 1px 3px rgba(17,19,24,.03);
+    --shadow-md:0 6px 16px rgba(17,19,24,.07), 0 2px 4px rgba(17,19,24,.04);
+    --shadow-lg:0 14px 32px rgba(17,19,24,.10), 0 4px 8px rgba(17,19,24,.05);
+    --r-sm:12px;
+    --r-md:16px;
+    --r-lg:999px;
+    --nav-h:64px;
+    --maxw:1120px;
+    --ease:cubic-bezier(.22,.61,.36,1);
+  }
+  html[data-theme="dark"]{
+    --primary:#6E8BFF;
+    --primary-hover:#8AA2FF;
+    --primary-soft:#1A2340;
+    --primary-soft-dark:#141B30;
+    --bg:#0F1115;
+    --bg-alt:#131620;
+    --surface:#161A22;
+    --text:#E6E8EE;
+    --text-soft:#B4BAC5;
+    --muted:#8A9099;
+    --line:#242A35;
+    --line-strong:#2F3644;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.35);
+    --shadow-md:0 8px 20px rgba(0,0,0,.40);
+    --shadow-lg:0 16px 36px rgba(0,0,0,.48);
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-behavior:smooth;scroll-padding-top:calc(var(--nav-h) + 16px);}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    transition:background-color .3s var(--ease), color .3s var(--ease);
+    overflow-x:hidden;
+  }
+  img{display:block;max-width:100%;}
+  a{color:inherit;text-decoration:none;}
+  button{font:inherit;color:inherit;}
+
+  .wrap{width:100%;max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);
+    background:color-mix(in srgb, var(--bg) 78%, transparent);
+    backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid transparent;
+    transition:border-color .25s var(--ease), background-color .25s var(--ease), box-shadow .25s var(--ease);
+  }
+  .nav.scrolled{border-bottom-color:var(--line);box-shadow:var(--shadow-sm);}
+  .nav-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;letter-spacing:.5px;}
+  .logo .dot{width:8px;height:8px;border-radius:50%;background:var(--primary);}
+  .nav-links{display:flex;align-items:center;gap:4px;}
+  .nav-links a{
+    position:relative;padding:8px 14px;border-radius:var(--r-lg);
+    font-size:14.5px;color:var(--text-soft);
+    transition:color .2s var(--ease), background-color .2s var(--ease);
+  }
+  .nav-links a:hover{color:var(--text);background:var(--bg-alt);}
+  .nav-links a.active{color:var(--primary);font-weight:600;}
+  .nav-links a.active::after{
+    content:"";position:absolute;left:14px;right:14px;bottom:2px;height:2px;border-radius:2px;background:var(--primary);
+  }
+  .nav-actions{display:flex;align-items:center;gap:8px;}
+  .icon-btn{
+    width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);
+    cursor:pointer;transition:all .2s var(--ease);
+  }
+  .icon-btn:hover{border-color:var(--primary);color:var(--primary);box-shadow:var(--shadow-sm);}
+  .icon-btn:active{transform:translateY(1px);}
+  .icon-btn:focus-visible{outline:2px solid var(--primary);outline-offset:2px;}
+  .icon-btn svg{width:18px;height:18px;}
+  .theme-btn .moon{display:none;}
+  html[data-theme="dark"] .theme-btn .moon{display:block;}
+  html[data-theme="dark"] .theme-btn .sun{display:none;}
+  .menu-btn{display:none;}
+
+  /* mobile dropdown */
+  .mobile-menu{
+    position:fixed;top:var(--nav-h);left:12px;right:12px;z-index:99;
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);
+    box-shadow:var(--shadow-lg);padding:8px;display:none;
+  }
+  .mobile-menu.open{display:block;animation:drop .22s var(--ease);}
+  @keyframes drop{from{opacity:0;transform:translateY(-8px);}to{opacity:1;transform:none;}}
+  .mobile-menu a{display:block;padding:11px 14px;border-radius:var(--r-sm);font-size:15px;color:var(--text-soft);}
+  .mobile-menu a:hover,.mobile-menu a.active{background:var(--primary-soft);color:var(--primary);}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:calc(var(--nav-h) + 72px) 0 88px;}
+  .hero-card{
+    display:flex;align-items:center;gap:44px;
+    padding:46px;border:1px solid var(--line);border-radius:24px;
+    background:var(--surface);box-shadow:var(--shadow-md);
+  }
+  .avatar{
+    position:relative;flex:0 0 auto;width:168px;height:168px;border-radius:50%;
+    background:var(--bg-alt);border:1px solid var(--line);overflow:hidden;
+    box-shadow:var(--shadow-md);
+  }
+  .avatar::after{
+    content:"";position:absolute;inset:0;border-radius:50%;
+    box-shadow:inset 0 0 0 4px color-mix(in srgb, var(--primary) 16%, transparent);
+  }
+  .avatar img{width:100%;height:100%;object-fit:cover;}
+  .avatar .fallback{width:100%;height:100%;display:none;align-items:center;justify-content:center;background:var(--primary-soft);}
+  .avatar .fallback svg{width:88px;height:88px;color:var(--primary);}
+  .avatar.loading .fallback{display:flex;}
+  .avatar.fallback-mode img{display:none;}
+  .avatar.fallback-mode .fallback{display:flex;}
+  .hero-text h1{
+    margin:0 0 10px;font-size:46px;line-height:1.15;letter-spacing:-.5px;font-weight:800;
+  }
+  .hero-text .sign{margin:0 0 18px;font-size:17px;color:var(--text-soft);max-width:520px;}
+  .meta-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+  .qq-pill{
+    display:inline-flex;align-items:center;gap:8px;padding:6px 14px 6px 10px;
+    background:var(--primary-soft);color:var(--primary);border-radius:var(--r-lg);
+    font-size:14px;font-weight:600;letter-spacing:.3px;
+  }
+  .qq-pill svg{width:18px;height:18px;}
+  .socials{display:flex;gap:8px;}
+  .social{
+    width:36px;height:36px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);color:var(--muted);background:var(--surface);
+    transition:all .2s var(--ease);
+  }
+  .social:hover{color:var(--primary);border-color:var(--primary);transform:translateY(-2px);box-shadow:var(--shadow-sm);}
+  .social svg{width:17px;height:17px;}
+  .hero-actions{display:flex;gap:12px;flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:var(--r-lg);
+    font-size:15px;font-weight:600;border:1px solid transparent;cursor:pointer;
+    transition:all .2s var(--ease);
+  }
+  .btn-primary{background:var(--primary);color:#fff;box-shadow:0 4px 14px color-mix(in srgb,var(--primary) 30%, transparent);}
+  .btn-primary:hover{background:var(--primary-hover);transform:translateY(-2px);box-shadow:0 8px 20px color-mix(in srgb,var(--primary) 34%, transparent);}
+  .btn-primary:active{transform:translateY(0);}
+  .btn-ghost{background:var(--surface);border-color:var(--line-strong);color:var(--text);}
+  .btn-ghost:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-soft);}
+  .btn:focus-visible{outline:2px solid var(--primary);outline-offset:3px;}
+  .btn svg{width:16px;height:16px;}
+
+  /* ---------- SECTION ---------- */
+  section{scroll-margin-top:calc(var(--nav-h) + 20px);}
+  .sec{padding:36px 0 76px;}
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:28px;}
+  .sec-head h2{margin:0;font-size:28px;font-weight:800;letter-spacing:-.3px;}
+  .sec-head .sub{margin:6px 0 0;color:var(--muted);font-size:14.5px;}
+  .sec-link{font-size:14px;color:var(--muted);display:inline-flex;align-items:center;gap:6px;transition:color .2s var(--ease);}
+  .sec-link:hover{color:var(--primary);}
+  .sec-link svg{width:15px;height:15px;}
+
+  /* ---------- POSTS ---------- */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .card{
+    border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);
+    padding:24px;box-shadow:var(--shadow-sm);
+    transition:transform .25s var(--ease), box-shadow .25s var(--ease), border-color .25s var(--ease);
+    display:flex;flex-direction:column;gap:12px;
+  }
+  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--line-strong);}
+  .card-top{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .tag{
+    font-size:12.5px;font-weight:600;color:var(--primary);background:var(--primary-soft);
+    padding:4px 11px;border-radius:var(--r-lg);
+  }
+  .date{font-size:13px;color:var(--muted);}
+  .card h3{margin:0;font-size:19px;font-weight:700;letter-spacing:-.2px;line-height:1.45;}
+  .card p{margin:0;color:var(--text-soft);font-size:14.5px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .card-foot{
+    margin-top:auto;padding-top:14px;border-top:1px solid var(--line);
+    display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:13px;
+  }
+  .readtime{display:inline-flex;align-items:center;gap:6px;}
+  .readtime svg{width:15px;height:15px;}
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:20px;}
+  .panel{
+    border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);
+    padding:30px;box-shadow:var(--shadow-sm);
+  }
+  .panel h3{margin:0 0 14px;font-size:18px;font-weight:700;}
+  .panel p{margin:0 0 14px;color:var(--text-soft);font-size:15px;}
+  .panel p:last-child{margin-bottom:0;}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;}
+  .chip{
+    padding:7px 15px;border-radius:var(--r-lg);border:1px solid var(--line-strong);
+    font-size:13.5px;color:var(--text-soft);background:var(--bg-alt);
+    transition:all .2s var(--ease);
+  }
+  .chip:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-soft);}
+
+  /* ---------- GUESTBOOK ---------- */
+  .guest-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;}
+  .form-row{display:grid;grid-template-columns:200px 1fr;gap:12px;}
+  .field{
+    width:100%;padding:11px 14px;border:1px solid var(--line-strong);border-radius:var(--r-sm);
+    background:var(--bg);color:var(--text);font-size:14.5px;transition:border-color .2s var(--ease), box-shadow .2s var(--ease);
+  }
+  .field::placeholder{color:var(--muted);}
+  .field:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px color-mix(in srgb,var(--primary) 16%, transparent);}
+  textarea.field{min-height:96px;resize:vertical;line-height:1.6;}
+  .form-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:16px;}
+  .toast{
+    font-size:13.5px;color:var(--primary);opacity:0;transition:opacity .25s var(--ease);
+    display:inline-flex;align-items:center;gap:6px;
+  }
+  .toast.show{opacity:1;}
+  .toast svg{width:15px;height:15px;}
+  .msg-list{max-height:340px;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding-right:4px;}
+  .msg-list::-webkit-scrollbar{width:6px;}
+  .msg-list::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:3px;}
+  .msg{border:1px solid var(--line);border-radius:var(--r-sm);padding:14px 16px;background:var(--bg-alt);animation:fadeUp .3s var(--ease);}
+  .msg-head{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+  .msg-avatar{
+    width:30px;height:30px;border-radius:50%;background:var(--primary-soft);color:var(--primary);
+    display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;
+  }
+  .msg-name{font-size:14px;font-weight:600;}
+  .msg-time{font-size:12.5px;color:var(--muted);margin-left:auto;}
+  .msg-body{margin:0;font-size:14.5px;color:var(--text-soft);white-space:pre-wrap;word-break:break-word;}
+  .empty{color:var(--muted);font-size:14px;text-align:center;padding:28px 10px;border:1px dashed var(--line-strong);border-radius:var(--r-sm);}
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line);background:var(--bg-alt);padding:34px 0;}
+  .foot-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .foot-inner p{margin:0;font-size:13.5px;color:var(--muted);}
+  .to-top{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;color:var(--muted);transition:color .2s var(--ease);}
+  .to-top:hover{color:var(--primary);}
+  .to-top svg{width:15px;height:15px;}
+
+  /* ---------- REVEAL ---------- */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s var(--ease), transform .6s var(--ease);}
+  .reveal.in{opacity:1;transform:none;}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 900px){
+    .wrap{padding:0 18px;}
+    .nav-links{display:none;}
+    .menu-btn{display:inline-flex;}
+    .hero{padding:calc(var(--nav-h) + 40px) 0 60px;}
+    .hero-card{flex-direction:column;text-align:center;padding:32px 24px;gap:24px;border-radius:20px;}
+    .avatar{width:132px;height:132px;}
+    .hero-text h1{font-size:36px;}
+    .meta-row{justify-content:center;}
+    .hero-actions{justify-content:center;}
+    .grid{grid-template-columns:1fr;}
+    .about-grid{grid-template-columns:1fr;}
+    .guest-grid{grid-template-columns:1fr;}
+    .form-row{grid-template-columns:1fr;}
+    .form-foot{flex-direction:column-reverse;align-items:stretch;gap:10px;}
+    .form-foot .btn{justify-content:center;}
+    .sec{padding:24px 0 56px;}
+    .sec-head h2{font-size:24px;}
+    .panel{padding:24px;}
+  }
+  @media (max-width: 420px){
+    .hero-text h1{font-size:32px;}
+    .sec-head{flex-direction:column;align-items:flex-start;}
+    .btn{padding:10px 18px;font-size:14px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#home" class="logo"><span class="dot"></span>你好</a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#home" data-target="home" class="active">首页</a>
+      <a href="#posts" data-target="posts">文章</a>
+      <a href="#about" data-target="about">关于我</a>
+      <a href="#guestbook" data-target="guestbook">留言</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn theme-btn" id="themeBtn" type="button" aria-label="切换主题" title="切换深浅色">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.4v2.2M12 19.4v2.2M4.2 12H2M22 12h-2.2M5.6 5.6 4 4M20 20l-1.6-1.6M18.4 5.6 20 4M4 20l1.6-1.6"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11z"/></svg>
+      </button>
+      <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="打开菜单" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home" data-target="home" class="active">首页</a>
+  <a href="#posts" data-target="posts">文章</a>
+  <a href="#about" data-target="about">关于我</a>
+  <a href="#guestbook" data-target="guestbook">留言</a>
+</div>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="wrap">
+      <div class="hero-card reveal">
+        <div class="avatar loading" id="avatarBox">
+          <img id="avatarImg" alt="QQ 头像" referrerpolicy="no-referrer"
+               src="https://q1.qlogo.cn/g?b=qq&nk=3627236036&s=640"
+               onerror="this.style.display='none';document.getElementById('avatarBox').classList.remove('loading');document.getElementById('avatarBox').classList.add('fallback-mode');"
+               onload="document.getElementById('avatarBox').classList.remove('loading');">
+          <div class="fallback">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="32" cy="24" r="11"/>
+              <path d="M12 56c0-11 9-18 20-18s20 7 20 18"/>
+            </svg>
+          </div>
+        </div>
+        <div class="hero-text">
+          <h1>你好</h1>
+          <p class="sign">写代码，也写生活。把每一次思考都整理成可以回看的笔记。</p>
+          <div class="meta-row">
+            <span class="qq-pill">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.9 2 2.8 5.7 2.8 10.2c0 2.5 1.4 4.7 3.6 6.1l-.8 3.3c-.1.5.5.9.9.6l3.1-2c.8.1 1.6.2 2.4.2 5.1 0 9.2-3.7 9.2-8.2S17.1 2 12 2zM8.9 11.6a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6zm6.2 0a1.3 1.3 0 1 1 0-2.6 1.3 1.3 0 0 1 0 2.6z"/></svg>
+              QQ 3627236036
+            </span>
+            <span class="socials">
+              <a class="social" href="#" title="邮件" aria-label="邮件">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
+              </a>
+              <a class="social" href="#" title="GitHub" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.3-4.3-2.2-6-2.7m12 5v-3.4c0-1 .1-1.4-.5-2 2.3-.3 4.5-1.1 4.5-5a3.9 3.9 0 0 0-1.1-2.7 3.6 3.6 0 0 0-.1-2.7s-.9-.3-3 1.1a10.3 10.3 0 0 0-5.4 0C6.5 5.5 5.6 5.8 5.6 5.8a3.6 3.6 0 0 0-.1 2.7A3.9 3.9 0 0 0 4.4 11.2c0 3.9 2.2 4.7 4.5 5-.4.4-.5.7-.5 1v3.5"/></svg>
+              </a>
+              <a class="social" href="#guestbook" title="留言" aria-label="留言">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-8 8H4l2.3-2.9A8 8 0 1 1 21 12z"/></svg>
+              </a>
+            </span>
+          </div>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#guestbook">
+              联系我
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+            </a>
+            <a class="btn btn-ghost" href="#posts">
+              查看文章
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v13M6 13l6 6 6-6"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POSTS -->
+  <section class="sec" id="posts">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <h2>我的文章</h2>
+          <p class="sub">记录一些值得回头看的东西</p>
+        </div>
+        <a class="sec-link" href="#posts">查看全部
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="grid" id="postGrid"></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="sec" id="about">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <h2>关于我</h2>
+          <p class="sub">一个长期主义者，喜欢把复杂的事做简单</p>
+        </div>
+      </div>
+      <div class="about-grid">
+        <div class="panel reveal">
+          <h3>简介</h3>
+          <p>你好，我是一名热爱折腾的开发者。白天写代码、画界面，晚上写字、拍照、听播客，喜欢把日常里的碎片整理成结构化的知识。</p>
+          <p>我相信好的产品来自克制的设计，也相信长期输出比短期爆发更重要。这个博客就是我的小角落，用来存放技术笔记、生活随笔和一些不太成熟的想法。</p>
+          <p>如果你看到这里，欢迎在下方留言聊聊，我会尽量回复。</p>
+        </div>
+        <div class="panel reveal">
+          <h3>技能</h3>
+          <div class="chips">
+            <span class="chip">HTML</span>
+            <span class="chip">CSS</span>
+            <span class="chip">JavaScript</span>
+            <span class="chip">TypeScript</span>
+            <span class="chip">Vue</span>
+            <span class="chip">React</span>
+            <span class="chip">UI 设计</span>
+            <span class="chip">Node.js</span>
+            <span class="chip">Git</span>
+            <span class="chip">性能优化</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUESTBOOK -->
+  <section class="sec" id="guestbook">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div>
+          <h2>留言</h2>
+          <p class="sub">留下你的想法，我会一条一条看</p>
+        </div>
+      </div>
+      <div class="guest-grid">
+        <form class="panel reveal" id="msgForm" novalidate>
+          <h3>写留言</h3>
+          <div class="form-row">
+            <input class="field" id="msgName" type="text" placeholder="你的昵称" maxlength="20" autocomplete="nickname">
+            <textarea class="field" id="msgText" placeholder="说点什么吧..." maxlength="300"></textarea>
+          </div>
+          <div class="form-foot">
+            <span class="toast" id="toast">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4 4L19 7"/></svg>
+              提交成功
+            </span>
+            <button class="btn btn-primary" type="submit">提交留言</button>
+          </div>
+        </form>
+        <div class="panel reveal">
+          <h3>全部留言 <span id="msgCount" style="color:var(--muted);font-weight:500;font-size:14px;">(0)</span></h3>
+          <div class="msg-list" id="msgList">
+            <div class="empty">还没有留言，来写第一条吧</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <p>© <span id="year">2025</span> 你好 · 用心记录每一篇笔记</p>
+    <a class="to-top" href="#home" id="toTop">
+      回到顶部
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V6M6 12l6-6 6 6"/></svg>
+    </a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ---------- Theme ---------- */
+  var root = document.documentElement;
+  var themeBtn = document.getElementById('themeBtn');
+  var saved = null;
+  try { saved = localStorage.getItem('blog-theme'); } catch (e) { saved = null; }
+  if (saved === 'dark' || saved === 'light') {
+    root.setAttribute('data-theme', saved);
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    root.setAttribute('data-theme', 'dark');
+  }
+  themeBtn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('blog-theme', next); } catch (e) {}
+  });
+
+  /* ---------- Avatar fallback ---------- */
+  var avatarBox = document.getElementById('avatarBox');
+  var avatarImg = document.getElementById('avatarImg');
+  function useFallback() {
+    avatarBox.classList.remove('loading');
+    avatarBox.classList.add('fallback-mode');
+    avatarImg.style.display = 'none';
+  }
+  avatarImg.addEventListener('error', useFallback);
+  avatarImg.addEventListener('load', function () {
+    avatarBox.classList.remove('loading');
+  });
+  setTimeout(function () {
+    if (avatarImg.complete && avatarImg.naturalWidth === 0) useFallback();
+  }, 4000);
+
+  /* ---------- Posts ---------- */
+  var posts = [
+    {
+      title: '用 CSS 变量搭建一套克制的设计系统',
+      date: '2025-03-18',
+      tag: '前端',
+      read: '3 分钟',
+      summary: '从颜色、间距到圆角与阴影，用统一的变量把视觉规范落到代码里，避免设计稿与实现之间的偏差。'
+    },
+    {
+      title: '个人博客的第二版：一个页面能有多简单',
+      date: '2025-02-06',
+      tag: '随笔',
+      read: '5 分钟',
+      summary: '删掉所有多余的功能之后，只留下头像、文章、关于和留言。轻量、可维护、打开即用。'
+    },
+    {
+      title: '深浅色主题切换的几种实现方式',
+      date: '2025-01-22',
+      tag: '交互',
+      read: '4 分钟',
+      summary: '对比 data-theme 属性、CSS 变量与 prefers-color-scheme 的配合方式，并处理刷新后的状态保持问题。'
+    },
+    {
+      title: 'IntersectionObserver 实现的滚动进场动画',
+      date: '2024-12-30',
+      tag: 'JavaScript',
+      read: '2 分钟',
+      summary: '用浏览器原生 API 监听元素进入视口，触发一次性的淡入上移效果，性能比滚动事件更稳定。'
+    }
+  ];
+  var grid = document.getElementById('postGrid');
+  var clockSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 1.8"/></svg>';
+  posts.forEach(function (p) {
+    var card = document.createElement('article');
+    card.className = 'card reveal';
+    card.innerHTML =
+      '<div class="card-top"><span class="tag"></span><span class="date"></span></div>' +
+      '<h3></h3>' +
+      '<p></p>' +
+      '<div class="card-foot"><span class="readtime">' + clockSvg + '阅读 ' + p.read + '</span>' +
+      '<span class="more">阅读全文</span></div>';
+    card.querySelector('.tag').textContent = p.tag;
+    card.querySelector('.date').textContent = p.date;
+    card.querySelector('h3').textContent = p.title;
+    card.querySelector('p').textContent = p.summary;
+    card.addEventListener('click', function () {
+      card.querySelector('h3').textContent = p.title + '（示例内容，暂未开放阅读）';
+    });
+    grid.appendChild(card);
+  });
+
+  /* ---------- Guestbook ---------- */
+  var form = document.getElementById('msgForm');
+  var nameInput = document.getElementById('msgName');
+  var textInput = document.getElementById('msgText');
+  var list = document.getElementById('msgList');
+  var count = document.getElementById('msgCount');
+  var toast = document.getElementById('toast');
+  var messages = [];
+
+  function fmtTime(d) {
+    var p = function (n) { return (n < 10 ? '0' : '') + n; };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate()) + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+
+  function render() {
+    list.innerHTML = '';
+    if (!messages.length) {
+      var empty = document.createElement('div');
+      empty.className = 'empty';
+      empty.textContent = '还没有留言，来写第一条吧';
+      list.appendChild(empty);
+    } else {
+      messages.forEach(function (m) {
+        var item = document.createElement('div');
+        item.className = 'msg';
+        var head = document.createElement('div');
+        head.className = 'msg-head';
+        var av = document.createElement('span');
+        av.className = 'msg-avatar';
+        av.textContent = m.name.slice(0, 1).toUpperCase();
+        var nm = document.createElement('span');
+        nm.className = 'msg-name';
+        nm.textContent = m.name;
+        var tm = document.createElement('span');
+        tm.className = 'msg-time';
+        tm.textContent = m.time;
+        head.appendChild(av); head.appendChild(nm); head.appendChild(tm);
+        var body = document.createElement('p');
+        body.className = 'msg-body';
+        body.textContent = m.text;
+        item.appendChild(head); item.appendChild(body);
+        list.appendChild(item);
+      });
+    }
+    count.textContent = '(' + messages.length + ')';
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = nameInput.value.trim();
+    var text = textInput.value.trim();
+    if (!name || !text) {
+      (name ? textInput : nameInput).focus();
+      toast.textContent = '昵称与留言内容都需要填写';
+      toast.classList.add('show');
+      setTimeout(function () { toast.classList.remove('show'); }, 2200);
+      return;
+    }
+    messages.unshift({ name: name, text: text, time: fmtTime(new Date()) });
+    render();
+    nameInput.value = '';
+    textInput.value = '';
+    toast.textContent = '提交成功';
+    toast.classList.add('show');
+    setTimeout(function () { toast.classList.remove('show'); }, 2200);
+  });
+
+  render();
+
+  /* ---------- Nav scroll & active state ---------- */
+  var nav = document.getElementById('nav');
+  var sections = ['home', 'posts', 'about', 'guestbook'];
+  var navAnchors = Array.prototype.slice.call(document.querySelectorAll('[data-target]'));
+  function onScroll() {
+    if (window.scrollY > 8) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+    var pos = window.scrollY + (nav.offsetHeight + 90);
+    var current = sections[0];
+    sections.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && el.offsetTop <= pos) current = id;
+    });
+    navAnchors.forEach(function (a) {
+      a.classList.toggle('active', a.getAttribute('data-target') === current);
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  /* ---------- Mobile menu ---------- */
+  var menuBtn = document.getElementById('menuBtn');
+  var mobileMenu = document.getElementById('mobileMenu');
+  menuBtn.addEventListener('click', function () {
+    var open = mobileMenu.classList.toggle('open');
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  mobileMenu.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () {
+      mobileMenu.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+  document.addEventListener('click', function (e) {
+    if (mobileMenu.classList.contains('open') &&
+        !mobileMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+      mobileMenu.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  /* ---------- Reveal on scroll ---------- */
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function (el, i) {
+      el.style.transitionDelay = (Math.min(i, 5) * 60) + 'ms';
+      io.observe(el);
+    });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  /* ---------- Misc ---------- */
+  document.getElementById('year').textContent = new Date().getFullYear();
+})();
+</script>
+</body>
+</html>
+
+```
