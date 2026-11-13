@@ -1,0 +1,14 @@
+{
+  "name": "screenshot-link-test",
+  "version": "1.0.0",
+  "private": true,
+  "description": "截图链路测试页面与截图采集脚本",
+  "scripts": {
+    "capture": "node scripts/capture.mjs",
+    "capture:chrome": "bash scripts/capture-chrome.sh",
+    "preview": "node scripts/make-preview.mjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.45.0"
+  }
+}

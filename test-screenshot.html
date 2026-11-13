@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>截图链路测试页面</title>
+<style>
+  /* ---------- Design tokens ---------- */
+  :root{
+    --c-primary:#2F5D62;
+    --c-primary-strong:#24494D;
+    --c-primary-soft:#E9F0F0;
+    --c-bg:#F5F7F7;
+    --c-surface:#FFFFFF;
+    --c-text:#1B2223;
+    --c-muted:#5F6B6D;
+    --c-border:#E1E6E6;
+    --c-border-strong:#CFD6D6;
+    --c-accent:#8A5A16;
+    --c-accent-soft:#FAF2E4;
+
+    --space-1:4px;
+    --space-2:8px;
+    --space-3:12px;
+    --space-4:16px;
+    --space-5:24px;
+    --space-6:32px;
+    --space-7:48px;
+    --space-8:72px;
+
+    --radius-sm:8px;
+    --radius-md:10px;
+    --radius-lg:14px;
+
+    --shadow-soft:0 1px 2px rgba(27,34,35,.05), 0 8px 24px rgba(27,34,35,.06);
+
+    --fs-xs:12px;
+    --fs-sm:13px;
+    --fs-base:15px;
+    --fs-md:17px;
+    --fs-lg:20px;
+    --fs-xl:28px;
+    --fs-2xl:38px;
+
+    --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+
+  html,body{margin:0;padding:0;}
+
+  body{
+    background:var(--c-bg);
+    color:var(--c-text);
+    font-family:var(--font-sans);
+    font-size:var(--fs-base);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  a{color:var(--c-primary);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+
+  .wrap{
+    width:100%;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 var(--space-6);
+  }
+
+  /* ---------- Header ---------- */
+  .site-header{
+    background:var(--c-surface);
+    border-bottom:1px solid var(--c-border);
+    position:sticky;
+    top:0;
+    z-index:10;
+  }
+  .header-inner{
+    display:flex;
+    align-items:center;
+    gap:var(--space-5);
+    min-height:68px;
+    flex-wrap:wrap;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:var(--space-3);
+    color:var(--c-text);
+    font-weight:600;
+    font-size:var(--fs-md);
+    letter-spacing:.2px;
+  }
+  .brand:hover{text-decoration:none;}
+  .brand-mark{
+    width:34px;height:34px;
+    flex:none;
+    display:block;
+  }
+  .nav{
+    display:flex;
+    align-items:center;
+    gap:var(--space-2);
+    margin-left:var(--space-4);
+  }
+  .nav a{
+    color:var(--c-muted);
+    font-size:var(--fs-sm);
+    padding:var(--space-2) var(--space-3);
+    border-radius:var(--radius-sm);
+    transition:background .15s ease,color .15s ease;
+  }
+  .nav a:hover{background:var(--c-bg);color:var(--c-text);text-decoration:none;}
+  .nav a[aria-current="page"]{
+    color:var(--c-primary);
+    background:var(--c-primary-soft);
+    font-weight:600;
+  }
+  .header-actions{
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:var(--space-3);
+  }
+  .avatar{
+    width:34px;height:34px;
+    border-radius:50%;
+    background:var(--c-primary-soft);
+    color:var(--c-primary);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:var(--fs-sm);
+    font-weight:600;
+    border:1px solid var(--c-border);
+    flex:none;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:var(--space-2);
+    font-family:inherit;
+    font-size:var(--fs-sm);
+    font-weight:600;
+    line-height:1;
+    padding:0 var(--space-5);
+    height:38px;
+    border-radius:var(--radius-sm);
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:background .15s ease,border-color .15s ease,color .15s ease,box-shadow .15s ease,transform .08s ease;
+    white-space:nowrap;
+  }
+  .btn:focus-visible{
+    outline:2px solid var(--c-primary);
+    outline-offset:2px;
+  }
+  .btn:active{transform:translateY(1px);}
+  .btn:disabled,.btn[aria-disabled="true"]{
+    cursor:not-allowed;
+    opacity:.55;
+    transform:none;
+  }
+  .btn-primary{
+    background:var(--c-primary);
+    color:#fff;
+    border-color:var(--c-primary);
+    box-shadow:var(--shadow-soft);
+  }
+  .btn-primary:hover:not(:disabled){background:var(--c-primary-strong);border-color:var(--c-primary-strong);}
+  .btn-primary:active:not(:disabled){background:var(--c-primary-strong);transform:translateY(1px);}
+  .btn-secondary{
+    background:var(--c-surface);
+    color:var(--c-text);
+    border-color:var(--c-border-strong);
+  }
+  .btn-secondary:hover:not(:disabled){background:var(--c-bg);border-color:var(--c-primary);color:var(--c-primary);}
+  .btn-secondary:active:not(:disabled){background:var(--c-primary-soft);}
+  .btn-ghost{
+    background:transparent;
+    color:var(--c-primary);
+    border-color:transparent;
+    padding:0 var(--space-3);
+  }
+  .btn-ghost:hover:not(:disabled){background:var(--c-primary-soft);}
+  .btn-ghost:active:not(:disabled){background:var(--c-primary-soft);color:var(--c-primary-strong);}
+  .btn-sm{height:30px;padding:0 var(--space-3);font-size:var(--fs-xs);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:var(--space-8) 0 var(--space-6);
+    text-align:center;
+  }
+  .hero h1{
+    font-size:var(--fs-2xl);
+    line-height:1.25;
+    margin:0 0 var(--space-3);
+    font-weight:700;
+    letter-spacing:-.4px;
+  }
+  .hero p{
+    margin:0 auto var(--space-5);
+    max-width:620px;
+    color:var(--c-muted);
+    font-size:var(--fs-md);
+  }
+  .hero-actions{
+    display:flex;
+    justify-content:center;
+    gap:var(--space-3);
+    flex-wrap:wrap;
+  }
+  .info-bar{
+    margin-top:var(--space-6);
+    background:var(--c-surface);
+    border:1px solid var(--c-border);
+    border-radius:var(--radius-md);
+    padding:var(--space-3) var(--space-4);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:var(--space-5);
+    flex-wrap:wrap;
+    box-shadow:var(--shadow-soft);
+    font-size:var(--fs-sm);
+    color:var(--c-muted);
+  }
+  .info-item{display:flex;align-items:center;gap:var(--space-2);}
+  .info-item .dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--c-primary);flex:none;
+  }
+  .info-item strong{
+    color:var(--c-text);
+    font-weight:600;
+    font-variant-numeric:tabular-nums;
+  }
+
+  /* ---------- Sections ---------- */
+  .section{padding:var(--space-7) 0;}
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:var(--space-4);
+    margin-bottom:var(--space-5);
+    flex-wrap:wrap;
+  }
+  .section-head h2{
+    margin:0;
+    font-size:var(--fs-lg);
+    font-weight:700;
+    letter-spacing:-.2px;
+  }
+  .section-head p{
+    margin:0;
+    color:var(--c-muted);
+    font-size:var(--fs-sm);
+  }
+  .panel{
+    background:var(--c-surface);
+    border:1px solid var(--c-border);
+    border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-soft);
+    padding:var(--space-6);
+  }
+
+  /* ---------- Cards ---------- */
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:var(--space-4);
+  }
+  .card{
+    background:var(--c-surface);
+    border:1px solid var(--c-border);
+    border-radius:var(--radius-lg);
+    padding:var(--space-5);
+    box-shadow:var(--shadow-soft);
+    display:flex;
+    flex-direction:column;
+    gap:var(--space-3);
+    transition:border-color .15s ease,transform .15s ease;
+  }
+  .card:hover{border-color:var(--c-border-strong);transform:translateY(-2px);}
+  .card-top{display:flex;align-items:center;justify-content:space-between;gap:var(--space-3);}
+  .card-icon{
+    width:38px;height:38px;
+    border-radius:var(--radius-md);
+    background:var(--c-primary-soft);
+    display:flex;align-items:center;justify-content:center;
+    flex:none;
+  }
+  .tag{
+    display:inline-flex;
+    align-items:center;
+    height:22px;
+    padding:0 var(--space-2);
+    border-radius:var(--radius-sm);
+    background:var(--c-accent-soft);
+    color:var(--c-accent);
+    border:1px solid rgba(138,90,22,.22);
+    font-size:var(--fs-xs);
+    font-weight:600;
+    letter-spacing:.2px;
+  }
+  .card h3{
+    margin:0;
+    font-size:var(--fs-md);
+    font-weight:700;
+  }
+  .card p{
+    margin:0;
+    color:var(--c-muted);
+    font-size:var(--fs-sm);
+    line-height:1.65;
+    flex:1;
+  }
+  .card-link{
+    font-size:var(--fs-sm);
+    font-weight:600;
+    display:inline-flex;
+    align-items:center;
+    gap:var(--space-1);
+  }
+
+  /* ---------- Form ---------- */
+  .form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:var(--space-5);
+  }
+  .field{display:flex;flex-direction:column;gap:var(--space-2);}
+  .field.full{grid-column:1 / -1;}
+  label{
+    font-size:var(--fs-sm);
+    font-weight:600;
+    color:var(--c-text);
+  }
+  .hint{font-size:var(--fs-xs);color:var(--c-muted);}
+  input[type="text"],select{
+    font-family:inherit;
+    font-size:var(--fs-sm);
+    color:var(--c-text);
+    background:var(--c-surface);
+    border:1px solid var(--c-border-strong);
+    border-radius:var(--radius-sm);
+    height:38px;
+    padding:0 var(--space-3);
+    width:100%;
+    transition:border-color .15s ease,box-shadow .15s ease;
+  }
+  select{appearance:none;-webkit-appearance:none;
+    background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 4.5 6 8l3.5-3.5' fill='none' stroke='%235F6B6D' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right var(--space-3) center;
+    padding-right:var(--space-6);
+  }
+  input[type="text"]::placeholder{color:#9AA5A6;}
+  input[type="text"]:focus,select:focus{
+    outline:none;
+    border-color:var(--c-primary);
+    box-shadow:0 0 0 3px rgba(47,93,98,.16);
+  }
+  .checkbox-group{
+    display:flex;
+    flex-direction:column;
+    gap:var(--space-2);
+    padding:var(--space-3);
+    border:1px solid var(--c-border);
+    border-radius:var(--radius-sm);
+    background:var(--c-bg);
+  }
+  .check{
+    display:flex;
+    align-items:center;
+    gap:var(--space-2);
+    font-size:var(--fs-sm);
+    font-weight:400;
+    color:var(--c-text);
+    cursor:pointer;
+  }
+  .check input{
+    width:15px;height:15px;
+    accent-color:var(--c-primary);
+    cursor:pointer;
+    margin:0;
+  }
+  .check input:focus-visible{outline:2px solid var(--c-primary);outline-offset:2px;}
+  .form-actions{
+    grid-column:1 / -1;
+    display:flex;
+    align-items:center;
+    gap:var(--space-3);
+    flex-wrap:wrap;
+    padding-top:var(--space-2);
+    border-top:1px solid var(--c-border);
+    margin-top:var(--space-2);
+  }
+
+  /* ---------- Table ---------- */
+  .table-wrap{
+    border:1px solid var(--c-border);
+    border-radius:var(--radius-lg);
+    background:var(--c-surface);
+    overflow:hidden;
+    box-shadow:var(--shadow-soft);
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:var(--fs-sm);
+  }
+  thead th{
+    background:var(--c-bg);
+    text-align:left;
+    font-weight:600;
+    color:var(--c-muted);
+    padding:var(--space-3) var(--space-4);
+    border-bottom:1px solid var(--c-border);
+    white-space:nowrap;
+  }
+  tbody td{
+    padding:var(--space-3) var(--space-4);
+    border-bottom:1px solid var(--c-border);
+    vertical-align:middle;
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:nth-child(even){background:#FBFCFC;}
+  tbody tr:hover{background:var(--c-primary-soft);}
+  .col-name{font-weight:600;color:var(--c-text);}
+  .col-time{color:var(--c-muted);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    height:22px;
+    padding:0 var(--space-2);
+    border-radius:999px;
+    font-size:var(--fs-xs);
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .pill-ok{background:var(--c-primary-soft);color:var(--c-primary-strong);}
+  .pill-off{background:#EFF1F1;color:var(--c-muted);}
+  .table-actions{display:flex;gap:var(--space-2);}
+
+  /* ---------- Footer ---------- */
+  .site-footer{
+    border-top:1px solid var(--c-border);
+    background:var(--c-surface);
+    padding:var(--space-6) 0;
+    margin-top:var(--space-6);
+  }
+  .footer-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:var(--space-4);
+    flex-wrap:wrap;
+  }
+  .footer-note{color:var(--c-muted);font-size:var(--fs-sm);margin:0;}
+  .footer-links{display:flex;gap:var(--space-5);font-size:var(--fs-sm);}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:1024px){
+    .card-grid{grid-template-columns:repeat(2,1fr);}
+    .form-grid{grid-template-columns:1fr;}
+    .hero{padding:var(--space-7) 0 var(--space-5);}
+  }
+  @media (max-width:640px){
+    :root{--fs-2xl:28px;--fs-xl:22px;}
+    .wrap{padding:0 var(--space-4);}
+    .header-inner{gap:var(--space-3);min-height:60px;}
+    .nav{margin-left:0;order:3;width:100%;overflow-x:auto;padding-bottom:var(--space-2);}
+    .nav a{padding:var(--space-2);font-size:var(--fs-xs);}
+    .header-actions{margin-left:auto;}
+    .header-actions .btn{display:none;}
+    .card-grid{grid-template-columns:1fr;}
+    .panel{padding:var(--space-5) var(--space-4);}
+    .hero-actions .btn{width:100%;}
+    .table-wrap{overflow-x:auto;}
+    table{min-width:640px;}
+    .footer-inner{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 40 40" role="img" aria-label="站点标识">
+        <circle cx="20" cy="20" r="19" fill="#2F5D62"/>
+        <path d="M12 26V18.5M20 26V12M28 26v-9.5" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round"/>
+      </svg>
+      <span>截图链路</span>
+    </a>
+
+    <nav class="nav" aria-label="主导航">
+      <a href="#top" aria-current="page">首页</a>
+      <a href="#cards">文档</a>
+      <a href="#footer">关于</a>
+    </nav>
+
+    <div class="header-actions">
+      <button type="button" class="btn btn-primary">新建项目</button>
+      <span class="avatar" title="当前用户">新</span>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero wrap">
+    <h1>截图链路测试页面</h1>
+    <p>这是一个自包含的静态页面，用于验证浏览器渲染、布局稳定性与截图采集链路是否正常。所有样式内联，无任何外部资源请求。</p>
+    <div class="hero-actions">
+      <button type="button" class="btn btn-primary">开始截图</button>
+      <button type="button" class="btn btn-secondary">查看示例</button>
+    </div>
+    <div class="info-bar">
+      <span class="info-item"><span class="dot"></span>当前时间 <strong id="js-time">--</strong></span>
+      <span class="info-item"><span class="dot"></span>视口宽度 <strong id="js-width">--</strong> px</span>
+      <span class="info-item"><span class="dot"></span>渲染状态 <strong>已完成</strong></span>
+    </div>
+  </section>
+
+  <section class="section wrap" id="cards">
+    <div class="section-head">
+      <h2>功能卡片</h2>
+      <p>三列栅格布局，窄屏自动降为单列</p>
+    </div>
+    <div class="card-grid">
+      <article class="card">
+        <div class="card-top">
+          <span class="card-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M2.5 15.5 7 9.8l3.4 3.2L17.5 4.5" stroke="#2F5D62" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12.8 4.5h4.7v4.7" stroke="#2F5D62" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+        <h3>渲染指标</h3>
+        <p>统计页面加载、字体就绪与布局偏移的关键数据，帮助定位渲染过程中的性能波动。</p>
+        <a class="card-link" href="#cards">了解详情</a>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <span class="card-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="M10 2.5 16 5v5c0 3.3-2.4 6-6 7.5C6.4 16 4 13.3 4 10V5l6-2.5Z" stroke="#2F5D62" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M7.4 10.1 9.3 12l3.4-3.6" stroke="#2F5D62" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="tag">已启用</span>
+        </div>
+        <h3>链路稳定性</h3>
+        <p>在连续采集任务中保持一致的输出尺寸与页面结构，避免出现截断或错位。</p>
+        <a class="card-link" href="#cards">了解详情</a>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <span class="card-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <circle cx="10" cy="10" r="2.8" stroke="#2F5D62" stroke-width="1.6"/>
+              <path d="M10 2.8v2.1M10 15.1v2.1M17.2 10h-2.1M4.9 10H2.8M15.1 4.9 13.6 6.4M6.4 13.6 4.9 15.1M15.1 15.1l-1.5-1.5M6.4 6.4 4.9 4.9" stroke="#2F5D62" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </div>
+        <h3>输出配置</h3>
+        <p>统一管理视口宽度、缩放比例与文件命名规则，让每次采集结果可复现、可比对。</p>
+        <a class="card-link" href="#cards">了解详情</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="section wrap" id="form">
+    <div class="section-head">
+      <h2>表单控件</h2>
+      <p>聚焦高亮、禁用态与标签关联检查</p>
+    </div>
+    <div class="panel">
+      <form class="form-grid" onsubmit="return false;">
+        <div class="field">
+          <label for="project-name">项目名称</label>
+          <input id="project-name" name="project-name" type="text" placeholder="例如：截图链路验证">
+          <span class="hint">用于标识本次采集任务</span>
+        </div>
+
+        <div class="field">
+          <label for="viewport-size">目标视口</label>
+          <select id="viewport-size" name="viewport-size">
+            <option value="1440">1440 × 900（桌面）</option>
+            <option value="390">390 × 844（移动）</option>
+            <option value="768">768 × 1024（平板）</option>
+          </select>
+          <span class="hint">决定截图输出的宽度</span>
+        </div>
+
+        <div class="field full">
+          <label id="options-label">采集选项</label>
+          <div class="checkbox-group" role="group" aria-labelledby="options-label">
+            <label class="check"><input type="checkbox" checked> 等待字体加载完成</label>
+            <label class="check"><input type="checkbox" checked> 截取完整页面高度</label>
+            <label class="check"><input type="checkbox"> 隐藏滚动条后采集</label>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">提交配置</button>
+          <button type="button" class="btn btn-secondary" disabled>已禁用按钮</button>
+          <button type="reset" class="btn btn-secondary">重置</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="section wrap" id="table">
+    <div class="section-head">
+      <h2>数据表格</h2>
+      <p>状态胶囊、表头底色与行悬停效果</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">名称</th>
+            <th scope="col">状态</th>
+            <th scope="col">更新时间</th>
+            <th scope="col">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-name">桌面端整页截图</td>
+            <td><span class="pill pill-ok">成功</span></td>
+            <td class="col-time">2024-06-18 09:42</td>
+            <td class="table-actions"><button type="button" class="btn btn-ghost btn-sm">重跑</button><button type="button" class="btn btn-ghost btn-sm">详情</button></td>
+          </tr>
+          <tr>
+            <td class="col-name">移动端整页截图</td>
+            <td><span class="pill pill-ok">成功</span></td>
+            <td class="col-time">2024-06-18 09:43</td>
+            <td class="table-actions"><button type="button" class="btn btn-ghost btn-sm">重跑</button><button type="button" class="btn btn-ghost btn-sm">详情</button></td>
+          </tr>
+          <tr>
+            <td class="col-name">深色主题回归</td>
+            <td><span class="pill pill-off">未开始</span></td>
+            <td class="col-time">2024-06-17 18:05</td>
+            <td class="table-actions"><button type="button" class="btn btn-ghost btn-sm">开始</button><button type="button" class="btn btn-ghost btn-sm">详情</button></td>
+          </tr>
+          <tr>
+            <td class="col-name">组件快照对比</td>
+            <td><span class="pill pill-off">排队中</span></td>
+            <td class="col-time">2024-06-17 20:31</td>
+            <td class="table-actions"><button type="button" class="btn btn-ghost btn-sm">取消</button><button type="button" class="btn btn-ghost btn-sm">详情</button></td>
+          </tr>
+          <tr>
+            <td class="col-name">字体回退检查</td>
+            <td><span class="pill pill-off">已归档</span></td>
+            <td class="col-time">2024-06-16 11:12</td>
+            <td class="table-actions"><button type="button" class="btn btn-ghost btn-sm">恢复</button><button type="button" class="btn btn-ghost btn-sm">详情</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer" id="footer">
+  <div class="wrap footer-inner">
+    <p class="footer-note">截图链路测试页面 · 本地静态资源，可离线打开</p>
+    <nav class="footer-links" aria-label="页脚链接">
+      <a href="#top">使用文档</a>
+      <a href="#top">更新日志</a>
+      <a href="#top">联系反馈</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    function pad(n) { return n < 10 ? '0' + n : '' + n; }
+    function renderTime() {
+      var d = new Date();
+      var out = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) +
+        ' ' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds());
+      var el = document.getElementById('js-time');
+      if (el) { el.textContent = out; }
+    }
+    function renderWidth() {
+      var el = document.getElementById('js-width');
+      if (el) { el.textContent = String(window.innerWidth || document.documentElement.clientWidth); }
+    }
+    renderTime();
+    renderWidth();
+    setInterval(renderTime, 1000);
+    window.addEventListener('resize', renderWidth);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(renderWidth);
+    }
+  })();
+</script>
+</body>
+</html>
