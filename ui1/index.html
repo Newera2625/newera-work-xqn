@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="简单 SSO 单点登录演示站，展示统一认证、会话共享和单点登出流程。">
+  <title>Demo SSO - 一次登录，访问全部应用</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a class="brand" href="index.html" aria-label="Demo SSO 首页">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M7 10V8a5 5 0 0 1 10 0v2m-9 0h8a2 2 0 0 1 2 2v7H6v-7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 14v2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>Demo SSO</span>
+        </a>
+
+        <nav class="nav-actions" aria-label="主要导航">
+          <a class="button button--secondary" data-home-login-link href="login.html">登录</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-main">
+      <section class="hero">
+        <div class="container hero__grid">
+          <div>
+            <p class="eyebrow">统一身份认证</p>
+            <h1 class="hero-title">一次登录，访问全部应用</h1>
+            <p class="hero-copy">
+              通过一个认证中心管理所有应用的登录状态。本演示完整呈现跳转认证、会话建立、受保护资源访问和单点登出流程。
+            </p>
+
+            <div class="button-row">
+              <a class="button button--primary" href="login.html">
+                登录 / 进入应用
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+              <a class="button button--secondary" data-home-account-link href="accounts.html">
+                选择已有身份
+              </a>
+            </div>
+          </div>
+
+          <div class="hero__visual" aria-label="单点登录流程示意图">
+            <div class="hero-diagram">
+              <div class="hero-diagram__header">
+                <h2 class="hero-diagram__title">统一会话示意</h2>
+                <span class="hero-diagram__meta">本地模拟环境</span>
+              </div>
+
+              <div class="diagram-window">
+                <div class="diagram-window__bar" aria-hidden="true">
+                  <span class="diagram-window__dot"></span>
+                  <span class="diagram-window__dot"></span>
+                  <span class="diagram-window__dot"></span>
+                </div>
+                <div class="diagram-window__body">
+                  <div class="diagram-node">
+                    <span class="diagram-node__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none">
+                        <rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" stroke-width="1.75"/>
+                        <path d="M8 7h8M8 11h8M8 15h5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                      </svg>
+                    </span>
+                    <div>
+                      <strong>受保护应用</strong>
+                      <span>请求访问应用资源</span>
+                    </div>
+                  </div>
+
+                  <div class="diagram-connector" aria-hidden="true"></div>
+
+                  <div class="diagram-node">
+                    <span class="diagram-node__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M7 10V8a5 5 0 0 1 10 0v2m-9 0h8a2 2 0 0 1 2 2v7H6v-7a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                    <div>
+                      <strong>Demo SSO 认证中心</strong>
+                      <span>校验身份并签发会话</span>
+                    </div>
+                  </div>
+
+                  <div class="diagram-connector" aria-hidden="true"></div>
+
+                  <div class="diagram-node">
+                    <span class="diagram-node__icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none">
+                        <path d="m9 12 2 2 4-4m7 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                    <div>
+                      <strong>访问成功</strong>
+                      <span>共享同一登录状态</span>
+                    </div>
+                  </div>
+
+                  <div class="diagram-token" aria-label="携带会话令牌访问应用">
+                    <span>Token</span>
+                    <span>sso_••••••••</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="flow-heading">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">核心流程</p>
+            <h2 class="section-title" id="flow-heading">登录流程</h2>
+            <p>认证只发生一次，后续应用通过统一会话识别当前用户。</p>
+          </div>
+
+          <div class="flow-grid">
+            <article class="card flow-step">
+              <span class="flow-step__number" aria-hidden="true">01</span>
+              <h3>访问应用</h3>
+              <p>用户请求访问受保护资源，触发身份校验。</p>
+            </article>
+
+            <article class="card flow-step">
+              <span class="flow-step__number" aria-hidden="true">02</span>
+              <h3>跳转认证中心</h3>
+              <p>未登录用户被安全引导至统一登录页面。</p>
+            </article>
+
+            <article class="card flow-step">
+              <span class="flow-step__number" aria-hidden="true">03</span>
+              <h3>建立会话</h3>
+              <p>认证中心校验账号并签发有时效的会话。</p>
+            </article>
+
+            <article class="card flow-step">
+              <span class="flow-step__number" aria-hidden="true">04</span>
+              <h3>携带令牌访问</h3>
+              <p>应用验证会话后开放资源并返回原访问地址。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--compact" aria-labelledby="accounts-heading">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow">快捷体验</p>
+            <h2 class="section-title" id="accounts-heading">演示账号</h2>
+            <p>每个账号具有不同角色，可直接进入身份选择页完成登录。</p>
+          </div>
+
+          <div class="account-grid">
+            <article class="card account-card">
+              <div class="account-card__head">
+                <span class="avatar" aria-hidden="true">管</span>
+                <div>
+                  <span class="account-card__email">admin@demo.com</span>
+                  <span class="account-card__role">管理员</span>
+                </div>
+              </div>
+              <div class="account-card__details">
+                <span>账号 <strong>admin</strong></span>
+                <span>密码 <strong>demo123</strong></span>
+              </div>
+              <a class="button button--secondary" href="accounts.html">使用该账号登录</a>
+            </article>
+
+            <article class="card account-card">
+              <div class="account-card__head">
+                <span class="avatar" aria-hidden="true">成</span>
+                <div>
+                  <span class="account-card__email">user@demo.com</span>
+                  <span class="account-card__role">成员</span>
+                </div>
+              </div>
+              <div class="account-card__details">
+                <span>账号 <strong>user</strong></span>
+                <span>密码 <strong>demo123</strong></span>
+              </div>
+              <a class="button button--secondary" href="accounts.html">使用该账号登录</a>
+            </article>
+
+            <article class="card account-card">
+              <div class="account-card__head">
+                <span class="avatar" aria-hidden="true">访</span>
+                <div>
+                  <span class="account-card__email">guest@demo.com</span>
+                  <span class="account-card__role">访客</span>
+                </div>
+              </div>
+              <div class="account-card__details">
+                <span>账号 <strong>guest</strong></span>
+                <span>密码 <strong>demo123</strong></span>
+              </div>
+              <a class="button button--secondary" href="accounts.html">使用该账号登录</a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" data-home-state aria-labelledby="state-heading">
+        <div class="container">
+          <div class="card state-panel">
+            <div>
+              <span class="state-panel__icon" data-state-icon aria-hidden="true"></span>
+              <h2 id="state-heading" data-state-title>当前未登录</h2>
+              <p data-state-text>选择一个演示账号，体验完整单点登录流程。</p>
+            </div>
+            <div class="state-grid" data-state-grid></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container site-footer__inner">
+        <p>© 2025 Demo SSO. 保留所有权利。</p>
+        <p>本项目仅用于前端单点登录流程演示，不包含真实生产认证。</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="assets/auth.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

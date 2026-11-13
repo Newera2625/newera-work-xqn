@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>应用控制台 - Demo SSO</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="site-header app-header">
+    <nav class="nav container" aria-label="应用导航">
+      <a class="brand" href="index.html" aria-label="Demo SSO 首页">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.8 2.9 8.2 7 10 4.1-1.8 7-5.2 7-10V6l-7-3Z"/><path d="m9.5 12 1.7 1.7 3.5-3.7"/></svg>
+        <span>Demo SSO</span>
+      </a>
+
+      <div id="session-nav" class="session-nav" hidden>
+        <div class="user-badge">
+          <span id="nav-avatar" class="avatar">A</span>
+          <div>
+            <strong id="nav-username">用户</strong>
+            <span id="nav-role">成员</span>
+          </div>
+        </div>
+        <div id="nav-time" class="session-time">
+          <span id="nav-remaining">剩余 30 分钟</span>
+          <span id="nav-warning" class="warning-badge" hidden>即将过期</span>
+        </div>
+        <button id="logout-button" class="button button-quiet button-small" type="button">退出登录</button>
+      </div>
+    </nav>
+
+    <div id="logout-confirm" class="logout-confirm" hidden role="alertdialog" aria-labelledby="logout-confirm-title">
+      <div>
+        <strong id="logout-confirm-title">确认退出当前会话？</strong>
+        <p>退出后需要重新登录才能访问受保护资源。</p>
+      </div>
+      <div class="button-row">
+        <button id="logout-cancel" class="button button-secondary button-small" type="button">取消</button>
+        <button id="logout-confirm-button" class="button button-primary button-small" type="button">确认退出</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container app-main">
+    <section class="app-welcome" aria-labelledby="app-title">
+      <div>
+        <p class="eyebrow">应用控制台</p>
+        <h1 id="app-title">欢迎回来，<span id="welcome-name">用户</span></h1>
+        <p>你的身份已通过统一认证中心验证，可以访问下方已接入的演示应用。</p>
+      </div>
+      <div class="verified-badge">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m8 12 2.5 2.5L16 9"/><circle cx="12" cy="12" r="9"/></svg>
+        身份验证通过
+      </div>
+    </section>
+
+    <section class="section session-panel" aria-labelledby="session-title">
+      <div class="section-heading compact-heading">
+        <div>
+          <p class="eyebrow">当前会话</p>
+          <h2 id="session-title">会话信息</h2>
+        </div>
+        <span class="status-dot-label"><i></i>会话有效</span>
+      </div>
+
+      <dl class="session-grid">
+        <div class="session-detail session-token">
+          <dt>访问令牌</dt>
+          <dd><code id="session-token" title="">—</code></dd>
+        </div>
+        <div class="session-detail">
+          <dt>登录时间</dt>
+          <dd id="session-issued">—</dd>
+        </div>
+        <div class="session-detail">
+          <dt>剩余有效时间</dt>
+          <dd><span id="session-remaining">—</span><span id="session-warning" class="warning-badge" hidden>即将过期</span></dd>
+        </div>
+        <div class="session-detail">
+          <dt>签发中心</dt>
+          <dd>Demo SSO 认证中心</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="section applications-section" aria-labelledby="applications-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">应用集合</p>
+          <h2 id="applications-title">已接入的应用</h2>
+        </div>
+        <p>无需再次输入账号密码，当前会话会自动传递身份信息。</p>
+      </div>
+
+      <div class="application-grid">
+        <article class="application-card">
+          <div class="application-icon">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg>
+          </div>
+          <div class="application-body">
+            <h3>示例工单系统</h3>
+            <p>集中查看和处理团队服务请求。</p>
+          </div>
+          <button class="button button-secondary app-open-button" type="button" data-app="示例工单系统">
+            <span class="app-button-label">打开</span>
+            <span class="app-loading" aria-hidden="true"></span>
+          </button>
+          <div class="app-success" hidden>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>
+            已进入
+          </div>
+        </article>
+
+        <article class="application-card">
+          <div class="application-icon">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19V3"/></svg>
+          </div>
+          <div class="application-body">
+            <h3>示例报表中心</h3>
+            <p>汇总业务指标并查看趋势摘要。</p>
+          </div>
+          <button class="button button-secondary app-open-button" type="button" data-app="示例报表中心">
+            <span class="app-button-label">打开</span>
+            <span class="app-loading" aria-hidden="true"></span>
+          </button>
+          <div class="app-success" hidden>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg>
+            已进入
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>Demo SSO</p>
+      <p>会话有效期为 30 分钟，超时后需要重新登录。</p>
+    </div>
+  </footer>
+
+  <script src="assets/auth.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>

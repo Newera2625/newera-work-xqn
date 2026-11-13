@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>控制台 · Demo SSO</title>
+<meta name="description" content="Demo SSO 受保护资源页：共享同一份登录会话，访问全部已接入应用。">
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233B5BDB' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='7.5' cy='12' r='3.5'/%3E%3Ccircle cx='16.5' cy='12' r='3.5'/%3E%3Cpath d='M11 12h2'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-nav site-nav--app">
+  <div class="container site-nav__inner">
+    <a class="brand" href="index.html">
+      <svg class="brand__mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+        <circle cx="7.5" cy="12" r="3.5"></circle>
+        <circle cx="16.5" cy="12" r="3.5"></circle>
+        <path d="M11 12h2"></path>
+      </svg>
+      <span class="brand__name">Demo SSO</span>
+    </a>
+
+    <div class="nav-session">
+      <div class="user-chip">
+        <span class="avatar avatar--sm" data-el="session-avatar" aria-hidden="true">D</span>
+        <span class="user-chip__name" data-el="session-name">演示用户</span>
+        <span class="badge badge--neutral" data-el="session-role">成员</span>
+      </div>
+
+      <div class="session-timer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M12 7.5V12l3 2"></path>
+        </svg>
+        <span class="session-timer__text" data-el="session-countdown">剩余 --</span>
+        <span class="badge badge--warning" data-el="session-badge" hidden>即将过期</span>
+      </div>
+
+      <button class="btn btn--quiet btn--sm" type="button" data-el="logout-button">
+        <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"></path>
+          <path d="M10 16l-4-4 4-4M6 12h11"></path>
+        </svg>
+        <span class="btn__label">退出登录</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="container page">
+
+  <!-- 退出确认条（由逻辑员工控制显隐） -->
+  <div class="confirm-bar" data-el="logout-confirm" hidden>
+    <span>确认退出当前账号？退出后需要重新登录才能访问受保护页面。</span>
+    <span class="confirm-bar__actions">
+      <button class="btn btn--primary btn--sm" type="button" data-el="logout-confirm-yes">
+        <span class="btn__label">确认退出</span>
+      </button>
+      <button class="btn btn--quiet btn--sm" type="button" data-el="logout-confirm-no">
+        <span class="btn__label">取消</span>
+      </button>
+    </span>
+  </div>
+
+  <!-- 会话信息面板 -->
+  <section class="section">
+    <h2 class="section__title">当前会话信息</h2>
+    <div class="card">
+      <div class="panel-grid">
+        <div class="panel-item">
+          <div class="panel-item__label">登录账号</div>
+          <div class="panel-item__value" data-el="session-email">--</div>
+        </div>
+        <div class="panel-item">
+          <div class="panel-item__label">用户名称</div>
+          <div class="panel-item__value" data-el="session-name">--</div>
+        </div>
+        <div class="panel-item">
+          <div class="panel-item__label">角色</div>
+          <div class="panel-item__value" data-el="session-role">--</div>
+        </div>
+        <div class="panel-item">
+          <div class="panel-item__label">签发中心</div>
+          <div class="panel-item__value">Demo SSO 认证中心</div>
+        </div>
+        <div class="panel-item">
+          <div class="panel-item__label">登录时间</div>
+          <div class="panel-item__value panel-item__value--mono" data-el="session-issued-at">--</div>
+        </div>
+        <div class="panel-item">
+          <div class="panel-item__label">过期时间</div>
+          <div class="panel-item__value panel-item__value--mono" data-el="session-expires-at">--</div>
+        </div>
+        <div class="panel-item">
+          <div class="panel-item__label">剩余有效时间</div>
+          <div class="panel-item__value panel-item__value--mono" data-el="session-remaining">--</div>
+        </div>
+        <div class="panel-item">
+          <div class="panel-item__label">最后访问</div>
+          <div class="panel-item__value panel-item__value--mono" data-el="last-visited">--</div>
+        </div>
+        <div class="panel-item panel-item--wide">
+          <div class="panel-item__label">会话 Token</div>
+          <span class="token-value" data-el="session-token" tabindex="0" title="点击展开完整 Token">--</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 已接入的应用 -->
+  <section class="section">
+    <h2 class="section__title">已接入的应用</h2>
+    <div class="app-grid">
+
+      <article class="card app-card" data-el="app-card">
+        <div class="app-card__head">
+          <span class="app-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+              <path d="M4 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7z"></path>
+              <path d="M14 5v14" stroke-dasharray="2 3"></path>
+            </svg>
+          </span>
+          <div>
+            <h3 class="app-card__name">示例工单系统</h3>
+            <p class="app-card__desc">工单创建、流转与处理进度跟踪。</p>
+          </div>
+        </div>
+        <div class="app-card__foot">
+          <button class="btn btn--secondary btn--sm" type="button" data-el="app-card-cta">
+            <span class="btn__label" data-el="app-card-status">打开</span>
+          </button>
+          <span class="app-card__status" data-el="app-card-opened" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M5 12.5l4.5 4.5L19 7.5"></path>
+            </svg>
+            已进入
+          </span>
+        </div>
+      </article>
+
+      <article class="card app-card" data-el="app-card">
+        <div class="app-card__head">
+          <span class="app-card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+              <path d="M4 20h16"></path>
+              <path d="M7 20v-6M12 20V8M17 20v-9"></path>
+            </svg>
+          </span>
+          <div>
+            <h3 class="app-card__name">示例报表中心</h3>
+            <p class="app-card__desc">业务指标汇总、趋势对比与导出报表。</p>
+          </div>
+        </div>
+        <div class="app-card__foot">
+          <button class="btn btn--secondary btn--sm" type="button" data-el="app-card-cta">
+            <span class="btn__label" data-el="app-card-status">打开</span>
+          </button>
+          <span class="app-card__status" data-el="app-card-opened" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+              <path d="M5 12.5l4.5 4.5L19 7.5"></path>
+            </svg>
+            已进入
+          </span>
+        </div>
+      </article>
+
+    </div>
+    <p class="apps-note">以上应用共用同一份 SSO 会话，无需重复登录。</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <span>Demo SSO · 单点登录演示项目</span>
+    <span>本项目仅用于前端演示，会话数据保存在浏览器 localStorage 中。</span>
+  </div>
+</footer>
+
+<script src="assets/auth.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
