@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>统一身份认证 - 组件状态样板</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="specimen-page">
+  <!-- 本文件仅为设计稿，交互逻辑由前端在正式页面实现。 -->
+  <header class="specimen-header">
+    <div><p class="eyebrow">Design System</p><h1>登录模块状态样板</h1></div>
+    <p>用于统一组件视觉、交互状态与前端实现基准</p>
+  </header>
+
+  <main class="specimen-main">
+    <section class="specimen-section">
+      <div class="section-heading"><h2>输入框</h2><p>字段高度 44px，圆角 8px，内边距 12px 16px。</p></div>
+      <div class="state-grid">
+        <article class="state-card"><span class="state-label">默认</span><div class="input-wrap"><input aria-label="默认输入框" placeholder="请输入账号"></div></article>
+        <article class="state-card"><span class="state-label">Hover</span><div class="input-wrap is-hover"><input aria-label="悬停输入框" placeholder="请输入账号"></div></article>
+        <article class="state-card"><span class="state-label">Focus</span><div class="input-wrap is-focus"><input aria-label="聚焦输入框" value="focus@example.com"></div></article>
+        <article class="state-card"><span class="state-label">Active</span><div class="input-wrap is-active"><input aria-label="激活输入框" value="active@example.com"></div></article>
+        <article class="state-card"><span class="state-label">Filled</span><div class="input-wrap"><input aria-label="已填写输入框" value="zhangsan"></div></article>
+        <article class="state-card"><span class="state-label">Error</span><div class="input-wrap is-error"><input aria-label="错误输入框" value="wrong@" aria-invalid="true"></div><p class="field-message field-message--visible">账号格式不正确</p></article>
+        <article class="state-card"><span class="state-label">Disabled</span><div class="input-wrap is-disabled"><input aria-label="禁用输入框" value="暂不可用" disabled></div></article>
+      </div>
+    </section>
+
+    <section class="specimen-section">
+      <div class="section-heading"><h2>按钮</h2><p>主按钮高度 44px；焦点环使用主色 2px 外圈。</p></div>
+      <div class="state-grid state-grid--buttons">
+        <article class="state-card"><span class="state-label">Default</span><button class="button button--primary">登录</button></article>
+        <article class="state-card"><span class="state-label">Hover</span><button class="button button--primary is-hover">登录</button></article>
+        <article class="state-card"><span class="state-label">Active</span><button class="button button--primary is-active">登录</button></article>
+        <article class="state-card"><span class="state-label">Focus visible</span><button class="button button--primary is-focus-visible">登录</button></article>
+        <article class="state-card"><span class="state-label">Disabled</span><button class="button button--primary is-disabled" disabled>登录</button></article>
+        <article class="state-card"><span class="state-label">Loading</span><button class="button button--primary is-loading" disabled><span class="spinner"></span>正在登录</button></article>
+      </div>
+    </section>
+
+    <section class="specimen-section">
+      <div class="section-heading"><h2>复选框与 Tab</h2><p>复选框 16px，键盘焦点具有清晰可见轮廓。</p></div>
+      <div class="state-grid">
+        <article class="state-card"><span class="state-label">未选</span><label class="checkbox-label"><input type="checkbox"><span class="checkbox"></span><span>记住账号</span></label></article>
+        <article class="state-card"><span class="state-label">悬停</span><label class="checkbox-label is-hover"><input type="checkbox"><span class="checkbox"></span><span>记住账号</span></label></article>
+        <article class="state-card"><span class="state-label">选中</span><label class="checkbox-label"><input type="checkbox" checked><span class="checkbox"><svg viewBox="0 0 16 16"><path d="m3 8 3 3 7-7"/></svg></span><span>记住账号</span></label></article>
+        <article class="state-card"><span class="state-label">聚焦</span><label class="checkbox-label is-focus"><input type="checkbox" checked><span class="checkbox"><svg viewBox="0 0 16 16"><path d="m3 8 3 3 7-7"/></svg></span><span>记住账号</span></label></article>
+        <article class="state-card"><span class="state-label">禁用</span><label class="checkbox-label is-disabled"><input type="checkbox" disabled><span class="checkbox"></span><span>记住账号</span></label></article>
+        <article class="state-card state-card--wide"><span class="state-label">Tab 状态</span><div class="login-tabs login-tabs--sample"><button class="tab">账号密码</button><button class="tab is-hover">短信验证码</button><button class="tab is-focus-visible">扫码登录</button><span class="tab-indicator"></span></div></article>
+      </div>
+    </section>
+
+    <section class="specimen-section">
+      <div class="section-heading"><h2>提示条</h2><p>提示条状态色仅用于语义反馈，不用于装饰。</p></div>
+      <div class="state-grid state-grid--alerts">
+        <article class="alert alert--success" role="status"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="m7 10 2 2 4-5"/></svg><span>登录成功，正在进入工作台</span></article>
+        <article class="alert alert--error" role="alert"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 6v5M10 14v.5"/></svg><span>密码错误，请重新输入</span></article>
+        <article class="alert alert--info" role="status"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7"/><path d="M10 9v5M10 6v.5"/></svg><span>登录后将继续访问工作台</span></article>
+      </div>
+    </section>
+
+    <section class="specimen-section">
+      <div class="section-heading"><h2>加载与第三方按钮</h2><p>加载状态禁止重复提交；图标按钮提供键盘焦点。</p></div>
+      <div class="state-grid">
+        <article class="state-card"><span class="state-label">加载骨架</span><div class="skeleton-card"><span></span><span></span><span></span></div></article>
+        <article class="state-card"><span class="state-label">第三方默认</span><button class="social-button" aria-label="企业登录"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M6 8h8M6 12h5"/></svg></button></article>
+        <article class="state-card"><span class="state-label">第三方 Hover</span><button class="social-button is-hover" aria-label="企业登录"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M6 8h8M6 12h5"/></svg></button></article>
+        <article class="state-card"><span class="state-label">第三方 Focus</span><button class="social-button is-focus-visible" aria-label="企业登录"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M6 8h8M6 12h5"/></svg></button></article>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

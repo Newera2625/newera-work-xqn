@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>统一身份认证 - 扫码登录</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- 本文件仅为设计稿，交互逻辑由前端在正式页面实现。 -->
+  <main class="login-shell login-shell--single">
+    <section class="form-panel">
+      <div class="login-card login-card--wide">
+        <header class="card-heading">
+          <h2>登录</h2>
+          <p>使用企业统一身份继续</p>
+        </header>
+
+        <div class="login-tabs" role="tablist" aria-label="登录方式">
+          <button class="tab" role="tab" aria-selected="false">账号密码</button>
+          <button class="tab" role="tab" aria-selected="false">短信验证码</button>
+          <button class="tab is-active" role="tab" aria-selected="true">扫码登录</button>
+          <span class="tab-indicator" aria-hidden="true"></span>
+        </div>
+
+        <div class="qr-state-grid">
+          <article class="qr-state">
+            <div class="qr-code-wrap">
+              <div class="qr-code" aria-label="二维码装饰占位图">
+                <span class="finder finder--tl"></span><span class="finder finder--tr"></span><span class="finder finder--bl"></span>
+                <span class="qr-data qr-data--one"></span><span class="qr-data qr-data--two"></span><span class="qr-data qr-data--three"></span>
+                <span class="qr-center"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 20 6v5c0 5-3.2 8.7-8 10-4.8-1.3-8-5-8-10V6l8-3Z"/><path d="m9 12 2 2 4-5"/></svg></span>
+              </div>
+            </div>
+            <h3>请使用企业 App 扫描二维码</h3>
+            <p>扫描后请在手机上确认登录</p>
+            <div class="qr-actions"><button class="text-button" type="button">刷新二维码</button><span></span><button class="text-button text-button--muted" type="button">切换账号</button></div>
+            <small>二维码 60 秒后失效</small>
+          </article>
+
+          <article class="qr-state qr-state--confirmed">
+            <div class="qr-code-wrap qr-code-wrap--active">
+              <div class="qr-code" aria-label="二维码装饰占位图">
+                <span class="finder finder--tl"></span><span class="finder finder--tr"></span><span class="finder finder--bl"></span>
+                <span class="qr-data qr-data--one"></span><span class="qr-data qr-data--two"></span><span class="qr-data qr-data--three"></span>
+                <span class="qr-center"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 20 6v5c0 5-3.2 8.7-8 10-4.8-1.3-8-5-8-10V6l8-3Z"/><path d="m9 12 2 2 4-5"/></svg></span>
+              </div>
+            </div>
+            <h3>扫描成功，请在手机上确认登录</h3>
+            <p>检测到已授权设备，确认后将进入系统</p>
+            <button class="button button--primary button--full" type="button">确认登录</button>
+            <div class="qr-actions qr-actions--below"><button class="text-button" type="button">刷新二维码</button><span></span><button class="text-button text-button--muted" type="button">切换账号</button></div>
+            <small>二维码 42 秒后失效</small>
+          </article>
+        </div>
+
+        <div class="agreement agreement--qr">
+          <label class="checkbox-label checkbox-label--agreement">
+            <input type="checkbox">
+            <span class="checkbox" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="m3 8 3 3 7-7"/></svg></span>
+            <span>我已阅读并同意<a href="#">《服务条款》</a><a href="#">《隐私政策》</a></span>
+          </label>
+          <p class="agreement-message" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
