@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif">
+  <rect width="1440" height="900" fill="#FBF8F4"/>
+
+  <!-- header -->
+  <rect x="0" y="0" width="1440" height="68" fill="#FBF8F4"/>
+  <rect x="0" y="67" width="1440" height="1" fill="#E8E1D7"/>
+  <rect x="160" y="18" width="32" height="32" rx="8" fill="#B4531A"/>
+  <text x="176" y="40" font-size="15" fill="#FFFFFF" text-anchor="middle" font-weight="700">舟</text>
+  <text x="202" y="40" font-size="15" fill="#0E0C0A" font-weight="700">陈一舟的博客</text>
+  <text x="298" y="40" font-size="12" fill="#948C83" font-family="ui-monospace, Menlo, monospace">/ yizhou.dev</text>
+
+  <text x="905" y="39" font-size="13" fill="#B4531A" font-weight="600">首页</text>
+  <rect x="905" y="52" width="28" height="2" rx="1" fill="#B4531A"/>
+  <text x="965" y="39" font-size="13" fill="#6E6760">文章</text>
+  <text x="1021" y="39" font-size="13" fill="#6E6760">项目</text>
+  <text x="1077" y="39" font-size="13" fill="#6E6760">关于</text>
+  <text x="1133" y="39" font-size="13" fill="#6E6760">联系我</text>
+  <rect x="1190" y="18" width="90" height="32" rx="16" fill="#B4531A"/>
+  <text x="1215" y="39" font-size="13" fill="#FFFFFF" font-weight="600">写封信</text>
+  <path d="M1262 30l6 6-6 6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- hero avatar -->
+  <circle cx="278" cy="300" r="134" fill="none" stroke="#E8CDB8" stroke-width="1" stroke-dasharray="4 6"/>
+  <circle cx="278" cy="292" r="121" fill="#FFFFFF" stroke="#E8E1D7" stroke-width="1"/>
+  <clipPath id="av"><circle cx="278" cy="292" r="115"/></clipPath>
+  <g clip-path="url(#av)">
+    <rect x="163" y="177" width="230" height="230" fill="#F6E9DF"/>
+    <circle cx="278" cy="248" r="44" fill="#B4531A" opacity="0.85"/>
+    <path d="M186 404c0-51 41-83 92-83s92 32 92 83z" fill="#B4531A" opacity="0.85"/>
+  </g>
+  <rect x="286" y="352" width="92" height="26" rx="13" fill="#FFFFFF" stroke="#E8E1D7"/>
+  <circle cx="300" cy="365" r="3.5" fill="#B4531A"/>
+  <text x="311" y="369" font-size="12" fill="#6E6760" font-family="ui-monospace, Menlo, monospace">QQ 在线</text>
+
+  <!-- qq chip -->
+  <rect x="163" y="452" width="230" height="44" rx="22" fill="#FFFFFF" stroke="#E8E1D7"/>
+  <rect x="184" y="465" width="17" height="17" rx="4" fill="#F6E9DF"/>
+  <text x="192.5" y="478" font-size="11" fill="#B4531A" text-anchor="middle" font-weight="700">Q</text>
+  <text x="212" y="479" font-size="13" fill="#0E0C0A" font-family="ui-monospace, Menlo, monospace" font-weight="600">3627236036</text>
+  <rect x="316" y="462" width="1" height="24" fill="#E8E1D7"/>
+  <text x="328" y="478" font-size="12" fill="#948C83">点击复制</text>
+
+  <!-- hero text -->
+  <circle cx="530" cy="196" r="4" fill="#B4531A"/>
+  <text x="544" y="200" font-size="12" fill="#6E6760" font-family="ui-monospace, Menlo, monospace" letter-spacing="1.6">HELLO, NICE TO MEET YOU</text>
+  <text x="524" y="262" font-size="46" fill="#0E0C0A" font-weight="700" letter-spacing="-1">你好，我是陈一舟<tspan fill="#B4531A">。</tspan></text>
+  <text x="524" y="296" font-size="13" fill="#6E6760" font-family="ui-monospace, Menlo, monospace">Yizhou Chen / Frontend Engineer &amp; Independent Blogger</text>
+  <text x="524" y="346" font-size="16" fill="#1A1714">一名把界面写进日常的前端工程师。白天在浏览器里打磨细节，夜里写点关于代码、</text>
+  <text x="524" y="374" font-size="16" fill="#1A1714">设计与独立开发的碎碎念。这里收录了我近三年的一些实践笔记与开源小作品，</text>
+  <text x="524" y="402" font-size="16" fill="#1A1714">愿它们能替你省下一点时间。</text>
+
+  <rect x="524" y="424" width="78" height="28" rx="14" fill="#F4EFE8" stroke="#E8E1D7"/>
+  <text x="563" y="443" font-size="12" fill="#6E6760" text-anchor="middle">前端工程</text>
+  <rect x="610" y="424" width="78" height="28" rx="14" fill="#F4EFE8" stroke="#E8E1D7"/>
+  <text x="649" y="443" font-size="12" fill="#6E6760" text-anchor="middle">交互设计</text>
+  <rect x="696" y="424" width="78" height="28" rx="14" fill="#F4EFE8" stroke="#E8E1D7"/>
+  <text x="735" y="443" font-size="12" fill="#6E6760" text-anchor="middle">独立开发</text>
+  <rect x="782" y="424" width="60" height="28" rx="14" fill="#F4EFE8" stroke="#E8E1D7"/>
+  <text x="812" y="443" font-size="12" fill="#6E6760" text-anchor="middle">写作</text>
+
+  <rect x="524" y="480" width="132" height="42" rx="21" fill="#B4531A"/>
+  <text x="562" y="506" font-size="13" fill="#FFFFFF" font-weight="600">阅读文章</text>
+  <path d="M632 495l6 6-6 6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="670" y="480" width="98" height="42" rx="21" fill="none" stroke="#D9D0C3"/>
+  <text x="719" y="506" font-size="13" fill="#1A1714" font-weight="600" text-anchor="middle">联系我</text>
+
+  <!-- posts section -->
+  <rect x="0" y="600" width="1440" height="300" fill="#F4EFE8"/>
+  <rect x="160" y="600" width="1440" height="300" fill="none"/>
+  <text x="160" y="648" font-size="12" fill="#B4531A" font-family="ui-monospace, Menlo, monospace" letter-spacing="1.6">JOURNAL</text>
+  <rect x="160" y="638" width="22" height="1" fill="#B4531A" opacity="0.5"/>
+  <text x="160" y="694" font-size="30" fill="#0E0C0A" font-weight="700">最近写的文章</text>
+  <text x="160" y="726" font-size="16" fill="#6E6760">工程实践、界面思考与生活片段。平均每月更新两到三篇，不追热点，只写自己真正做过的。</text>
+
+  <!-- post card -->
+  <rect x="160" y="756" width="1120" height="120" rx="20" fill="#FFFFFF" stroke="#E8E1D7"/>
+  <rect x="160" y="778" width="3" height="52" rx="1.5" fill="#B4531A"/>
+  <text x="184" y="784" font-size="12" fill="#948C83" font-family="ui-monospace, Menlo, monospace">2025-03-18</text>
+  <rect x="184" y="796" width="66" height="22" rx="11" fill="#F6E9DF"/>
+  <text x="217" y="811" font-size="12" fill="#8E3E11" text-anchor="middle" font-weight="600">工程实践</text>
+  <text x="184" y="840" font-size="12" fill="#8E3E11" font-weight="600">置顶</text>
+
+  <text x="348" y="790" font-size="18" fill="#B4531A" font-weight="700">用 CSS 变量搭一套可维护的设计令牌体系</text>
+  <text x="348" y="820" font-size="13" fill="#6E6760">把散落在组件里的颜色与间距收拢到 :root 中，意味着改一次主题只需动一行。</text>
+  <text x="348" y="840" font-size="13" fill="#6E6760">这篇文章记录了我在三个项目里沉淀下来的令牌命名规范与迁移路径。</text>
+  <text x="348" y="862" font-size="13" fill="#B4531A" font-weight="600">阅读全文 →</text>
+  <text x="420" y="862" font-size="12" fill="#948C83" font-family="ui-monospace, Menlo, monospace">#CSS  #DesignToken</text>
+
+  <circle cx="1244" cy="816" r="18" fill="#B4531A"/>
+  <path d="M1240 808l8 8-8 8" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

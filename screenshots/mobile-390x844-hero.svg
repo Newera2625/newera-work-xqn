@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif">
+  <rect width="390" height="844" fill="#FBF8F4"/>
+
+  <!-- header -->
+  <rect x="0" y="0" width="390" height="68" fill="#FBF8F4"/>
+  <rect x="0" y="67" width="390" height="1" fill="#E8E1D7"/>
+  <rect x="18" y="18" width="32" height="32" rx="8" fill="#B4531A"/>
+  <text x="34" y="40" font-size="15" fill="#FFFFFF" text-anchor="middle" font-weight="700">舟</text>
+  <text x="60" y="40" font-size="15" fill="#0E0C0A" font-weight="700">陈一舟的博客</text>
+  <rect x="332" y="24" width="40" height="40" rx="8" fill="#FFFFFF" stroke="#E8E1D7"/>
+  <rect x="343" y="39" width="18" height="1.6" rx="0.8" fill="#1A1714"/>
+  <rect x="343" y="44" width="18" height="1.6" rx="0.8" fill="#1A1714"/>
+  <rect x="343" y="49" width="18" height="1.6" rx="0.8" fill="#1A1714"/>
+
+  <!-- hero -->
+  <circle cx="108" cy="152" r="104" fill="none" stroke="#E8CDB8" stroke-width="1" stroke-dasharray="4 6"/>
+  <clipPath id="avm"><circle cx="108" cy="144" r="88"/></clipPath>
+  <g clip-path="url(#avm)">
+    <rect x="20" y="56" width="176" height="176" fill="#F6E9DF"/>
+    <circle cx="108" cy="110" r="34" fill="#B4531A" opacity="0.85"/>
+    <path d="M40 232c0-38 30-61 68-61s68 23 68 61z" fill="#B4531A" opacity="0.85"/>
+  </g>
+  <rect x="112" y="192" width="86" height="26" rx="13" fill="#FFFFFF" stroke="#E8E1D7"/>
+  <circle cx="126" cy="205" r="3.5" fill="#B4531A"/>
+  <text x="137" y="209" font-size="12" fill="#6E6760" font-family="ui-monospace, Menlo, monospace">QQ 在线</text>
+
+  <rect x="20" y="278" width="176" height="42" rx="21" fill="#FFFFFF" stroke="#E8E1D7"/>
+  <rect x="38" y="290" width="17" height="17" rx="4" fill="#F6E9DF"/>
+  <text x="46.5" y="303" font-size="11" fill="#B4531A" text-anchor="middle" font-weight="700">Q</text>
+  <text x="64" y="304" font-size="12" fill="#0E0C0A" font-family="ui-monospace, Menlo, monospace" font-weight="600">3627236036</text>
+  <text x="160" y="303" font-size="11" fill="#948C83">点击复制</text>
+
+  <circle cx="20" cy="360" r="4" fill="#B4531A"/>
+  <text x="32" y="364" font-size="11" fill="#6E6760" font-family="ui-monospace, Menlo, monospace" letter-spacing="1.2">HELLO, NICE TO MEET YOU</text>
+  <text x="20" y="404" font-size="30" fill="#0E0C0A" font-weight="700">你好，我是陈一舟<tspan fill="#B4531A">。</tspan></text>
+  <text x="20" y="428" font-size="11" fill="#6E6760" font-family="ui-monospace, Menlo, monospace">Yizhou Chen / Frontend Engineer</text>
+  <text x="20" y="464" font-size="14" fill="#1A1714">一名把界面写进日常的前端工程师。白天在浏览器里打磨</text>
+  <text x="20" y="486" font-size="14" fill="#1A1714">细节，夜里写点关于代码、设计与独立开发的碎碎念。</text>
+  <text x="20" y="508" font-size="14" fill="#1A1714">愿它们能替你省下一点时间。</text>
+
+  <rect x="20" y="530" width="74" height="26" rx="13" fill="#F4EFE8" stroke="#E8E1D7"/>
+  <text x="57" y="548" font-size="11" fill="#6E6760" text-anchor="middle">前端工程</text>
+  <rect x="100" y="530" width="74" height="26" rx="13" fill="#F4EFE8" stroke="#E8E1D7"/>
+  <text x="137" y="548" font-size="11" fill="#6E6760" text-anchor="middle">交互设计</text>
+  <rect x="180" y="530" width="74" height="26" rx="13" fill="#F4EFE8" stroke="#E8E1D7"/>
+  <text x="217" y="548" font-size="11" fill="#6E6760" text-anchor="middle">独立开发</text>
+  <rect x="260" y="530" width="56" height="26" rx="13" fill="#F4EFE8" stroke="#E8E1D7"/>
+  <text x="288" y="548" font-size="11" fill="#6E6760" text-anchor="middle">写作</text>
+
+  <rect x="20" y="578" width="124" height="40" rx="20" fill="#B4531A"/>
+  <text x="55" y="603" font-size="12" fill="#FFFFFF" font-weight="600">阅读文章</text>
+  <path d="M120 592l6 6-6 6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="156" y="578" width="94" height="40" rx="20" fill="none" stroke="#D9D0C3"/>
+  <text x="203" y="603" font-size="12" fill="#1A1714" font-weight="600" text-anchor="middle">联系我</text>
+
+  <!-- posts -->
+  <rect x="0" y="660" width="390" height="184" fill="#F4EFE8"/>
+  <text x="20" y="694" font-size="11" fill="#B4531A" font-family="ui-monospace, Menlo, monospace" letter-spacing="1.4">JOURNAL</text>
+  <text x="20" y="726" font-size="22" fill="#0E0C0A" font-weight="700">最近写的文章</text>
+  <text x="20" y="750" font-size="12" fill="#6E6760">工程实践、界面思考与生活片段。不追热点，</text>
+  <text x="20" y="768" font-size="12" fill="#6E6760">只写自己真正做过的。</text>
+
+  <rect x="20" y="790" width="350" height="150" rx="16" fill="#FFFFFF" stroke="#E8E1D7"/>
+  <text x="40" y="818" font-size="11" fill="#948C83" font-family="ui-monospace, Menlo, monospace">2025-03-18</text>
+  <rect x="152" y="804" width="64" height="20" rx="10" fill="#F6E9DF"/>
+  <text x="184" y="818" font-size="11" fill="#8E3E11" text-anchor="middle" font-weight="600">工程实践</text>
+  <text x="224" y="818" font-size="11" fill="#8E3E11" font-weight="600">置顶</text>
+  <text x="40" y="850" font-size="15" fill="#B4531A" font-weight="700">用 CSS 变量搭一套可维护的</text>
+  <text x="40" y="872" font-size="15" fill="#B4531A" font-weight="700">设计令牌体系</text>
+  <text x="40" y="896" font-size="12" fill="#6E6760">把散落在组件里的颜色与间距收拢到 :root 中，</text>
+  <text x="40" y="914" font-size="12" fill="#6E6760">意味着改一次主题只需动一行。</text>
+</svg>
