@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lin Notes · 一个关于前端与设计的个人博客</title>
+<meta name="description" content="Lin Notes：一个关于前端工程、界面设计与独立思考的个人博客。">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232f4bff'/%3E%3Cpath d='M8 24h16M12 19V9M17 19V6M22 19v-8' fill='none' stroke='%23ffffff' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+</head>
+<body>
+<a class="skip-link" href="#main">跳到主要内容</a>
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="index.html">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M8 15V7"/><path d="M12 15V4"/><path d="M16 15v-6"/></svg>
+      </span>
+      <span class="brand__text">Lin Notes<small>记录工程实践与设计思考</small></span>
+    </a>
+
+    <nav class="site-nav" aria-label="主导航">
+      <ul class="site-nav__list">
+        <li><a class="site-nav__link is-active" href="index.html" aria-current="page">首页</a></li>
+        <li><a class="site-nav__link" href="articles.html">文章</a></li>
+        <li><a class="site-nav__link" href="about.html">关于</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="切换主题" aria-pressed="false">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <button class="icon-btn nav-toggle" type="button" data-nav-toggle aria-label="打开菜单" aria-expanded="false" aria-controls="mobile-nav">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-nav" id="mobile-nav">
+    <div class="container">
+      <ul>
+        <li><a class="is-active" href="index.html" aria-current="page">首页</a></li>
+        <li><a href="articles.html">文章</a></li>
+        <li><a href="about.html">关于</a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="container hero__inner">
+      <span class="eyebrow">个人博客</span>
+      <h1 class="hero__title">把复杂的问题，<br>写成<em>清晰的界面</em>。</h1>
+      <p class="hero__lead">这里记录我在前端工程、界面设计与独立思考上的实践与心得，尽量把话说清楚。</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="articles.html">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19h16"/><path d="M8 15V7"/><path d="M12 15V4"/><path d="M16 15v-6"/></svg>
+          开始阅读
+        </a>
+        <a class="btn btn--ghost" href="articles.html">
+          全部文章
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <span class="eyebrow">最新文章</span>
+          <h2 class="section__title">最近写下的几篇</h2>
+          <p class="section__desc">围绕工程实践、体验设计与思考方式的一些记录。</p>
+        </div>
+        <a class="link-more" href="articles.html">
+          查看更多
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+      <div class="card-grid" id="latest-grid"></div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <div class="section__head">
+        <div>
+          <span class="eyebrow">精选文章</span>
+          <h2 class="section__title">值得反复读的一篇</h2>
+        </div>
+      </div>
+      <div id="featured-wrap"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="about-summary">
+        <img class="about-summary__avatar" src="assets/avatar.svg" alt="作者头像" width="180" height="180">
+        <div>
+          <h2 class="about-summary__title">关于我</h2>
+          <p class="about-summary__role">林知远 · 前端工程师 / 界面设计爱好者 · 杭州</p>
+          <p class="about-summary__text">我把博客当作一台检验理解的机器：把踩过的坑整理成可复用的方案，也乐于在代码之外讨论体验与美学。每篇文章都尽量说清楚「为什么这样做」。</p>
+          <p class="about-summary__actions">
+            <a class="btn btn--ghost" href="about.html">
+              查看全部
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="brand footer__brand">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M8 15V7"/><path d="M12 15V4"/><path d="M16 15v-6"/></svg>
+          </span>
+          <span class="brand__text">Lin Notes</span>
+        </div>
+        <p class="footer__about">一个关于前端工程、界面设计与独立思考的个人博客。</p>
+      </div>
+      <div>
+        <h3 class="footer__title">导航</h3>
+        <ul class="footer__list">
+          <li><a href="index.html">首页</a></li>
+          <li><a href="articles.html">文章</a></li>
+          <li><a href="about.html">关于我</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="footer__title">联系方式</h3>
+        <ul class="footer__list">
+          <li><a href="mailto:hello@linnotes.dev">hello@linnotes.dev</a></li>
+          <li><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="https://www.zhihu.com/" target="_blank" rel="noopener noreferrer">知乎</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© <span id="footer-year">2024</span> Lin Notes. 保留所有权利。</span>
+      <span>以简洁为荣，用文字记录。</span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

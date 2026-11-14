@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="320" height="320" role="img" aria-label="作者头像">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#eef1ff"/>
+      <stop offset="100%" stop-color="#dfe4ff"/>
+    </linearGradient>
+    <clipPath id="round">
+      <circle cx="160" cy="160" r="160"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#round)">
+    <rect width="320" height="320" fill="url(#bg)"/>
+    <circle cx="160" cy="132" r="52" fill="#2f4bff" opacity="0.9"/>
+    <path d="M52 320c0-59.6 48.4-108 108-108s108 48.4 108 108z" fill="#2f4bff"/>
+    <path d="M52 320c0-59.6 48.4-108 108-108s108 48.4 108 108z" fill="#1b31b8" opacity="0.35"/>
+    <circle cx="160" cy="132" r="62" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.6"/>
+  </g>
+</svg>
